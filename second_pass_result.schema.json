@@ -1,0 +1,470 @@
+{
+  "$defs": {
+    "BeamExtent": {
+      "additionalProperties": false,
+      "description": "Drawing-supported longitudinal beam information.\n\nDo not estimate lengths from image pixels.",
+      "properties": {
+        "start_support": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Start Support"
+        },
+        "end_support": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "End Support"
+        },
+        "start_grid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Start Grid"
+        },
+        "end_grid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "End Grid"
+        },
+        "centreline_span": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Centreline Span"
+        },
+        "clear_span": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Clear Span"
+        },
+        "overall_length": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Overall Length"
+        },
+        "unit": {
+          "$ref": "#/$defs/DimensionUnit"
+        },
+        "evidence": {
+          "$ref": "#/$defs/VerificationEvidence"
+        }
+      },
+      "required": [
+        "start_support",
+        "end_support",
+        "start_grid",
+        "end_grid",
+        "centreline_span",
+        "clear_span",
+        "overall_length",
+        "unit",
+        "evidence"
+      ],
+      "title": "BeamExtent",
+      "type": "object"
+    },
+    "ColumnVerticalExtent": {
+      "additionalProperties": false,
+      "description": "Vertical drawing facts for a column.\n\nfloor_to_floor_height is not automatically the final QS measured\nconcrete height.",
+      "properties": {
+        "bottom_level": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Bottom Level"
+        },
+        "top_level": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Top Level"
+        },
+        "bottom_elevation": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Bottom Elevation"
+        },
+        "top_elevation": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Top Elevation"
+        },
+        "floor_to_floor_height": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Floor To Floor Height"
+        },
+        "explicit_column_height": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Explicit Column Height"
+        },
+        "unit": {
+          "$ref": "#/$defs/DimensionUnit"
+        },
+        "evidence": {
+          "$ref": "#/$defs/VerificationEvidence"
+        }
+      },
+      "required": [
+        "bottom_level",
+        "top_level",
+        "bottom_elevation",
+        "top_elevation",
+        "floor_to_floor_height",
+        "explicit_column_height",
+        "unit",
+        "evidence"
+      ],
+      "title": "ColumnVerticalExtent",
+      "type": "object"
+    },
+    "DimensionComponent": {
+      "additionalProperties": false,
+      "description": "Examples:\n\n450\n    raw = \"450\"\n    values = [450]\n\n30/32\n    raw = \"30/32\"\n    values = [30, 32]",
+      "properties": {
+        "raw": {
+          "minLength": 1,
+          "title": "Raw",
+          "type": "string"
+        },
+        "values": {
+          "items": {
+            "exclusiveMinimum": 0.0,
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "title": "Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "raw",
+        "values"
+      ],
+      "title": "DimensionComponent",
+      "type": "object"
+    },
+    "DimensionOrder": {
+      "enum": [
+        "depth_x_width",
+        "width_x_depth"
+      ],
+      "title": "DimensionOrder",
+      "type": "string"
+    },
+    "DimensionUnit": {
+      "enum": [
+        "mm",
+        "in"
+      ],
+      "title": "DimensionUnit",
+      "type": "string"
+    },
+    "ElementType": {
+      "enum": [
+        "beam",
+        "column"
+      ],
+      "title": "ElementType",
+      "type": "string"
+    },
+    "EvidenceType": {
+      "enum": [
+        "direct_annotation",
+        "sheet_default",
+        "drawing_default",
+        "beam_schedule",
+        "column_schedule",
+        "beam_detail",
+        "column_detail",
+        "grid_dimension",
+        "explicit_span_dimension",
+        "level_elevation",
+        "explicit_height_dimension",
+        "support_association",
+        "unresolved"
+      ],
+      "title": "EvidenceType",
+      "type": "string"
+    },
+    "VerificationEvidence": {
+      "additionalProperties": false,
+      "description": "Short factual evidence only.\n\nDo not place chain-of-thought here.",
+      "properties": {
+        "evidence_type": {
+          "$ref": "#/$defs/EvidenceType"
+        },
+        "observed_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observed Text"
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "evidence_type",
+        "observed_text",
+        "confidence"
+      ],
+      "title": "VerificationEvidence",
+      "type": "object"
+    },
+    "VerificationResult": {
+      "additionalProperties": false,
+      "description": "One result for one Element.key generated by pass 1.\n\nAll major fact objects are required-but-nullable so the JSON schema\nremains rigid while still supporting beams and columns.",
+      "properties": {
+        "element_key": {
+          "minLength": 1,
+          "title": "Element Key",
+          "type": "string"
+        },
+        "element_type": {
+          "$ref": "#/$defs/ElementType"
+        },
+        "status": {
+          "$ref": "#/$defs/VerificationStatus"
+        },
+        "cross_section": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VerifiedCrossSection"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "beam_extent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BeamExtent"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "column_vertical_extent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ColumnVerticalExtent"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Note"
+        }
+      },
+      "required": [
+        "element_key",
+        "element_type",
+        "status",
+        "cross_section",
+        "beam_extent",
+        "column_vertical_extent",
+        "confidence",
+        "note"
+      ],
+      "title": "VerificationResult",
+      "type": "object"
+    },
+    "VerificationStatus": {
+      "enum": [
+        "resolved",
+        "partially_resolved",
+        "unresolved",
+        "conflict"
+      ],
+      "title": "VerificationStatus",
+      "type": "string"
+    },
+    "VerifiedCrossSection": {
+      "additionalProperties": false,
+      "properties": {
+        "raw": {
+          "minLength": 1,
+          "title": "Raw",
+          "type": "string"
+        },
+        "first": {
+          "$ref": "#/$defs/DimensionComponent"
+        },
+        "second": {
+          "$ref": "#/$defs/DimensionComponent"
+        },
+        "unit": {
+          "$ref": "#/$defs/DimensionUnit"
+        },
+        "dimension_order": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DimensionOrder"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "width": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DimensionComponent"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "depth": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DimensionComponent"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence": {
+          "$ref": "#/$defs/VerificationEvidence"
+        }
+      },
+      "required": [
+        "raw",
+        "first",
+        "second",
+        "unit",
+        "dimension_order",
+        "width",
+        "depth",
+        "evidence"
+      ],
+      "title": "VerifiedCrossSection",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "results": {
+      "items": {
+        "$ref": "#/$defs/VerificationResult"
+      },
+      "minItems": 1,
+      "title": "Results",
+      "type": "array"
+    }
+  },
+  "required": [
+    "results"
+  ],
+  "title": "VerificationBatch",
+  "type": "object"
+}

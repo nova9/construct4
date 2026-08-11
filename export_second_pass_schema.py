@@ -5,17 +5,19 @@ from pathlib import Path
 
 from openai.lib._pydantic import to_strict_json_schema
 
-from first_pass_schema import DrawingExtraction
+from second_pass_schema import VerificationBatch
 
-OUTPUT_PATH = Path("result.schema.json")
+OUTPUT_PATH = Path("second_pass_result.schema.json")
 
 
 def main() -> None:
-    schema = to_strict_json_schema(DrawingExtraction)
+    schema = to_strict_json_schema(VerificationBatch)
+
     OUTPUT_PATH.write_text(
         json.dumps(schema, indent=2) + "\n",
         encoding="utf-8",
     )
+
     print(f"Wrote {OUTPUT_PATH}")
 
 
