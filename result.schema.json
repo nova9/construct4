@@ -1,28 +1,40 @@
 {
   "$defs": {
+    "BeamDimensionMethod": {
+      "enum": [
+        "direct_annotation",
+        "sheet_default",
+        "drawing_default",
+        "beam_schedule",
+        "beam_detail"
+      ],
+      "title": "BeamDimensionMethod",
+      "type": "string"
+    },
+    "ColumnDimensionMethod": {
+      "enum": [
+        "direct_annotation",
+        "sheet_default",
+        "drawing_default",
+        "column_schedule",
+        "column_detail"
+      ],
+      "title": "ColumnDimensionMethod",
+      "type": "string"
+    },
     "Conventions": {
       "additionalProperties": false,
       "properties": {
         "beam_dimension_methods": {
           "items": {
-            "enum": [
-              "direct_annotation",
-              "sheet_default",
-              "beam_detail"
-            ],
-            "type": "string"
+            "$ref": "#/$defs/BeamDimensionMethod"
           },
           "title": "Beam Dimension Methods",
           "type": "array"
         },
         "column_dimension_methods": {
           "items": {
-            "enum": [
-              "direct_annotation",
-              "sheet_default",
-              "column_schedule"
-            ],
-            "type": "string"
+            "$ref": "#/$defs/ColumnDimensionMethod"
           },
           "title": "Column Dimension Methods",
           "type": "array"
@@ -35,18 +47,53 @@
       "title": "Conventions",
       "type": "object"
     },
-    "DrawingDimensionOrder": {
+    "DimensionComponent": {
       "additionalProperties": false,
+      "description": "One side of an AxB member size.\n\nExamples:\n\n    450\n    -> raw = \"450\"\n    -> values = [450]\n\n    30/32\n    -> raw = \"30/32\"\n    -> values = [30, 32]\n\nThis lets us preserve tapered/variable dimensions rather than\nforcing them into one scalar.",
       "properties": {
-        "beam": {
-          "const": "depth_x_width",
-          "title": "Beam",
+        "raw": {
+          "minLength": 1,
+          "title": "Raw",
           "type": "string"
         },
-        "column": {
-          "const": "width_x_depth",
-          "title": "Column",
-          "type": "string"
+        "values": {
+          "items": {
+            "exclusiveMinimum": 0.0,
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "title": "Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "raw",
+        "values"
+      ],
+      "title": "DimensionComponent",
+      "type": "object"
+    },
+    "DimensionOrder": {
+      "enum": [
+        "depth_x_width",
+        "width_x_depth"
+      ],
+      "title": "DimensionOrder",
+      "type": "string"
+    },
+    "DimensionOrderAssessment": {
+      "additionalProperties": false,
+      "properties": {
+        "order": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DimensionOrder"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "confidence": {
           "maximum": 1.0,
@@ -56,9 +103,33 @@
         }
       },
       "required": [
-        "beam",
-        "column",
+        "order",
         "confidence"
+      ],
+      "title": "DimensionOrderAssessment",
+      "type": "object"
+    },
+    "DimensionUnit": {
+      "enum": [
+        "mm",
+        "in"
+      ],
+      "title": "DimensionUnit",
+      "type": "string"
+    },
+    "DrawingDimensionOrder": {
+      "additionalProperties": false,
+      "properties": {
+        "beam": {
+          "$ref": "#/$defs/DimensionOrderAssessment"
+        },
+        "column": {
+          "$ref": "#/$defs/DimensionOrderAssessment"
+        }
+      },
+      "required": [
+        "beam",
+        "column"
       ],
       "title": "DrawingDimensionOrder",
       "type": "object"
@@ -67,9 +138,12 @@
       "additionalProperties": false,
       "properties": {
         "units": {
-          "const": "mm",
+          "items": {
+            "$ref": "#/$defs/DimensionUnit"
+          },
+          "minItems": 1,
           "title": "Units",
-          "type": "string"
+          "type": "array"
         },
         "dimension_order": {
           "$ref": "#/$defs/DrawingDimensionOrder"
@@ -84,19 +158,37 @@
     },
     "Element": {
       "additionalProperties": false,
+      "description": "One dimension-resolved member occurrence / level scope.\n\n`key` is unique within the JSON output.\n\n`drawing_id` is the actual designation printed on the drawing, if one\nexists. The same drawing_id may legitimately occur at several levels.",
       "properties": {
-        "id": {
+        "key": {
           "minLength": 1,
-          "title": "Id",
+          "title": "Key",
           "type": "string"
+        },
+        "drawing_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Drawing Id"
         },
         "type": {
           "$ref": "#/$defs/ElementType"
         },
-        "floor": {
-          "minLength": 1,
-          "title": "Floor",
-          "type": "string"
+        "level": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Level"
         },
         "size": {
           "anyOf": [
@@ -112,32 +204,22 @@
           "$ref": "#/$defs/Resolution"
         },
         "location": {
-          "$ref": "#/$defs/Location"
+          "$ref": "#/$defs/ElementLocation"
         },
         "needs_verification": {
           "title": "Needs Verification",
           "type": "boolean"
-        },
-        "verification": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/Verification"
-            },
-            {
-              "type": "null"
-            }
-          ]
         }
       },
       "required": [
-        "id",
+        "key",
+        "drawing_id",
         "type",
-        "floor",
+        "level",
         "size",
         "resolution",
         "location",
-        "needs_verification",
-        "verification"
+        "needs_verification"
       ],
       "title": "Element",
       "type": "object"
@@ -148,20 +230,21 @@
         "element_type": {
           "$ref": "#/$defs/ElementType"
         },
-        "floor": {
+        "scope": {
           "minLength": 1,
-          "title": "Floor",
+          "title": "Scope",
           "type": "string"
         },
-        "size_raw": {
-          "pattern": "^\\d+x\\d+$",
-          "title": "Size Raw",
-          "type": "string"
+        "size": {
+          "$ref": "#/$defs/ElementSize"
         },
         "page": {
           "exclusiveMinimum": 0,
           "title": "Page",
           "type": "integer"
+        },
+        "bbox": {
+          "$ref": "#/$defs/NormalizedBBox"
         },
         "confidence": {
           "maximum": 1.0,
@@ -172,46 +255,79 @@
       },
       "required": [
         "element_type",
-        "floor",
-        "size_raw",
+        "scope",
+        "size",
         "page",
+        "bbox",
         "confidence"
       ],
       "title": "ElementDefault",
       "type": "object"
     },
+    "ElementLocation": {
+      "additionalProperties": false,
+      "description": "Location of the actual structural member on the plan.\n\nbbox is nullable because the model may identify a member semantically\nwithout being confident enough to provide its physical region.",
+      "properties": {
+        "page": {
+          "exclusiveMinimum": 0,
+          "title": "Page",
+          "type": "integer"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NormalizedBBox"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "page",
+        "bbox"
+      ],
+      "title": "ElementLocation",
+      "type": "object"
+    },
     "ElementSize": {
       "additionalProperties": false,
+      "description": "Preserve drawing notation separately from normalized interpretation.\n\nExample:\n    raw = '30\"/32\" x 18\"'\n    first.raw = '30/32'\n    first.values = [30, 32]\n    second.values = [18]\n\nwidth/depth can remain null if the ordering convention is uncertain.",
       "properties": {
         "raw": {
-          "pattern": "^\\d+x\\d+$",
+          "minLength": 1,
           "title": "Raw",
           "type": "string"
         },
         "first": {
-          "exclusiveMinimum": 0,
-          "title": "First",
-          "type": "integer"
+          "$ref": "#/$defs/DimensionComponent"
         },
         "second": {
-          "exclusiveMinimum": 0,
-          "title": "Second",
-          "type": "integer"
+          "$ref": "#/$defs/DimensionComponent"
         },
         "unit": {
-          "const": "mm",
-          "title": "Unit",
-          "type": "string"
+          "$ref": "#/$defs/DimensionUnit"
         },
         "width": {
-          "exclusiveMinimum": 0,
-          "title": "Width",
-          "type": "integer"
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DimensionComponent"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "depth": {
-          "exclusiveMinimum": 0,
-          "title": "Depth",
-          "type": "integer"
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DimensionComponent"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -233,31 +349,91 @@
       "title": "ElementType",
       "type": "string"
     },
-    "Location": {
+    "Evidence": {
       "additionalProperties": false,
+      "description": "Where the evidence for the dimension came from.\n\nThis is intentionally separate from ElementLocation.\n\nExample:\n    element is on page 9\n    dimension is resolved from a schedule on page 12",
       "properties": {
+        "source_type": {
+          "$ref": "#/$defs/ResolutionSource"
+        },
         "page": {
-          "exclusiveMinimum": 0,
-          "title": "Page",
-          "type": "integer"
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Page"
         },
         "bbox": {
-          "items": {
-            "maximum": 1.0,
-            "minimum": 0.0,
-            "type": "number"
-          },
-          "maxItems": 4,
-          "minItems": 4,
-          "title": "Bbox",
-          "type": "array"
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NormalizedBBox"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "raw_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Raw Text"
         }
       },
       "required": [
+        "source_type",
         "page",
-        "bbox"
+        "bbox",
+        "raw_text"
       ],
-      "title": "Location",
+      "title": "Evidence",
+      "type": "object"
+    },
+    "NormalizedBBox": {
+      "additionalProperties": false,
+      "description": "Normalized page coordinates.\n\nOrigin: top-left\nx increases left -> right\ny increases top -> bottom",
+      "properties": {
+        "left": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Left",
+          "type": "number"
+        },
+        "top": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Top",
+          "type": "number"
+        },
+        "right": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Right",
+          "type": "number"
+        },
+        "bottom": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Bottom",
+          "type": "number"
+        }
+      },
+      "required": [
+        "left",
+        "top",
+        "right",
+        "bottom"
+      ],
+      "title": "NormalizedBBox",
       "type": "object"
     },
     "Readability": {
@@ -273,12 +449,7 @@
       "additionalProperties": false,
       "properties": {
         "type": {
-          "enum": [
-            "column_schedule",
-            "beam_details"
-          ],
-          "title": "Type",
-          "type": "string"
+          "$ref": "#/$defs/ReferenceSourceType"
         },
         "page": {
           "exclusiveMinimum": 0,
@@ -286,15 +457,7 @@
           "type": "integer"
         },
         "bbox": {
-          "items": {
-            "maximum": 1.0,
-            "minimum": 0.0,
-            "type": "number"
-          },
-          "maxItems": 4,
-          "minItems": 4,
-          "title": "Bbox",
-          "type": "array"
+          "$ref": "#/$defs/NormalizedBBox"
         },
         "readability": {
           "$ref": "#/$defs/Readability"
@@ -314,28 +477,38 @@
       "title": "ReferenceSource",
       "type": "object"
     },
+    "ReferenceSourceType": {
+      "enum": [
+        "column_schedule",
+        "beam_schedule",
+        "column_details",
+        "beam_details",
+        "general_notes",
+        "default_size_note"
+      ],
+      "title": "ReferenceSourceType",
+      "type": "string"
+    },
     "Resolution": {
       "additionalProperties": false,
       "properties": {
         "source_type": {
           "$ref": "#/$defs/ResolutionSource"
         },
-        "source_page": {
-          "exclusiveMinimum": 0,
-          "title": "Source Page",
-          "type": "integer"
-        },
         "confidence": {
           "maximum": 1.0,
           "minimum": 0.0,
           "title": "Confidence",
           "type": "number"
+        },
+        "evidence": {
+          "$ref": "#/$defs/Evidence"
         }
       },
       "required": [
         "source_type",
-        "source_page",
-        "confidence"
+        "confidence",
+        "evidence"
       ],
       "title": "Resolution",
       "type": "object"
@@ -344,47 +517,34 @@
       "enum": [
         "direct_annotation",
         "sheet_default",
+        "drawing_default",
+        "beam_schedule",
+        "column_schedule",
         "beam_detail",
-        "column_schedule"
+        "column_detail",
+        "inferred",
+        "unresolved"
       ],
       "title": "ResolutionSource",
       "type": "string"
     },
-    "Verification": {
-      "additionalProperties": false,
-      "properties": {
-        "reason": {
-          "minLength": 1,
-          "title": "Reason",
-          "type": "string"
-        },
-        "page": {
-          "exclusiveMinimum": 0,
-          "title": "Page",
-          "type": "integer"
-        },
-        "bbox": {
-          "items": {
-            "maximum": 1.0,
-            "minimum": 0.0,
-            "type": "number"
-          },
-          "maxItems": 4,
-          "minItems": 4,
-          "title": "Bbox",
-          "type": "array"
-        }
-      },
-      "required": [
-        "reason",
-        "page",
-        "bbox"
+    "VerificationPurpose": {
+      "enum": [
+        "read_direct_annotation",
+        "read_column_schedule",
+        "read_beam_schedule",
+        "read_column_detail",
+        "read_beam_detail",
+        "resolve_member_association",
+        "determine_dimension_order",
+        "resolve_conflicting_evidence"
       ],
-      "title": "Verification",
-      "type": "object"
+      "title": "VerificationPurpose",
+      "type": "string"
     },
     "VerificationRequest": {
       "additionalProperties": false,
+      "description": "A targeted region worth sending through a higher-resolution second pass.",
       "properties": {
         "page": {
           "exclusiveMinimum": 0,
@@ -392,19 +552,14 @@
           "type": "integer"
         },
         "bbox": {
-          "items": {
-            "maximum": 1.0,
-            "minimum": 0.0,
-            "type": "number"
-          },
-          "maxItems": 4,
-          "minItems": 4,
-          "title": "Bbox",
-          "type": "array"
+          "$ref": "#/$defs/NormalizedBBox"
         },
         "purpose": {
-          "const": "read_column_schedule",
-          "title": "Purpose",
+          "$ref": "#/$defs/VerificationPurpose"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
           "type": "string"
         },
         "required_for": {
@@ -420,6 +575,7 @@
         "page",
         "bbox",
         "purpose",
+        "reason",
         "required_for"
       ],
       "title": "VerificationRequest",

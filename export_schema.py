@@ -1,5 +1,3 @@
-"""Export an OpenAI strict JSON Schema for ``codex exec --output-schema``."""
-
 from __future__ import annotations
 
 import json
