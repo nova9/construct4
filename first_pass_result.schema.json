@@ -11,6 +11,117 @@
       "title": "BeamDimensionMethod",
       "type": "string"
     },
+    "BeamExtent": {
+      "additionalProperties": false,
+      "properties": {
+        "start_support": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Start Support"
+        },
+        "end_support": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "End Support"
+        },
+        "start_grid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Start Grid"
+        },
+        "end_grid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "End Grid"
+        },
+        "centreline_span": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Centreline Span"
+        },
+        "clear_span": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Clear Span"
+        },
+        "overall_length": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Overall Length"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DimensionUnit"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "start_support",
+        "end_support",
+        "start_grid",
+        "end_grid",
+        "centreline_span",
+        "clear_span",
+        "overall_length",
+        "unit",
+        "confidence"
+      ],
+      "title": "BeamExtent",
+      "type": "object"
+    },
     "ColumnDimensionMethod": {
       "enum": [
         "direct_annotation",
@@ -200,6 +311,26 @@
             }
           ]
         },
+        "vertical_extent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VerticalExtent"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "beam_extent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BeamExtent"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "resolution": {
           "$ref": "#/$defs/Resolution"
         },
@@ -217,6 +348,8 @@
         "type",
         "level",
         "size",
+        "vertical_extent",
+        "beam_extent",
         "resolution",
         "location",
         "needs_verification"
@@ -579,6 +712,93 @@
         "required_for"
       ],
       "title": "VerificationRequest",
+      "type": "object"
+    },
+    "VerticalExtent": {
+      "additionalProperties": false,
+      "properties": {
+        "bottom_level": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Bottom Level"
+        },
+        "top_level": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Top Level"
+        },
+        "bottom_elevation": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Bottom Elevation"
+        },
+        "top_elevation": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Top Elevation"
+        },
+        "floor_to_floor_height": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Floor To Floor Height"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DimensionUnit"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "bottom_level",
+        "top_level",
+        "bottom_elevation",
+        "top_elevation",
+        "floor_to_floor_height",
+        "unit",
+        "confidence"
+      ],
+      "title": "VerticalExtent",
       "type": "object"
     }
   },

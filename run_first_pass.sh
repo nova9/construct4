@@ -24,8 +24,8 @@ if [[ ! -f ./plan.pdf ]]; then
   exit 1
 fi
 
-# Regenerate the strict OpenAI JSON Schema from the Pydantic model.
-python ./export_schema.py
+# Regenerate the strict OpenAI JSON Schema from the first-pass Pydantic model.
+python ./export_first_pass_schema.py
 
 codex exec \
   --json \
@@ -33,10 +33,10 @@ codex exec \
   -m gpt-5.6-sol \
   -c model_reasoning_effort=high \
   -c model_reasoning_summary=detailed \
-  --output-schema ./result.schema.json \
-  -o ./result.json \
+  --output-schema ./first_pass_result.schema.json \
+  -o ./first_pass_result.json \
   '
-Analyze the attached construction drawing set.
+Analyze the construction drawing set at ./plan.pdf.
 
 Determine how this drawing set specifies beam and column dimensions, then extract and resolve those dimensions using all relevant pages in the PDF.
 

@@ -7,7 +7,7 @@ from openai.lib._pydantic import to_strict_json_schema
 
 from first_pass_schema import DrawingExtraction
 
-OUTPUT_PATH = Path("result.schema.json")
+OUTPUT_PATH = Path("first_pass_result.schema.json")
 
 
 def main() -> None:

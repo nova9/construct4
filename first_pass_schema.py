@@ -5,7 +5,6 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-
 # ---------------------------------------------------------------------------
 # Common primitives
 # ---------------------------------------------------------------------------
@@ -203,6 +202,22 @@ class VerticalExtent(StrictModel):
     confidence: Confidence
 
 
+class BeamExtent(StrictModel):
+    start_support: str | None
+    end_support: str | None
+
+    start_grid: str | None
+    end_grid: str | None
+
+    centreline_span: float | None
+    clear_span: float | None
+    overall_length: float | None
+
+    unit: DimensionUnit | None
+
+    confidence: Confidence
+
+
 # ---------------------------------------------------------------------------
 # Defaults and cross-page references
 # ---------------------------------------------------------------------------
@@ -337,6 +352,12 @@ class Element(StrictModel):
     level: str | None
 
     size: ElementSize | None
+
+    # Only meaningful for columns.
+    vertical_extent: VerticalExtent | None
+
+    # Only meaningful for beams.
+    beam_extent: BeamExtent | None
 
     resolution: Resolution
 
