@@ -40,6 +40,8 @@ codex exec \
     --output-schema ./second_pass_result.schema.json \
     -o ./second_pass_result.json \
     '
+Use $extract-structural-members for this extraction.
+
 Perform the final structural-member extraction from the complete drawing set at
 ./plan.pdf. Read ./first_pass_result.json first and use it only as an overview
 of the drawing set and as a guide to relevant pages, schedules, details, notes,
@@ -70,7 +72,7 @@ Each column has exactly three dimension fields:
 - height: physical vertical height
 
 Return dimensions as numbers, without unit conversion. Every dimension field
-must contain one numeric value; never return combined notation such as
+must contain one numeric value or null; never return combined notation such as
 "450/400". Populate a dimension only when it is
 explicitly stated or can be derived exactly from drawing dimensions, grids,
 levels, and support geometry. Never estimate dimensions from rendered pixels.
