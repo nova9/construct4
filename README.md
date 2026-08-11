@@ -294,5 +294,3 @@ Do not reuse an old `first_pass_result.json` with a different `plan.pdf`.
 - `export_second_pass_schema.py`: generates the second-pass JSON Schema
 - `.agents/skills/extract-structural-members/SKILL.md`: reusable extraction and cross-view reasoning instructions
 - `requirements.txt`: Python dependencies
-
-The NRM 2 text and Markdown files in this repository are not required to run beam and column extraction. They relate to a possible later measurement or bill-of-quantities workflow.
