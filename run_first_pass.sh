@@ -53,5 +53,5 @@ Use cross-page references where necessary.
 
 Return the result using the supplied structured output schema.
 
-If a dimension cannot be read or resolved confidently from the supplied rendering, do not guess. Add an appropriate verification request for a targeted higher-resolution second pass.
+If a dimension cannot be read or resolved confidently from the supplied rendering, do not guess. Mark the element as needing verification. A mandatory higher-resolution second pass will process every beam and column.
 '

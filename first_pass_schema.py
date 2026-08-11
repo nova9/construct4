@@ -390,43 +390,6 @@ class Element(StrictModel):
 
 
 # ---------------------------------------------------------------------------
-# Verification
-# ---------------------------------------------------------------------------
-
-class VerificationPurpose(StrEnum):
-    READ_DIRECT_ANNOTATION = "read_direct_annotation"
-
-    READ_COLUMN_SCHEDULE = "read_column_schedule"
-    READ_BEAM_SCHEDULE = "read_beam_schedule"
-
-    READ_COLUMN_DETAIL = "read_column_detail"
-    READ_BEAM_DETAIL = "read_beam_detail"
-
-    RESOLVE_MEMBER_ASSOCIATION = "resolve_member_association"
-
-    DETERMINE_DIMENSION_ORDER = "determine_dimension_order"
-
-    RESOLVE_CONFLICTING_EVIDENCE = "resolve_conflicting_evidence"
-
-
-class VerificationRequest(StrictModel):
-    """
-    A targeted region worth sending through a higher-resolution second pass.
-    """
-
-    page: int = Field(gt=0)
-
-    bbox: NormalizedBBox
-
-    purpose: VerificationPurpose
-
-    reason: str = Field(min_length=1)
-
-    # References Element.key, NOT drawing_id.
-    required_for: list[str] = Field(min_length=1)
-
-
-# ---------------------------------------------------------------------------
 # Root output
 # ---------------------------------------------------------------------------
 
@@ -441,8 +404,6 @@ class DrawingExtraction(StrictModel):
 
     elements: list[Element]
 
-    verification_requests: list[VerificationRequest]
-
     @model_validator(mode="after")
     def validate_references(self) -> DrawingExtraction:
         # `key`, rather than drawing_id, must be globally unique.
@@ -450,45 +411,5 @@ class DrawingExtraction(StrictModel):
 
         if len(keys) != len(set(keys)):
             raise ValueError("element keys must be unique")
-
-        known_keys = set(keys)
-
-        requested_keys = {
-            key
-            for request in self.verification_requests
-            for key in request.required_for
-        }
-
-        unknown_keys = requested_keys - known_keys
-
-        if unknown_keys:
-            raise ValueError(
-                "verification requests reference unknown elements: "
-                + ", ".join(sorted(unknown_keys))
-            )
-
-        required_keys = {
-            element.key
-            for element in self.elements
-            if element.needs_verification
-        }
-
-        missing_keys = required_keys - requested_keys
-
-        if missing_keys:
-            raise ValueError(
-                "elements needing verification require a verification request: "
-                + ", ".join(sorted(missing_keys))
-            )
-
-        # Prevent unnecessary verification references.
-        unnecessary_keys = requested_keys - required_keys
-
-        if unnecessary_keys:
-            raise ValueError(
-                "verification requests reference elements not marked "
-                "needs_verification: "
-                + ", ".join(sorted(unnecessary_keys))
-            )
 
         return self

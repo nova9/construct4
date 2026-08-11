@@ -661,59 +661,6 @@
       "title": "ResolutionSource",
       "type": "string"
     },
-    "VerificationPurpose": {
-      "enum": [
-        "read_direct_annotation",
-        "read_column_schedule",
-        "read_beam_schedule",
-        "read_column_detail",
-        "read_beam_detail",
-        "resolve_member_association",
-        "determine_dimension_order",
-        "resolve_conflicting_evidence"
-      ],
-      "title": "VerificationPurpose",
-      "type": "string"
-    },
-    "VerificationRequest": {
-      "additionalProperties": false,
-      "description": "A targeted region worth sending through a higher-resolution second pass.",
-      "properties": {
-        "page": {
-          "exclusiveMinimum": 0,
-          "title": "Page",
-          "type": "integer"
-        },
-        "bbox": {
-          "$ref": "#/$defs/NormalizedBBox"
-        },
-        "purpose": {
-          "$ref": "#/$defs/VerificationPurpose"
-        },
-        "reason": {
-          "minLength": 1,
-          "title": "Reason",
-          "type": "string"
-        },
-        "required_for": {
-          "items": {
-            "type": "string"
-          },
-          "minItems": 1,
-          "title": "Required For",
-          "type": "array"
-        }
-      },
-      "required": [
-        "page",
-        "bbox",
-        "purpose",
-        "reason",
-        "required_for"
-      ],
-      "title": "VerificationRequest",
-      "type": "object"
-    },
     "VerticalExtent": {
       "additionalProperties": false,
       "properties": {
@@ -830,13 +777,6 @@
       },
       "title": "Elements",
       "type": "array"
-    },
-    "verification_requests": {
-      "items": {
-        "$ref": "#/$defs/VerificationRequest"
-      },
-      "title": "Verification Requests",
-      "type": "array"
     }
   },
   "required": [
@@ -844,8 +784,7 @@
     "conventions",
     "defaults",
     "reference_sources",
-    "elements",
-    "verification_requests"
+    "elements"
   ],
   "title": "DrawingExtraction",
   "type": "object"
