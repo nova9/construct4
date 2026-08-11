@@ -70,7 +70,7 @@ Each column has exactly three dimension fields:
 - height: physical vertical height
 
 Return dimensions as numbers, without unit conversion. Every dimension field
-must contain one numeric value or null; never return combined notation such as
+must contain one numeric value; never return combined notation such as
 "450/400". Populate a dimension only when it is
 explicitly stated or can be derived exactly from drawing dimensions, grids,
 levels, and support geometry. Never estimate dimensions from rendered pixels.
