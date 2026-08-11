@@ -1,0 +1,408 @@
+{
+  "drawing_set": {
+    "units": "mm",
+    "dimension_order": {
+      "beam": "depth_x_width",
+      "column": "width_x_depth",
+      "confidence": 0.99
+    }
+  },
+  "conventions": {
+    "beam_dimension_methods": [
+      "direct_annotation",
+      "sheet_default",
+      "beam_detail"
+    ],
+    "column_dimension_methods": ["sheet_default", "column_schedule"]
+  },
+  "defaults": [
+    {
+      "element_type": "beam",
+      "floor": "first_floor",
+      "size_raw": "450x225",
+      "page": 9,
+      "confidence": 0.99
+    },
+    {
+      "element_type": "column",
+      "floor": "ground_floor_plan",
+      "size_raw": "225x225",
+      "page": 9,
+      "confidence": 0.99
+    },
+    {
+      "element_type": "column",
+      "floor": "first_floor_plan",
+      "size_raw": "225x225",
+      "page": 9,
+      "confidence": 0.99
+    }
+  ],
+  "reference_sources": [
+    {
+      "type": "column_schedule",
+      "page": 12,
+      "bbox": [0.302, 0.471, 0.455, 0.899],
+      "readability": "high",
+      "needs_high_resolution": false
+    },
+    {
+      "type": "beam_details",
+      "page": 13,
+      "bbox": [0.03, 0.035, 0.96, 0.965],
+      "readability": "high",
+      "needs_high_resolution": false
+    }
+  ],
+  "elements": [
+    {
+      "id": "C1@footing_to_ground_floor",
+      "type": "column",
+      "floor": "footing_to_ground_floor",
+      "size": {
+        "raw": "300x350",
+        "first": 300,
+        "second": 350,
+        "unit": "mm",
+        "width": 300,
+        "depth": 350
+      },
+      "resolution": {
+        "source_type": "column_schedule",
+        "source_page": 12,
+        "confidence": 0.99
+      },
+      "location": { "page": 12, "bbox": [0.189, 0.753, 0.272, 0.874] },
+      "needs_verification": false,
+      "verification": null
+    },
+    {
+      "id": "C1@ground_to_first_floor",
+      "type": "column",
+      "floor": "ground_to_first_floor",
+      "size": {
+        "raw": "225x300",
+        "first": 225,
+        "second": 300,
+        "unit": "mm",
+        "width": 225,
+        "depth": 300
+      },
+      "resolution": {
+        "source_type": "column_schedule",
+        "source_page": 12,
+        "confidence": 0.99
+      },
+      "location": { "page": 12, "bbox": [0.189, 0.615, 0.272, 0.75] },
+      "needs_verification": false,
+      "verification": null
+    },
+    {
+      "id": "C1@first_floor_to_roof",
+      "type": "column",
+      "floor": "first_floor_to_roof",
+      "size": {
+        "raw": "225x225",
+        "first": 225,
+        "second": 225,
+        "unit": "mm",
+        "width": 225,
+        "depth": 225
+      },
+      "resolution": {
+        "source_type": "column_schedule",
+        "source_page": 12,
+        "confidence": 0.99
+      },
+      "location": { "page": 12, "bbox": [0.189, 0.495, 0.272, 0.613] },
+      "needs_verification": false,
+      "verification": null
+    },
+    {
+      "id": "C2@footing_to_ground_floor",
+      "type": "column",
+      "floor": "footing_to_ground_floor",
+      "size": {
+        "raw": "300x300",
+        "first": 300,
+        "second": 300,
+        "unit": "mm",
+        "width": 300,
+        "depth": 300
+      },
+      "resolution": {
+        "source_type": "column_schedule",
+        "source_page": 12,
+        "confidence": 0.99
+      },
+      "location": { "page": 12, "bbox": [0.272, 0.753, 0.361, 0.874] },
+      "needs_verification": false,
+      "verification": null
+    },
+    {
+      "id": "C2@ground_to_first_floor",
+      "type": "column",
+      "floor": "ground_to_first_floor",
+      "size": {
+        "raw": "225x225",
+        "first": 225,
+        "second": 225,
+        "unit": "mm",
+        "width": 225,
+        "depth": 225
+      },
+      "resolution": {
+        "source_type": "column_schedule",
+        "source_page": 12,
+        "confidence": 0.99
+      },
+      "location": { "page": 12, "bbox": [0.272, 0.615, 0.361, 0.75] },
+      "needs_verification": false,
+      "verification": null
+    },
+    {
+      "id": "C2@first_floor_to_roof",
+      "type": "column",
+      "floor": "first_floor_to_roof",
+      "size": {
+        "raw": "225x225",
+        "first": 225,
+        "second": 225,
+        "unit": "mm",
+        "width": 225,
+        "depth": 225
+      },
+      "resolution": {
+        "source_type": "column_schedule",
+        "source_page": 12,
+        "confidence": 0.99
+      },
+      "location": { "page": 12, "bbox": [0.272, 0.495, 0.361, 0.613] },
+      "needs_verification": false,
+      "verification": null
+    },
+    {
+      "id": "C3@footing_to_ground_floor",
+      "type": "column",
+      "floor": "footing_to_ground_floor",
+      "size": {
+        "raw": "300x300",
+        "first": 300,
+        "second": 300,
+        "unit": "mm",
+        "width": 300,
+        "depth": 300
+      },
+      "resolution": {
+        "source_type": "column_schedule",
+        "source_page": 12,
+        "confidence": 0.99
+      },
+      "location": { "page": 12, "bbox": [0.361, 0.753, 0.451, 0.874] },
+      "needs_verification": false,
+      "verification": null
+    },
+    {
+      "id": "C3@ground_to_first_floor",
+      "type": "column",
+      "floor": "ground_to_first_floor",
+      "size": {
+        "raw": "225x225",
+        "first": 225,
+        "second": 225,
+        "unit": "mm",
+        "width": 225,
+        "depth": 225
+      },
+      "resolution": {
+        "source_type": "column_schedule",
+        "source_page": 12,
+        "confidence": 0.99
+      },
+      "location": { "page": 12, "bbox": [0.361, 0.615, 0.451, 0.75] },
+      "needs_verification": false,
+      "verification": null
+    },
+    {
+      "id": "1B1",
+      "type": "beam",
+      "floor": "first_floor",
+      "size": {
+        "raw": "450x225",
+        "first": 450,
+        "second": 225,
+        "unit": "mm",
+        "width": 225,
+        "depth": 450
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "source_page": 13,
+        "confidence": 0.99
+      },
+      "location": { "page": 13, "bbox": [0.035, 0.825, 0.69, 0.97] },
+      "needs_verification": false,
+      "verification": null
+    },
+    {
+      "id": "1B3",
+      "type": "beam",
+      "floor": "first_floor",
+      "size": null,
+      "resolution": {
+        "source_type": "beam_detail",
+        "source_page": 13,
+        "confidence": 0.99
+      },
+      "location": { "page": 13, "bbox": [0.035, 0.65, 0.69, 0.825] },
+      "needs_verification": true,
+      "verification": {
+        "reason": "The beam is stepped: details show both 450x225 at section 2-2 and 400x225 at section 2a-2a, so one uniform size would be misleading.",
+        "page": 13,
+        "bbox": [0.45, 0.2, 0.96, 0.67]
+      }
+    },
+    {
+      "id": "1B4",
+      "type": "beam",
+      "floor": "first_floor",
+      "size": {
+        "raw": "450x225",
+        "first": 450,
+        "second": 225,
+        "unit": "mm",
+        "width": 225,
+        "depth": 450
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "source_page": 13,
+        "confidence": 0.99
+      },
+      "location": { "page": 13, "bbox": [0.485, 0.48, 0.615, 0.67] },
+      "needs_verification": false,
+      "verification": null
+    },
+    {
+      "id": "1B5",
+      "type": "beam",
+      "floor": "first_floor",
+      "size": {
+        "raw": "450x225",
+        "first": 450,
+        "second": 225,
+        "unit": "mm",
+        "width": 225,
+        "depth": 450
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "source_page": 13,
+        "confidence": 0.98
+      },
+      "location": { "page": 13, "bbox": [0.035, 0.5, 0.47, 0.66] },
+      "needs_verification": false,
+      "verification": null
+    },
+    {
+      "id": "1B6",
+      "type": "beam",
+      "floor": "first_floor",
+      "size": {
+        "raw": "450x225",
+        "first": 450,
+        "second": 225,
+        "unit": "mm",
+        "width": 225,
+        "depth": 450
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "source_page": 13,
+        "confidence": 0.99
+      },
+      "location": { "page": 13, "bbox": [0.035, 0.34, 0.66, 0.5] },
+      "needs_verification": false,
+      "verification": null
+    },
+    {
+      "id": "1B7",
+      "type": "beam",
+      "floor": "first_floor",
+      "size": null,
+      "resolution": {
+        "source_type": "beam_detail",
+        "source_page": 13,
+        "confidence": 0.99
+      },
+      "location": { "page": 13, "bbox": [0.035, 0.16, 0.505, 0.35] },
+      "needs_verification": true,
+      "verification": {
+        "reason": "The beam has more than one detailed depth: section 5-5 is 450x225 and section 6-6 is 400x225.",
+        "page": 13,
+        "bbox": [0.52, 0.18, 0.69, 0.51]
+      }
+    },
+    {
+      "id": "1B8",
+      "type": "beam",
+      "floor": "first_floor",
+      "size": null,
+      "resolution": {
+        "source_type": "beam_detail",
+        "source_page": 13,
+        "confidence": 0.99
+      },
+      "location": { "page": 13, "bbox": [0.65, 0.13, 0.96, 0.34] },
+      "needs_verification": true,
+      "verification": {
+        "reason": "The beam has more than one detailed depth: section 7-7 is 400x225 and section 8-8 is 450x225.",
+        "page": 13,
+        "bbox": [0.69, 0.13, 0.96, 0.52]
+      }
+    },
+    {
+      "id": "1B9",
+      "type": "beam",
+      "floor": "first_floor",
+      "size": {
+        "raw": "450x225",
+        "first": 450,
+        "second": 225,
+        "unit": "mm",
+        "width": 225,
+        "depth": 450
+      },
+      "resolution": {
+        "source_type": "sheet_default",
+        "source_page": 9,
+        "confidence": 0.97
+      },
+      "location": { "page": 9, "bbox": [0.58, 0.58, 0.605, 0.7] },
+      "needs_verification": false,
+      "verification": null
+    },
+    {
+      "id": "SB1",
+      "type": "beam",
+      "floor": "first_floor",
+      "size": {
+        "raw": "175x600",
+        "first": 175,
+        "second": 600,
+        "unit": "mm",
+        "width": 600,
+        "depth": 175
+      },
+      "resolution": {
+        "source_type": "direct_annotation",
+        "source_page": 14,
+        "confidence": 0.99
+      },
+      "location": { "page": 14, "bbox": [0.47, 0.62, 0.6, 0.79] },
+      "needs_verification": false,
+      "verification": null
+    }
+  ],
+  "verification_requests": []
+}

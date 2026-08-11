@@ -1,0 +1,476 @@
+{
+  "$defs": {
+    "Conventions": {
+      "additionalProperties": false,
+      "properties": {
+        "beam_dimension_methods": {
+          "items": {
+            "enum": [
+              "direct_annotation",
+              "sheet_default",
+              "beam_detail"
+            ],
+            "type": "string"
+          },
+          "title": "Beam Dimension Methods",
+          "type": "array"
+        },
+        "column_dimension_methods": {
+          "items": {
+            "enum": [
+              "direct_annotation",
+              "sheet_default",
+              "column_schedule"
+            ],
+            "type": "string"
+          },
+          "title": "Column Dimension Methods",
+          "type": "array"
+        }
+      },
+      "required": [
+        "beam_dimension_methods",
+        "column_dimension_methods"
+      ],
+      "title": "Conventions",
+      "type": "object"
+    },
+    "DrawingDimensionOrder": {
+      "additionalProperties": false,
+      "properties": {
+        "beam": {
+          "const": "depth_x_width",
+          "title": "Beam",
+          "type": "string"
+        },
+        "column": {
+          "const": "width_x_depth",
+          "title": "Column",
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "beam",
+        "column",
+        "confidence"
+      ],
+      "title": "DrawingDimensionOrder",
+      "type": "object"
+    },
+    "DrawingSet": {
+      "additionalProperties": false,
+      "properties": {
+        "units": {
+          "const": "mm",
+          "title": "Units",
+          "type": "string"
+        },
+        "dimension_order": {
+          "$ref": "#/$defs/DrawingDimensionOrder"
+        }
+      },
+      "required": [
+        "units",
+        "dimension_order"
+      ],
+      "title": "DrawingSet",
+      "type": "object"
+    },
+    "Element": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/ElementType"
+        },
+        "floor": {
+          "minLength": 1,
+          "title": "Floor",
+          "type": "string"
+        },
+        "size": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ElementSize"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "resolution": {
+          "$ref": "#/$defs/Resolution"
+        },
+        "location": {
+          "$ref": "#/$defs/Location"
+        },
+        "needs_verification": {
+          "title": "Needs Verification",
+          "type": "boolean"
+        },
+        "verification": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Verification"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "floor",
+        "size",
+        "resolution",
+        "location",
+        "needs_verification",
+        "verification"
+      ],
+      "title": "Element",
+      "type": "object"
+    },
+    "ElementDefault": {
+      "additionalProperties": false,
+      "properties": {
+        "element_type": {
+          "$ref": "#/$defs/ElementType"
+        },
+        "floor": {
+          "minLength": 1,
+          "title": "Floor",
+          "type": "string"
+        },
+        "size_raw": {
+          "pattern": "^\\d+x\\d+$",
+          "title": "Size Raw",
+          "type": "string"
+        },
+        "page": {
+          "exclusiveMinimum": 0,
+          "title": "Page",
+          "type": "integer"
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "element_type",
+        "floor",
+        "size_raw",
+        "page",
+        "confidence"
+      ],
+      "title": "ElementDefault",
+      "type": "object"
+    },
+    "ElementSize": {
+      "additionalProperties": false,
+      "properties": {
+        "raw": {
+          "pattern": "^\\d+x\\d+$",
+          "title": "Raw",
+          "type": "string"
+        },
+        "first": {
+          "exclusiveMinimum": 0,
+          "title": "First",
+          "type": "integer"
+        },
+        "second": {
+          "exclusiveMinimum": 0,
+          "title": "Second",
+          "type": "integer"
+        },
+        "unit": {
+          "const": "mm",
+          "title": "Unit",
+          "type": "string"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "integer"
+        },
+        "depth": {
+          "exclusiveMinimum": 0,
+          "title": "Depth",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "raw",
+        "first",
+        "second",
+        "unit",
+        "width",
+        "depth"
+      ],
+      "title": "ElementSize",
+      "type": "object"
+    },
+    "ElementType": {
+      "enum": [
+        "beam",
+        "column"
+      ],
+      "title": "ElementType",
+      "type": "string"
+    },
+    "Location": {
+      "additionalProperties": false,
+      "properties": {
+        "page": {
+          "exclusiveMinimum": 0,
+          "title": "Page",
+          "type": "integer"
+        },
+        "bbox": {
+          "items": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "type": "number"
+          },
+          "maxItems": 4,
+          "minItems": 4,
+          "title": "Bbox",
+          "type": "array"
+        }
+      },
+      "required": [
+        "page",
+        "bbox"
+      ],
+      "title": "Location",
+      "type": "object"
+    },
+    "Readability": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Readability",
+      "type": "string"
+    },
+    "ReferenceSource": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "column_schedule",
+            "beam_details"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "page": {
+          "exclusiveMinimum": 0,
+          "title": "Page",
+          "type": "integer"
+        },
+        "bbox": {
+          "items": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "type": "number"
+          },
+          "maxItems": 4,
+          "minItems": 4,
+          "title": "Bbox",
+          "type": "array"
+        },
+        "readability": {
+          "$ref": "#/$defs/Readability"
+        },
+        "needs_high_resolution": {
+          "title": "Needs High Resolution",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "page",
+        "bbox",
+        "readability",
+        "needs_high_resolution"
+      ],
+      "title": "ReferenceSource",
+      "type": "object"
+    },
+    "Resolution": {
+      "additionalProperties": false,
+      "properties": {
+        "source_type": {
+          "$ref": "#/$defs/ResolutionSource"
+        },
+        "source_page": {
+          "exclusiveMinimum": 0,
+          "title": "Source Page",
+          "type": "integer"
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "source_type",
+        "source_page",
+        "confidence"
+      ],
+      "title": "Resolution",
+      "type": "object"
+    },
+    "ResolutionSource": {
+      "enum": [
+        "direct_annotation",
+        "sheet_default",
+        "beam_detail",
+        "column_schedule"
+      ],
+      "title": "ResolutionSource",
+      "type": "string"
+    },
+    "Verification": {
+      "additionalProperties": false,
+      "properties": {
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "page": {
+          "exclusiveMinimum": 0,
+          "title": "Page",
+          "type": "integer"
+        },
+        "bbox": {
+          "items": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "type": "number"
+          },
+          "maxItems": 4,
+          "minItems": 4,
+          "title": "Bbox",
+          "type": "array"
+        }
+      },
+      "required": [
+        "reason",
+        "page",
+        "bbox"
+      ],
+      "title": "Verification",
+      "type": "object"
+    },
+    "VerificationRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "page": {
+          "exclusiveMinimum": 0,
+          "title": "Page",
+          "type": "integer"
+        },
+        "bbox": {
+          "items": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "type": "number"
+          },
+          "maxItems": 4,
+          "minItems": 4,
+          "title": "Bbox",
+          "type": "array"
+        },
+        "purpose": {
+          "const": "read_column_schedule",
+          "title": "Purpose",
+          "type": "string"
+        },
+        "required_for": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Required For",
+          "type": "array"
+        }
+      },
+      "required": [
+        "page",
+        "bbox",
+        "purpose",
+        "required_for"
+      ],
+      "title": "VerificationRequest",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "drawing_set": {
+      "$ref": "#/$defs/DrawingSet"
+    },
+    "conventions": {
+      "$ref": "#/$defs/Conventions"
+    },
+    "defaults": {
+      "items": {
+        "$ref": "#/$defs/ElementDefault"
+      },
+      "title": "Defaults",
+      "type": "array"
+    },
+    "reference_sources": {
+      "items": {
+        "$ref": "#/$defs/ReferenceSource"
+      },
+      "title": "Reference Sources",
+      "type": "array"
+    },
+    "elements": {
+      "items": {
+        "$ref": "#/$defs/Element"
+      },
+      "title": "Elements",
+      "type": "array"
+    },
+    "verification_requests": {
+      "items": {
+        "$ref": "#/$defs/VerificationRequest"
+      },
+      "title": "Verification Requests",
+      "type": "array"
+    }
+  },
+  "required": [
+    "drawing_set",
+    "conventions",
+    "defaults",
+    "reference_sources",
+    "elements",
+    "verification_requests"
+  ],
+  "title": "DrawingExtraction",
+  "type": "object"
+}
