@@ -23,10 +23,10 @@ class Beam(StrictModel):
     level: str | None
     location: str = Field(min_length=1)
 
-    # Exact drawing notation; null means the value is not established.
-    width: str | None
-    depth: str | None
-    length: str | None
+    # Numeric drawing dimensions; null means one exact value is not established.
+    width: float | None
+    depth: float | None
+    length: float | None
     unit: DimensionUnit | None
 
 
@@ -39,10 +39,10 @@ class Column(StrictModel):
     level: str | None
     location: str = Field(min_length=1)
 
-    # Exact drawing notation; null means the value is not established.
-    width: str | None
-    depth: str | None
-    height: str | None
+    # Numeric drawing dimensions; null means one exact value is not established.
+    width: float | None
+    depth: float | None
+    height: float | None
     unit: DimensionUnit | None
 
 

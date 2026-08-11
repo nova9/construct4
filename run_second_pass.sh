@@ -69,14 +69,14 @@ Each column has exactly three dimension fields:
 - depth: cross-section depth
 - height: physical vertical height
 
-Preserve exact drawing notation as strings, without unit conversion. Preserve
-variable dimensions such as "450/400". Populate a dimension only when it is
+Return dimensions as numbers, without unit conversion. Every dimension field
+must contain one numeric value or null; never return combined notation such as
+"450/400". Populate a dimension only when it is
 explicitly stated or can be derived exactly from drawing dimensions, grids,
 levels, and support geometry. Never estimate dimensions from rendered pixels.
-Use null when an exact value cannot be established.
 
 Use the unit applying to the three dimensions. If the unit cannot be established,
-use null. Do not put units inside the dimension strings.
+use null.
 
 Return only data conforming to the supplied structured output schema.
 ' \
