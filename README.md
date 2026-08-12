@@ -28,6 +28,7 @@ Each physical beam contains:
 - Cross-section width and depth
 - Physical longitudinal length
 - Unit
+- A reason for every dimension or unit that is `null`
 
 Each physical column contains:
 
@@ -37,8 +38,12 @@ Each physical column contains:
 - Cross-section width and depth
 - Physical vertical height
 - Unit
+- A reason for every dimension or unit that is `null`
 
 A dimension can be `null` when the drawing does not establish one exact value or when the extraction cannot resolve the available evidence safely. `null` does not mean zero.
+Each nullable value has a matching `<field>_null_reason` field, such as
+`length_null_reason`. The reason is required when its value is `null` and must
+itself be `null` when the value is populated.
 
 ## Requirements
 

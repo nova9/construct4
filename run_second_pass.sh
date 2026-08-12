@@ -71,6 +71,12 @@ Each column has exactly three dimension fields:
 - depth: cross-section depth
 - height: physical vertical height
 
+Each nullable dimension and unit field has a matching `<field>_null_reason`.
+When the value is null, give a concise, specific reason describing which exact
+evidence was searched and why it did not establish one value. When the value is
+populated, its null-reason field must be null. Do not use a generic phrase such
+as "not found" when the missing evidence can be identified more precisely.
+
 Return dimensions as numbers, without unit conversion. Every dimension field
 must contain one numeric value or null; never return combined notation such as
 "450/400". Populate a dimension only when it is
@@ -83,6 +89,15 @@ use null.
 Return only data conforming to the supplied structured output schema.
 ' \
     >./second_pass_log.jsonl
+
+python - <<'PY'
+from pathlib import Path
+
+from second_pass_schema import SecondPassResult
+
+result_path = Path("second_pass_result.json")
+SecondPassResult.model_validate_json(result_path.read_text(encoding="utf-8"))
+PY
 
 echo
 echo "Second pass complete."

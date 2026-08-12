@@ -52,6 +52,17 @@
           ],
           "title": "Width"
         },
+        "width_null_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Width Null Reason"
+        },
         "depth": {
           "anyOf": [
             {
@@ -62,6 +73,17 @@
             }
           ],
           "title": "Depth"
+        },
+        "depth_null_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Depth Null Reason"
         },
         "length": {
           "anyOf": [
@@ -74,6 +96,17 @@
           ],
           "title": "Length"
         },
+        "length_null_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Length Null Reason"
+        },
         "unit": {
           "anyOf": [
             {
@@ -83,6 +116,17 @@
               "type": "null"
             }
           ]
+        },
+        "unit_null_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit Null Reason"
         }
       },
       "required": [
@@ -92,9 +136,13 @@
         "level",
         "location",
         "width",
+        "width_null_reason",
         "depth",
+        "depth_null_reason",
         "length",
-        "unit"
+        "length_null_reason",
+        "unit",
+        "unit_null_reason"
       ],
       "title": "Beam",
       "type": "object"
@@ -151,6 +199,17 @@
           ],
           "title": "Width"
         },
+        "width_null_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Width Null Reason"
+        },
         "depth": {
           "anyOf": [
             {
@@ -161,6 +220,17 @@
             }
           ],
           "title": "Depth"
+        },
+        "depth_null_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Depth Null Reason"
         },
         "height": {
           "anyOf": [
@@ -173,6 +243,17 @@
           ],
           "title": "Height"
         },
+        "height_null_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Height Null Reason"
+        },
         "unit": {
           "anyOf": [
             {
@@ -182,6 +263,17 @@
               "type": "null"
             }
           ]
+        },
+        "unit_null_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit Null Reason"
         }
       },
       "required": [
@@ -191,9 +283,13 @@
         "level",
         "location",
         "width",
+        "width_null_reason",
         "depth",
+        "depth_null_reason",
         "height",
-        "unit"
+        "height_null_reason",
+        "unit",
+        "unit_null_reason"
       ],
       "title": "Column",
       "type": "object"

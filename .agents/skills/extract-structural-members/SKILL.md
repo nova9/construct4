@@ -47,6 +47,20 @@ Resolve width and depth using this priority:
 
 Use the drawing’s established dimension order. Do not assume that the first value is width.
 
+## Beam lengths
+
+Report beam length as the centreline-to-centreline distance between its end
+supports or bounding grid lines. When the endpoints span several grid bays, sum
+the stated intermediate grid spacings exactly. For example, a beam from grid A
+to grid D has length `A-B + B-C + C-D`.
+
+Do not convert a centreline span into a clear span, face-to-face length, or
+outer-face overall length by adding or subtracting beam, column, or wall widths.
+Do not infer endpoint offsets from the drawn linework. Use a non-grid endpoint
+only when the drawing explicitly dimensions that endpoint from a grid or support
+centreline; then calculate it using exact stated dimensions and record the
+arithmetic as evidence.
+
 ## Trace plan callouts into other views
 
 Do not treat the plan as the only source of a member's dimensions. Plans usually establish that a physical member occurs; sections, elevations, and details can supply dimensions that are absent from the plan.

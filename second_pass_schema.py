@@ -25,9 +25,21 @@ class Beam(StrictModel):
 
     # Numeric drawing dimensions; null means one exact value is not established.
     width: float | None
+    width_null_reason: str | None
     depth: float | None
+    depth_null_reason: str | None
     length: float | None
+    length_null_reason: str | None
     unit: DimensionUnit | None
+    unit_null_reason: str | None
+
+    @model_validator(mode="after")
+    def validate_null_reasons(self) -> Beam:
+        _validate_null_reasons(
+            self,
+            ("width", "depth", "length", "unit"),
+        )
+        return self
 
 
 class Column(StrictModel):
@@ -41,9 +53,21 @@ class Column(StrictModel):
 
     # Numeric drawing dimensions; null means one exact value is not established.
     width: float | None
+    width_null_reason: str | None
     depth: float | None
+    depth_null_reason: str | None
     height: float | None
+    height_null_reason: str | None
     unit: DimensionUnit | None
+    unit_null_reason: str | None
+
+    @model_validator(mode="after")
+    def validate_null_reasons(self) -> Column:
+        _validate_null_reasons(
+            self,
+            ("width", "depth", "height", "unit"),
+        )
+        return self
 
 
 class SecondPassResult(StrictModel):
@@ -56,3 +80,18 @@ class SecondPassResult(StrictModel):
         if len(keys) != len(set(keys)):
             raise ValueError("member keys must be unique")
         return self
+
+
+def _validate_null_reasons(
+    member: Beam | Column,
+    fields: tuple[str, ...],
+) -> None:
+    for field_name in fields:
+        value = getattr(member, field_name)
+        reason_name = f"{field_name}_null_reason"
+        reason = getattr(member, reason_name)
+
+        if value is None and (reason is None or not reason.strip()):
+            raise ValueError(f"{reason_name} is required when {field_name} is null")
+        if value is not None and reason is not None:
+            raise ValueError(f"{reason_name} must be null when {field_name} is populated")
