@@ -1,31 +1,10 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
-
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
-
-if [[ ! -f ./.venv/bin/activate ]]; then
-  echo "Error: virtual environment not found at $SCRIPT_DIR/.venv" >&2
-  echo "Create it with: python3 -m venv .venv" >&2
-  exit 1
-fi
-
-# shellcheck disable=SC1091
-source ./.venv/bin/activate
-
-if ! command -v codex >/dev/null 2>&1; then
-  echo "Error: codex CLI is not installed or is not on PATH." >&2
-  exit 1
-fi
-
-if [[ ! -f ./plan.pdf ]]; then
-  echo "Error: expected input PDF at $SCRIPT_DIR/plan.pdf" >&2
-  exit 1
-fi
+source "$(dirname -- "${BASH_SOURCE[0]}")/_common.sh"
+initialize_pipeline
 
 # Regenerate the strict OpenAI JSON Schema from the first-pass Pydantic model.
-python ./export_first_pass_schema.py
+python -m pipeline.tools.export_schema first ./data/schemas/first_pass.schema.json
 
 codex exec \
   --json \
@@ -33,10 +12,10 @@ codex exec \
   -m gpt-5.6-sol \
   -c model_reasoning_effort=high \
   -c model_reasoning_summary=detailed \
-  --output-schema ./first_pass_result.schema.json \
-  -o ./first_pass_result.json \
+  --output-schema ./data/schemas/first_pass.schema.json \
+  -o ./data/results/first_pass.json \
   '
-Analyze the construction drawing set at ./plan.pdf.
+Analyze the construction drawing set at ./data/input/plan.pdf.
 
 Determine how this drawing set specifies beam and column dimensions, then extract and resolve those dimensions using all relevant pages in the PDF.
 
@@ -55,9 +34,9 @@ Return the result using the supplied structured output schema.
 
 If a dimension cannot be read or resolved confidently from the supplied rendering, do not guess. Mark the element as needing verification. A mandatory higher-resolution second pass will process every beam and column.
 ' \
-  >./first_pass_log.jsonl
+  >./data/logs/first_pass.jsonl
 
 echo
 echo "First pass complete."
-echo "Result written to: $SCRIPT_DIR/first_pass_result.json"
-echo "Log written to: $SCRIPT_DIR/first_pass_log.jsonl"
+echo "Result written to: $PROJECT_ROOT/data/results/first_pass.json"
+echo "Log written to: $PROJECT_ROOT/data/logs/first_pass.jsonl"

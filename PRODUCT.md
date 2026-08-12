@@ -51,8 +51,8 @@ positions without changing member facts.
 
 - [`README.md`](README.md) documents the working three-pass CLI extraction workflow and output semantics.
 - [`docs/ui.md`](docs/ui.md) contains the confirmed initial interaction model for PDF selection, evidence review, ambiguity resolution, synchronized editing, and export.
-- [`plan.pdf`](plan.pdf) is a sample construction drawing set.
-- [`first_pass_result.json`](first_pass_result.json), [`second_pass_result.json`](second_pass_result.json), and [`third_pass_result.json`](third_pass_result.json) are structured extraction outputs for overview, members, and positions respectively.
+- [`data/input/plan.pdf`](data/input/plan.pdf) is a sample construction drawing set.
+- [`data/results/first_pass.json`](data/results/first_pass.json), [`data/results/second_pass.json`](data/results/second_pass.json), and [`data/results/third_pass.json`](data/results/third_pass.json) are structured extraction outputs for overview, members, and positions respectively.
 - Their matching `*.schema.json` files define the current output structures.
 - No testimonials, customer logos, performance benchmarks, production claims, or confirmed brand assets are on hand and future work must not fabricate them.
 

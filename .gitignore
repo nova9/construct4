@@ -1,6 +1,8 @@
 .venv/
 tmp/
 __pycache__/
+.DS_Store
+*.py[cod]
 
 # Local NRM 2 reference/extracted documents (not redistributed)
 /NRN2 document text extracted.txt

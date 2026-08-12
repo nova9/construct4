@@ -8,8 +8,8 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-from second_pass_schema import Beam, Column, SecondPassResult
-from third_pass_schema import (
+from pipeline.schemas.second_pass import Beam, Column, SecondPassResult
+from pipeline.schemas.third_pass import (
     MemberPosition,
     ThirdPassResult,
     validate_against_second_pass,
@@ -30,12 +30,12 @@ def parse_args() -> argparse.Namespace:
             "member's normalized third-pass position overlaid."
         )
     )
-    parser.add_argument("--pdf", type=Path, default=Path("plan.pdf"))
+    parser.add_argument("--pdf", type=Path, default=Path("data/input/plan.pdf"))
     parser.add_argument(
-        "--result", type=Path, default=Path("second_pass_result.json")
+        "--result", type=Path, default=Path("data/results/second_pass.json")
     )
     parser.add_argument(
-        "--positions", type=Path, default=Path("third_pass_result.json")
+        "--positions", type=Path, default=Path("data/results/third_pass.json")
     )
     parser.add_argument(
         "--output", type=Path, default=Path("output/member-overlays")

@@ -5,23 +5,23 @@ This project uses the Codex CLI to inspect a construction drawing PDF and produc
 It uses three passes:
 
 ```text
-plan.pdf
+data/input/plan.pdf
    |
    +-- First pass: understand sheets, conventions, defaults, and references
-   |      +-- first_pass_result.json
-   |      +-- first_pass_log.jsonl
+   |      +-- data/results/first_pass.json
+   |      +-- data/logs/first_pass.jsonl
    |
    +-- Second pass: independently inspect the PDF and extract occurrences
-   |      +-- second_pass_result.json
-   |      +-- second_pass_log.jsonl
+   |      +-- data/results/second_pass.json
+   |      +-- data/logs/second_pass.jsonl
    |
    +-- Third pass: independently locate those members on their pages
-          +-- third_pass_result.json
-          +-- third_pass_log.jsonl
+          +-- data/results/third_pass.json
+          +-- data/logs/third_pass.jsonl
 ```
 
-Member facts live in `second_pass_result.json`; independently checked overlay
-positions live in `third_pass_result.json`.
+Member facts live in `data/results/second_pass.json`; independently checked overlay
+positions live in `data/results/third_pass.json`.
 
 ## What the final result contains
 
@@ -116,13 +116,13 @@ The Python packages are used to generate strict JSON schemas for the Codex outpu
 Copy the complete construction drawing set into the project directory and name it exactly:
 
 ```text
-plan.pdf
+data/input/plan.pdf
 ```
 
 For example:
 
 ```bash
-cp "/path/to/my-structural-drawings.pdf" ./plan.pdf
+cp "/path/to/my-structural-drawings.pdf" ./data/input/plan.pdf
 ```
 
 Use the complete drawing set, not only the beam or column layout sheets. Sections, elevations, schedules, details, notes, and architectural levels may contain dimensions needed to resolve members.
@@ -130,7 +130,7 @@ Use the complete drawing set, not only the beam or column layout sheets. Section
 ## 4. Run the first pass
 
 ```bash
-bash ./run_first_pass.sh
+bash ./pipeline/runners/first_pass.sh
 ```
 
 The first pass identifies:
@@ -143,27 +143,27 @@ The first pass identifies:
 
 It writes:
 
-- `first_pass_result.json`: structured drawing-set overview
-- `first_pass_log.jsonl`: complete Codex JSONL event log
-- `first_pass_result.schema.json`: generated output schema
+- `data/results/first_pass.json`: structured drawing-set overview
+- `data/logs/first_pass.jsonl`: complete Codex JSONL event log
+- `data/schemas/first_pass.schema.json`: generated output schema
 
-Do not manually create `first_pass_result.json`. The second pass requires the result produced by this command.
+Do not manually create `data/results/first_pass.json`. The second pass requires the result produced by this command.
 
 ## 5. Run the second pass
 
 After the first pass succeeds:
 
 ```bash
-bash ./run_second_pass.sh
+bash ./pipeline/runners/second_pass.sh
 ```
 
 The second pass reads the first-pass overview and independently reinspects the complete PDF. It returns only physical member occurrences tied to locations in plans, layouts, sections, or elevations.
 
 It writes:
 
-- `second_pass_result.json`: final beams and columns
-- `second_pass_log.jsonl`: complete Codex JSONL event log
-- `second_pass_result.schema.json`: generated output schema
+- `data/results/second_pass.json`: final beams and columns
+- `data/logs/second_pass.jsonl`: complete Codex JSONL event log
+- `data/schemas/second_pass.schema.json`: generated output schema
 
 The second pass explicitly uses the repository skill at:
 
@@ -178,16 +178,16 @@ That skill instructs Codex to follow plan callouts into sections, elevations, an
 After the second pass succeeds:
 
 ```bash
-bash ./run_third_pass.sh
+bash ./pipeline/runners/third_pass.sh
 ```
 
 The third pass reads the final member inventory and independently locates every
 member on its specified PDF page. It does not change member identities, pages,
 locations, levels, or dimensions. It writes:
 
-- `third_pass_result.json`: normalized member positions keyed to the second pass
-- `third_pass_log.jsonl`: complete positioning and visual-verification log
-- `third_pass_result.schema.json`: generated position-output schema
+- `data/results/third_pass.json`: normalized member positions keyed to the second pass
+- `data/logs/third_pass.jsonl`: complete positioning and visual-verification log
+- `data/schemas/third_pass.schema.json`: generated position-output schema
 - `output/member-overlays/`: one diagnostic full-page PNG per positioned member
 
 The runner validates that the beam and column key sets and page numbers match
@@ -198,19 +198,19 @@ the second pass exactly.
 Pretty-print the complete final result:
 
 ```bash
-jq . second_pass_result.json
+jq . data/results/second_pass.json
 ```
 
 Show only beams:
 
 ```bash
-jq '.beams' second_pass_result.json
+jq '.beams' data/results/second_pass.json
 ```
 
 Show only columns:
 
 ```bash
-jq '.columns' second_pass_result.json
+jq '.columns' data/results/second_pass.json
 ```
 
 ### Generate one overlay image per member
@@ -220,7 +220,7 @@ third-pass position highlighted:
 
 ```bash
 source .venv/bin/activate
-python ./generate_member_overlay_images.py
+python -m pipeline.tools.generate_member_overlays
 ```
 
 The images are written to `output/member-overlays/beam/` and
@@ -241,19 +241,19 @@ jq '{
     .columns[]
     | select(.width == null or .depth == null or .height == null or .unit == null)
   ]
-}' second_pass_result.json
+}' data/results/second_pass.json
 ```
 
 ## Understanding the three JSON files
 
-`first_pass_result.json` is an analysis and evidence map. It can contain defaults, reference sources, dimension conventions, preliminary elements, bounding boxes, confidence values, and verification flags.
+`data/results/first_pass.json` is an analysis and evidence map. It can contain defaults, reference sources, dimension conventions, preliminary elements, bounding boxes, confidence values, and verification flags.
 
-`second_pass_result.json` is the simplified final inventory. It separates beams
+`data/results/second_pass.json` is the simplified final inventory. It separates beams
 and columns and contains one record for each physical occurrence found by the
 second pass. It contains semantic locations and dimensions, but no page
 coordinates.
 
-`third_pass_result.json` contains only normalized `position` bounding boxes
+`data/results/third_pass.json` contains only normalized `position` bounding boxes
 (`left`, `top`, `right`, `bottom`) keyed to second-pass members, or a specific
 `position_null_reason` when an occurrence cannot be localized confidently.
 
@@ -266,19 +266,19 @@ The `*.jsonl` logs contain reasoning summaries, commands, PDF-rendering activity
 Search a log for errors:
 
 ```bash
-rg -n 'error|failed' first_pass_log.jsonl second_pass_log.jsonl
+rg -n 'error|failed' data/logs/first_pass.jsonl data/logs/second_pass.jsonl
 ```
 
 Confirm that the extraction skill was read:
 
 ```bash
-rg -n 'extract-structural-members/SKILL.md' first_pass_log.jsonl second_pass_log.jsonl third_pass_log.jsonl
+rg -n 'extract-structural-members/SKILL.md' data/logs/first_pass.jsonl data/logs/second_pass.jsonl data/logs/third_pass.jsonl
 ```
 
 Inspect commands used during a run:
 
 ```bash
-jq -r 'select(.item.type? == "command_execution") | .item.command // empty' second_pass_log.jsonl
+jq -r 'select(.item.type? == "command_execution") | .item.command // empty' data/logs/second_pass.jsonl
 ```
 
 ### Virtual environment not found
@@ -301,10 +301,10 @@ codex --version
 
 ### Input PDF not found
 
-Confirm the file is in the project root and is named exactly `plan.pdf`:
+Confirm the file is under `data/input/` and is named exactly `plan.pdf`:
 
 ```bash
-ls -lh ./plan.pdf
+ls -lh ./data/input/plan.pdf
 ```
 
 ### Requested model is unavailable
@@ -328,27 +328,40 @@ If the drawing contains a reliable resolution procedure that Codex missed, add t
 
 The scripts use fixed filenames and overwrite their previous outputs and logs. Before starting another project, copy any results you need to keep.
 
-Then replace `plan.pdf` and run all three passes again:
+Then replace `data/input/plan.pdf` and run all three passes again:
 
 ```bash
-bash ./run_first_pass.sh
-bash ./run_second_pass.sh
-bash ./run_third_pass.sh
+bash ./pipeline/runners/first_pass.sh
+bash ./pipeline/runners/second_pass.sh
+bash ./pipeline/runners/third_pass.sh
 ```
 
-Do not reuse an old `first_pass_result.json` with a different `plan.pdf`.
+Do not reuse an old `data/results/first_pass.json` with a different `data/input/plan.pdf`.
 
-## Main files
+## Repository layout
 
-- `run_first_pass.sh`: runs drawing-set discovery and preliminary extraction
-- `run_second_pass.sh`: runs the final physical-member extraction
-- `run_third_pass.sh`: independently locates and visually verifies members
-- `first_pass_schema.py`: defines the detailed first-pass output
-- `second_pass_schema.py`: defines the simplified final output
-- `third_pass_schema.py`: defines the position-only output and cross-pass checks
-- `export_first_pass_schema.py`: generates the first-pass JSON Schema
-- `export_second_pass_schema.py`: generates the second-pass JSON Schema
-- `export_third_pass_schema.py`: generates the third-pass JSON Schema
-- `generate_member_overlay_images.py`: renders one diagnostic PNG per member
-- `.agents/skills/extract-structural-members/SKILL.md`: reusable extraction and cross-view reasoning instructions
-- `requirements.txt`: Python dependencies
+```text
+pipeline/
+  runners/        three pass runners and shared shell setup
+  schemas/        strict Pydantic contracts
+  tools/          schema export and overlay rendering
+data/
+  input/          source construction drawing PDF
+  results/        structured pass outputs
+  schemas/        generated JSON Schemas
+  logs/           Codex JSONL logs
+src/              React application source
+public/           browser-ready drawing pages and result copies
+docs/             supporting documentation
+output/           generated diagnostic overlays (ignored by Git)
+tools/            unrelated repository maintenance utilities
+```
+
+Run the complete pipeline with:
+
+```bash
+bash ./pipeline/runners/all_passes.sh
+```
+
+The reusable extraction instructions remain in
+`.agents/skills/extract-structural-members/SKILL.md`.

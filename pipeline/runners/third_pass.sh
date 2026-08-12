@@ -1,35 +1,14 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+source "$(dirname -- "${BASH_SOURCE[0]}")/_common.sh"
+initialize_pipeline
 
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
-
-if [[ ! -f ./.venv/bin/activate ]]; then
-    echo "Error: virtual environment not found at $SCRIPT_DIR/.venv" >&2
-    echo "Create it with: python3 -m venv .venv" >&2
+if [[ ! -f ./data/results/second_pass.json ]]; then
+    echo "Error: expected second-pass result at $PROJECT_ROOT/data/results/second_pass.json" >&2
     exit 1
 fi
 
-# shellcheck disable=SC1091
-source ./.venv/bin/activate
-
-if ! command -v codex >/dev/null 2>&1; then
-    echo "Error: codex CLI is not installed or is not on PATH." >&2
-    exit 1
-fi
-
-if [[ ! -f ./plan.pdf ]]; then
-    echo "Error: expected input PDF at $SCRIPT_DIR/plan.pdf" >&2
-    exit 1
-fi
-
-if [[ ! -f ./second_pass_result.json ]]; then
-    echo "Error: expected second-pass result at $SCRIPT_DIR/second_pass_result.json" >&2
-    exit 1
-fi
-
-python ./export_third_pass_schema.py
+python -m pipeline.tools.export_schema third ./data/schemas/third_pass.schema.json
 
 codex exec \
     --json \
@@ -37,13 +16,13 @@ codex exec \
     -m gpt-5.6-sol \
     -c model_reasoning_effort=high \
     -c model_reasoning_summary=detailed \
-    --output-schema ./third_pass_result.schema.json \
-    -o ./third_pass_result.json \
+    --output-schema ./data/schemas/third_pass.schema.json \
+    -o ./data/results/third_pass.json \
     '
 Use $extract-structural-members for this positioning pass.
 
-Read ./second_pass_result.json and locate every listed physical beam and column
-on the complete drawing set at ./plan.pdf. This third pass is exclusively for
+Read ./data/results/second_pass.json and locate every listed physical beam and column
+on the complete drawing set at ./data/input/plan.pdf. This third pass is exclusively for
 member positions. Do not re-extract, rename, add, remove, or change members,
 pages, locations, levels, or dimensions.
 
@@ -79,29 +58,29 @@ null and give a concise, specific `position_null_reason`; do not invent a box.
 
 Return only data conforming to the supplied structured output schema.
 ' \
-    >./third_pass_log.jsonl
+    >./data/logs/third_pass.jsonl
 
 python - <<'PY'
 from pathlib import Path
 
-from second_pass_schema import SecondPassResult
-from third_pass_schema import ThirdPassResult, validate_against_second_pass
+from pipeline.schemas.second_pass import SecondPassResult
+from pipeline.schemas.third_pass import ThirdPassResult, validate_against_second_pass
 
 second = SecondPassResult.model_validate_json(
-    Path("second_pass_result.json").read_text(encoding="utf-8")
+    Path("data/results/second_pass.json").read_text(encoding="utf-8")
 )
 third = ThirdPassResult.model_validate_json(
-    Path("third_pass_result.json").read_text(encoding="utf-8")
+    Path("data/results/third_pass.json").read_text(encoding="utf-8")
 )
 validate_against_second_pass(third, second)
 PY
 
 mkdir -p ./public
-cp ./third_pass_result.json ./public/third_pass_result.json
+cp ./data/results/third_pass.json ./public/third_pass_result.json
 
-python ./generate_member_overlay_images.py
+python -m pipeline.tools.generate_member_overlays
 
 echo
 echo "Third pass complete."
-echo "Positions written to: $SCRIPT_DIR/third_pass_result.json"
-echo "Overlay images written to: $SCRIPT_DIR/output/member-overlays"
+echo "Positions written to: $PROJECT_ROOT/data/results/third_pass.json"
+echo "Overlay images written to: $PROJECT_ROOT/output/member-overlays"

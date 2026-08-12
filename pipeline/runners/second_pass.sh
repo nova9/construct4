@@ -1,35 +1,14 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+source "$(dirname -- "${BASH_SOURCE[0]}")/_common.sh"
+initialize_pipeline
 
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
-
-if [[ ! -f ./.venv/bin/activate ]]; then
-    echo "Error: virtual environment not found at $SCRIPT_DIR/.venv" >&2
-    echo "Create it with: python3 -m venv .venv" >&2
+if [[ ! -f ./data/results/first_pass.json ]]; then
+    echo "Error: expected first-pass result at $PROJECT_ROOT/data/results/first_pass.json" >&2
     exit 1
 fi
 
-# shellcheck disable=SC1091
-source ./.venv/bin/activate
-
-if ! command -v codex >/dev/null 2>&1; then
-    echo "Error: codex CLI is not installed or is not on PATH." >&2
-    exit 1
-fi
-
-if [[ ! -f ./plan.pdf ]]; then
-    echo "Error: expected input PDF at $SCRIPT_DIR/plan.pdf" >&2
-    exit 1
-fi
-
-if [[ ! -f ./first_pass_result.json ]]; then
-    echo "Error: expected first-pass result at $SCRIPT_DIR/first_pass_result.json" >&2
-    exit 1
-fi
-
-python ./export_second_pass_schema.py
+python -m pipeline.tools.export_schema second ./data/schemas/second_pass.schema.json
 
 codex exec \
     --json \
@@ -37,13 +16,13 @@ codex exec \
     -m gpt-5.6-sol \
     -c model_reasoning_effort=high \
     -c model_reasoning_summary=detailed \
-    --output-schema ./second_pass_result.schema.json \
-    -o ./second_pass_result.json \
+    --output-schema ./data/schemas/second_pass.schema.json \
+    -o ./data/results/second_pass.json \
     '
 Use $extract-structural-members for this extraction.
 
 Perform the final structural-member extraction from the complete drawing set at
-./plan.pdf. Read ./first_pass_result.json first and use it only as an overview
+./data/input/plan.pdf. Read ./data/results/first_pass.json first and use it only as an overview
 of the drawing set and as a guide to relevant pages, schedules, details, notes,
 and dimension conventions.
 
@@ -92,20 +71,20 @@ use null.
 
 Return only data conforming to the supplied structured output schema.
 ' \
-    >./second_pass_log.jsonl
+    >./data/logs/second_pass.jsonl
 
 python - <<'PY'
 from pathlib import Path
 
-from second_pass_schema import SecondPassResult
+from pipeline.schemas.second_pass import SecondPassResult
 
-result_path = Path("second_pass_result.json")
+result_path = Path("data/results/second_pass.json")
 SecondPassResult.model_validate_json(result_path.read_text(encoding="utf-8"))
 PY
 
 mkdir -p ./public
-cp ./second_pass_result.json ./public/second_pass_result.json
+cp ./data/results/second_pass.json ./public/second_pass_result.json
 
 echo
 echo "Second pass complete."
-echo "Result written to: $SCRIPT_DIR/second_pass_result.json"
+echo "Result written to: $PROJECT_ROOT/data/results/second_pass.json"

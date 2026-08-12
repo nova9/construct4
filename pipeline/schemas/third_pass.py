@@ -4,7 +4,7 @@ from typing import Annotated
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from second_pass_schema import SecondPassResult
+from pipeline.schemas.second_pass import SecondPassResult
 
 
 Coordinate = Annotated[float, Field(ge=0.0, le=1.0)]
