@@ -246,10 +246,10 @@
       "key": "B1-stair-grid-C-side",
       "page": 15,
       "position": {
-        "left": 0.108504,
-        "top": 0.656591,
-        "right": 0.108789,
-        "bottom": 0.895181
+        "left": 0.10838,
+        "top": 0.647023,
+        "right": 0.109235,
+        "bottom": 0.895134
       },
       "position_null_reason": null
     },
@@ -257,10 +257,10 @@
       "key": "B1-stair-grid-D-side",
       "page": 15,
       "position": {
-        "left": 0.144418,
-        "top": 0.646919,
-        "right": 0.152043,
-        "bottom": 0.895181
+        "left": 0.144292,
+        "top": 0.647023,
+        "right": 0.151988,
+        "bottom": 0.895134
       },
       "position_null_reason": null
     }

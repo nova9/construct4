@@ -5,6 +5,8 @@ set -euo pipefail
 PROJECT_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)"
 
 initialize_pipeline() {
+    local required_cli="${1:-codex}"
+
     cd "$PROJECT_ROOT"
 
     if [[ ! -f ./.venv/bin/activate ]]; then
@@ -16,8 +18,8 @@ initialize_pipeline() {
     # shellcheck disable=SC1091
     source ./.venv/bin/activate
 
-    if ! command -v codex >/dev/null 2>&1; then
-        echo "Error: codex CLI is not installed or is not on PATH." >&2
+    if ! command -v "$required_cli" >/dev/null 2>&1; then
+        echo "Error: $required_cli CLI is not installed or is not on PATH." >&2
         exit 1
     fi
 

@@ -1,1 +1,578 @@
-{"beams":[{"key":"1B1-first-floor-A-D-grid-5","page":9,"position":{"left":0.502922,"top":0.508783,"right":0.626627,"bottom":0.514123},"position_null_reason":null},{"key":"1B3-first-floor-A-D-grid-4","page":9,"position":{"left":0.502922,"top":0.620823,"right":0.626627,"bottom":0.626264},"position_null_reason":null},{"key":"1B4-first-floor-A-B-south-of-grid-3","page":9,"position":{"left":0.502922,"top":0.688128,"right":0.531496,"bottom":0.693568},"position_null_reason":null},{"key":"1B5-first-floor-B-D-grid-2","page":9,"position":{"left":0.535344,"top":0.750395,"right":0.626627,"bottom":0.755735},"position_null_reason":null},{"key":"1B6-first-floor-A-grid-5-4","page":9,"position":{"left":0.499145,"top":0.514123,"right":0.502922,"bottom":0.620823},"position_null_reason":null},{"key":"1B7-first-floor-B-grid-4-2","page":9,"position":{"left":0.531496,"top":0.626264,"right":0.535344,"bottom":0.750395},"position_null_reason":null},{"key":"1B8-first-floor-B-grid-5-4","page":9,"position":{"left":0.531496,"top":0.514123,"right":0.535344,"bottom":0.620823},"position_null_reason":null},{"key":"1B9-first-floor-D-grid-5-2","page":9,"position":{"left":0.626627,"top":0.514123,"right":0.630475,"bottom":0.750395},"position_null_reason":null},{"key":"SB1-first-floor-stair-void-west-edge","page":9,"position":{"left":0.598694,"top":0.626264,"right":0.603682,"bottom":0.750395},"position_null_reason":null},{"key":"RB1-roof-B-C-north-of-grid-5","page":10,"position":{"left":0.12639,"top":0.585961,"right":0.197933,"bottom":0.591402},"position_null_reason":null},{"key":"RB2-roof-A-B-grid-5","page":10,"position":{"left":0.094038,"top":0.613367,"right":0.122613,"bottom":0.618808},"position_null_reason":null},{"key":"RB3-roof-C-D-grid-5","page":10,"position":{"left":0.201781,"top":0.613367,"right":0.217743,"bottom":0.618808},"position_null_reason":null},{"key":"RB4-roof-A-B-south-of-grid-3","page":10,"position":{"left":0.094038,"top":0.79251,"right":0.122613,"bottom":0.797851},"position_null_reason":null},{"key":"RB5-roof-B-D-grid-2","page":10,"position":{"left":0.12639,"top":0.854979,"right":0.217743,"bottom":0.860319},"position_null_reason":null},{"key":"RB6-roof-B-C-grid-1","page":10,"position":{"left":0.12639,"top":0.874022,"right":0.197933,"bottom":0.879362},"position_null_reason":null},{"key":"RB7-roof-A-grid-5-to-RB4","page":10,"position":{"left":0.09019,"top":0.618808,"right":0.094038,"bottom":0.79251},"position_null_reason":null},{"key":"RB8-roof-west-ridge-line-grid-5-to-RB4","page":10,"position":{"left":0.122613,"top":0.618808,"right":0.12639,"bottom":0.79251},"position_null_reason":null},{"key":"RB8a-roof-east-ridge-line-grid-5-to-RB4","page":10,"position":{"left":0.12639,"top":0.618808,"right":0.130594,"bottom":0.79251},"position_null_reason":null},{"key":"RB9-roof-grid-B-RB4-to-grid-1","page":10,"position":{"left":0.122613,"top":0.797851,"right":0.12639,"bottom":0.874022},"position_null_reason":null},{"key":"RB10-roof-C-grid-2-1","page":10,"position":{"left":0.197933,"top":0.860319,"right":0.201781,"bottom":0.874022},"position_null_reason":null},{"key":"RB11-roof-C-RB1-to-grid-5","page":10,"position":{"left":0.197933,"top":0.591402,"right":0.201781,"bottom":0.613367},"position_null_reason":null},{"key":"RB12-roof-D-grid-5-2","page":10,"position":{"left":0.217743,"top":0.618808,"right":0.22152,"bottom":0.854979},"position_null_reason":null},{"key":"B1-stair-grid-C-side","page":15,"position":{"left":0.108504,"top":0.656591,"right":0.108789,"bottom":0.895181},"position_null_reason":null},{"key":"B1-stair-grid-D-side","page":15,"position":{"left":0.144418,"top":0.646919,"right":0.152043,"bottom":0.895181},"position_null_reason":null}],"columns":[{"key":"C2-A5-footing-ground","page":11,"position":{"left":0.097957,"top":0.515634,"right":0.101734,"bottom":0.520974},"position_null_reason":null},{"key":"C3-B5-footing-ground","page":11,"position":{"left":0.130309,"top":0.515634,"right":0.134086,"bottom":0.520974},"position_null_reason":null},{"key":"C2-D5-footing-ground","page":11,"position":{"left":0.225439,"top":0.515634,"right":0.229216,"bottom":0.520974},"position_null_reason":null},{"key":"C1-A4-footing-ground","page":11,"position":{"left":0.097957,"top":0.627674,"right":0.101734,"bottom":0.633014},"position_null_reason":null},{"key":"C3-B4-footing-ground","page":11,"position":{"left":0.130309,"top":0.627674,"right":0.134086,"bottom":0.633014},"position_null_reason":null},{"key":"C2-D4-footing-ground","page":11,"position":{"left":0.225439,"top":0.627674,"right":0.229216,"bottom":0.633014},"position_null_reason":null},{"key":"C2-B-offset-footing-ground","page":11,"position":{"left":0.130309,"top":0.694979,"right":0.134086,"bottom":0.700319},"position_null_reason":null},{"key":"C1-B2-footing-ground","page":11,"position":{"left":0.130309,"top":0.757145,"right":0.134086,"bottom":0.762586},"position_null_reason":null},{"key":"C2-C2-footing-ground","page":11,"position":{"left":0.205629,"top":0.757145,"right":0.209406,"bottom":0.762586},"position_null_reason":null},{"key":"C2-D2-footing-ground","page":11,"position":{"left":0.225439,"top":0.757145,"right":0.229216,"bottom":0.762586},"position_null_reason":null},{"key":"C2-A5-ground-first","page":9,"position":{"left":0.209121,"top":0.50979,"right":0.212898,"bottom":0.51513},"position_null_reason":null},{"key":"C3-B5-ground-first","page":9,"position":{"left":0.241544,"top":0.50979,"right":0.245321,"bottom":0.51513},"position_null_reason":null},{"key":"C2-D5-ground-first","page":9,"position":{"left":0.336675,"top":0.50979,"right":0.340451,"bottom":0.51513},"position_null_reason":null},{"key":"C1-A4-ground-first","page":9,"position":{"left":0.209121,"top":0.621931,"right":0.212898,"bottom":0.627271},"position_null_reason":null},{"key":"C3-B4-ground-first","page":9,"position":{"left":0.241544,"top":0.621931,"right":0.245321,"bottom":0.627271},"position_null_reason":null},{"key":"C2-D4-ground-first","page":9,"position":{"left":0.336675,"top":0.621931,"right":0.340451,"bottom":0.627271},"position_null_reason":null},{"key":"C2-B-offset-ground-first","page":9,"position":{"left":0.241544,"top":0.689236,"right":0.245321,"bottom":0.694576},"position_null_reason":null},{"key":"C1-B2-ground-first","page":9,"position":{"left":0.241544,"top":0.751402,"right":0.245321,"bottom":0.756742},"position_null_reason":null},{"key":"C2-C2-ground-first","page":9,"position":{"left":0.316865,"top":0.751402,"right":0.320713,"bottom":0.756742},"position_null_reason":null},{"key":"C2-D2-ground-first","page":9,"position":{"left":0.336675,"top":0.751402,"right":0.340451,"bottom":0.756742},"position_null_reason":null},{"key":"C2-A5-first-roof","page":9,"position":{"left":0.499145,"top":0.508783,"right":0.502922,"bottom":0.514123},"position_null_reason":null},{"key":"C2-D5-first-roof","page":9,"position":{"left":0.626627,"top":0.508783,"right":0.630475,"bottom":0.514123},"position_null_reason":null},{"key":"C1-A4-first-roof","page":9,"position":{"left":0.499145,"top":0.620823,"right":0.502922,"bottom":0.626264},"position_null_reason":null},{"key":"C2-D4-first-roof","page":9,"position":{"left":0.626627,"top":0.620823,"right":0.630475,"bottom":0.626264},"position_null_reason":null},{"key":"C2-B-offset-first-roof","page":9,"position":{"left":0.531496,"top":0.688128,"right":0.535344,"bottom":0.693568},"position_null_reason":null},{"key":"C1-B2-first-roof","page":9,"position":{"left":0.531496,"top":0.750395,"right":0.535344,"bottom":0.755735},"position_null_reason":null},{"key":"C2-C2-first-roof","page":9,"position":{"left":0.606817,"top":0.750395,"right":0.610665,"bottom":0.755735},"position_null_reason":null},{"key":"C2-D2-first-roof","page":9,"position":{"left":0.626627,"top":0.750395,"right":0.630475,"bottom":0.755735},"position_null_reason":null}]}
+{
+  "beams": [
+    {
+      "key": "1B1-first-floor-A-D-grid-5",
+      "page": 9,
+      "position": {
+        "left": 0.502922,
+        "top": 0.508783,
+        "right": 0.626627,
+        "bottom": 0.514123
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "1B3-first-floor-A-D-grid-4",
+      "page": 9,
+      "position": {
+        "left": 0.502922,
+        "top": 0.620823,
+        "right": 0.626627,
+        "bottom": 0.626264
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "1B4-first-floor-A-B-south-of-grid-3",
+      "page": 9,
+      "position": {
+        "left": 0.502922,
+        "top": 0.688128,
+        "right": 0.531496,
+        "bottom": 0.693568
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "1B5-first-floor-B-D-grid-2",
+      "page": 9,
+      "position": {
+        "left": 0.535344,
+        "top": 0.750395,
+        "right": 0.626627,
+        "bottom": 0.755735
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "1B6-first-floor-A-grid-5-4",
+      "page": 9,
+      "position": {
+        "left": 0.499145,
+        "top": 0.514123,
+        "right": 0.502922,
+        "bottom": 0.620823
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "1B7-first-floor-B-grid-4-2",
+      "page": 9,
+      "position": {
+        "left": 0.531496,
+        "top": 0.626264,
+        "right": 0.535344,
+        "bottom": 0.750395
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "1B8-first-floor-B-grid-5-4",
+      "page": 9,
+      "position": {
+        "left": 0.531496,
+        "top": 0.514123,
+        "right": 0.535344,
+        "bottom": 0.620823
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "1B9-first-floor-D-grid-5-2",
+      "page": 9,
+      "position": {
+        "left": 0.626627,
+        "top": 0.514123,
+        "right": 0.630475,
+        "bottom": 0.750395
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "SB1-first-floor-stair-void-west-edge",
+      "page": 9,
+      "position": {
+        "left": 0.598694,
+        "top": 0.626264,
+        "right": 0.603682,
+        "bottom": 0.750395
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "RB1-roof-B-C-north-of-grid-5",
+      "page": 10,
+      "position": {
+        "left": 0.12639,
+        "top": 0.585961,
+        "right": 0.197933,
+        "bottom": 0.591402
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "RB2-roof-A-B-grid-5",
+      "page": 10,
+      "position": {
+        "left": 0.094038,
+        "top": 0.613367,
+        "right": 0.122613,
+        "bottom": 0.618808
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "RB3-roof-C-D-grid-5",
+      "page": 10,
+      "position": {
+        "left": 0.201781,
+        "top": 0.613367,
+        "right": 0.217743,
+        "bottom": 0.618808
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "RB4-roof-A-B-south-of-grid-3",
+      "page": 10,
+      "position": {
+        "left": 0.094038,
+        "top": 0.79251,
+        "right": 0.122613,
+        "bottom": 0.797851
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "RB5-roof-B-D-grid-2",
+      "page": 10,
+      "position": {
+        "left": 0.12639,
+        "top": 0.854979,
+        "right": 0.217743,
+        "bottom": 0.860319
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "RB6-roof-B-C-grid-1",
+      "page": 10,
+      "position": {
+        "left": 0.12639,
+        "top": 0.874022,
+        "right": 0.197933,
+        "bottom": 0.879362
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "RB7-roof-A-grid-5-to-RB4",
+      "page": 10,
+      "position": {
+        "left": 0.09019,
+        "top": 0.618808,
+        "right": 0.094038,
+        "bottom": 0.79251
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "RB8-roof-west-ridge-line-grid-5-to-RB4",
+      "page": 10,
+      "position": {
+        "left": 0.122613,
+        "top": 0.618808,
+        "right": 0.12639,
+        "bottom": 0.79251
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "RB8a-roof-east-ridge-line-grid-5-to-RB4",
+      "page": 10,
+      "position": {
+        "left": 0.12639,
+        "top": 0.618808,
+        "right": 0.130594,
+        "bottom": 0.79251
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "RB9-roof-grid-B-RB4-to-grid-1",
+      "page": 10,
+      "position": {
+        "left": 0.122613,
+        "top": 0.797851,
+        "right": 0.12639,
+        "bottom": 0.874022
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "RB10-roof-C-grid-2-1",
+      "page": 10,
+      "position": {
+        "left": 0.197933,
+        "top": 0.860319,
+        "right": 0.201781,
+        "bottom": 0.874022
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "RB11-roof-C-RB1-to-grid-5",
+      "page": 10,
+      "position": {
+        "left": 0.197933,
+        "top": 0.591402,
+        "right": 0.201781,
+        "bottom": 0.613367
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "RB12-roof-D-grid-5-2",
+      "page": 10,
+      "position": {
+        "left": 0.217743,
+        "top": 0.618808,
+        "right": 0.22152,
+        "bottom": 0.854979
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "B1-stair-grid-C-side",
+      "page": 15,
+      "position": {
+        "left": 0.10838,
+        "top": 0.647023,
+        "right": 0.109235,
+        "bottom": 0.895134
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "B1-stair-grid-D-side",
+      "page": 15,
+      "position": {
+        "left": 0.144292,
+        "top": 0.647023,
+        "right": 0.151988,
+        "bottom": 0.895134
+      },
+      "position_null_reason": null
+    }
+  ],
+  "columns": [
+    {
+      "key": "C2-A5-footing-ground",
+      "page": 11,
+      "position": {
+        "left": 0.097957,
+        "top": 0.515634,
+        "right": 0.101734,
+        "bottom": 0.520974
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C3-B5-footing-ground",
+      "page": 11,
+      "position": {
+        "left": 0.130309,
+        "top": 0.515634,
+        "right": 0.134086,
+        "bottom": 0.520974
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-D5-footing-ground",
+      "page": 11,
+      "position": {
+        "left": 0.225439,
+        "top": 0.515634,
+        "right": 0.229216,
+        "bottom": 0.520974
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C1-A4-footing-ground",
+      "page": 11,
+      "position": {
+        "left": 0.097957,
+        "top": 0.627674,
+        "right": 0.101734,
+        "bottom": 0.633014
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C3-B4-footing-ground",
+      "page": 11,
+      "position": {
+        "left": 0.130309,
+        "top": 0.627674,
+        "right": 0.134086,
+        "bottom": 0.633014
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-D4-footing-ground",
+      "page": 11,
+      "position": {
+        "left": 0.225439,
+        "top": 0.627674,
+        "right": 0.229216,
+        "bottom": 0.633014
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-B-offset-footing-ground",
+      "page": 11,
+      "position": {
+        "left": 0.130309,
+        "top": 0.694979,
+        "right": 0.134086,
+        "bottom": 0.700319
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C1-B2-footing-ground",
+      "page": 11,
+      "position": {
+        "left": 0.130309,
+        "top": 0.757145,
+        "right": 0.134086,
+        "bottom": 0.762586
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-C2-footing-ground",
+      "page": 11,
+      "position": {
+        "left": 0.205629,
+        "top": 0.757145,
+        "right": 0.209406,
+        "bottom": 0.762586
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-D2-footing-ground",
+      "page": 11,
+      "position": {
+        "left": 0.225439,
+        "top": 0.757145,
+        "right": 0.229216,
+        "bottom": 0.762586
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-A5-ground-first",
+      "page": 9,
+      "position": {
+        "left": 0.209121,
+        "top": 0.50979,
+        "right": 0.212898,
+        "bottom": 0.51513
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C3-B5-ground-first",
+      "page": 9,
+      "position": {
+        "left": 0.241544,
+        "top": 0.50979,
+        "right": 0.245321,
+        "bottom": 0.51513
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-D5-ground-first",
+      "page": 9,
+      "position": {
+        "left": 0.336675,
+        "top": 0.50979,
+        "right": 0.340451,
+        "bottom": 0.51513
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C1-A4-ground-first",
+      "page": 9,
+      "position": {
+        "left": 0.209121,
+        "top": 0.621931,
+        "right": 0.212898,
+        "bottom": 0.627271
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C3-B4-ground-first",
+      "page": 9,
+      "position": {
+        "left": 0.241544,
+        "top": 0.621931,
+        "right": 0.245321,
+        "bottom": 0.627271
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-D4-ground-first",
+      "page": 9,
+      "position": {
+        "left": 0.336675,
+        "top": 0.621931,
+        "right": 0.340451,
+        "bottom": 0.627271
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-B-offset-ground-first",
+      "page": 9,
+      "position": {
+        "left": 0.241544,
+        "top": 0.689236,
+        "right": 0.245321,
+        "bottom": 0.694576
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C1-B2-ground-first",
+      "page": 9,
+      "position": {
+        "left": 0.241544,
+        "top": 0.751402,
+        "right": 0.245321,
+        "bottom": 0.756742
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-C2-ground-first",
+      "page": 9,
+      "position": {
+        "left": 0.316865,
+        "top": 0.751402,
+        "right": 0.320713,
+        "bottom": 0.756742
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-D2-ground-first",
+      "page": 9,
+      "position": {
+        "left": 0.336675,
+        "top": 0.751402,
+        "right": 0.340451,
+        "bottom": 0.756742
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-A5-first-roof",
+      "page": 9,
+      "position": {
+        "left": 0.499145,
+        "top": 0.508783,
+        "right": 0.502922,
+        "bottom": 0.514123
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-D5-first-roof",
+      "page": 9,
+      "position": {
+        "left": 0.626627,
+        "top": 0.508783,
+        "right": 0.630475,
+        "bottom": 0.514123
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C1-A4-first-roof",
+      "page": 9,
+      "position": {
+        "left": 0.499145,
+        "top": 0.620823,
+        "right": 0.502922,
+        "bottom": 0.626264
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-D4-first-roof",
+      "page": 9,
+      "position": {
+        "left": 0.626627,
+        "top": 0.620823,
+        "right": 0.630475,
+        "bottom": 0.626264
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-B-offset-first-roof",
+      "page": 9,
+      "position": {
+        "left": 0.531496,
+        "top": 0.688128,
+        "right": 0.535344,
+        "bottom": 0.693568
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C1-B2-first-roof",
+      "page": 9,
+      "position": {
+        "left": 0.531496,
+        "top": 0.750395,
+        "right": 0.535344,
+        "bottom": 0.755735
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-C2-first-roof",
+      "page": 9,
+      "position": {
+        "left": 0.606817,
+        "top": 0.750395,
+        "right": 0.610665,
+        "bottom": 0.755735
+      },
+      "position_null_reason": null
+    },
+    {
+      "key": "C2-D2-first-roof",
+      "page": 9,
+      "position": {
+        "left": 0.626627,
+        "top": 0.750395,
+        "right": 0.630475,
+        "bottom": 0.755735
+      },
+      "position_null_reason": null
+    }
+  ]
+}
