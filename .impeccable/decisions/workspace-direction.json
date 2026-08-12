@@ -1,0 +1,76 @@
+{
+  "title": "Choose the workspace visual world",
+  "question": "Keep Evidence Light Table, choose a challenger, re-roll, or take the familiar category standard.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Evidence Light Table",
+      "kicker": "RECOMMENDED DIRECTION",
+      "lineage": "drawing-office light tables, translucent revision overlays, and grease-pencil review marks",
+      "thesis": "The drawing is the workspace; member data and ambiguity controls attach directly to its evidence.",
+      "palette": ["#f4f6f5", "#dce5e8", "#172432", "#c63f35", "#d79a19"],
+      "materials": ["drafting vellum", "frosted light glass", "graphite", "red grease pencil"],
+      "viewport": "A dominant illuminated evidence plane, a narrow indexed member register, and one decision strip docked beneath the selected member.",
+      "risk": "Paper texture or spatial controls could become skeuomorphic if they compete with drawing legibility.",
+      "sketch": ".impeccable/sketches/assigned.webp"
+    },
+    {
+      "id": "challenger-airport",
+      "label": "Decision Wayfinding",
+      "kicker": "CHALLENGER",
+      "lineage": "international airport sign systems and chained decision points",
+      "thesis": "Every unresolved member becomes one unmistakable next junction through the review set.",
+      "case": "Very clear sequencing, but less immediately native to quantity-surveying practice than the light table.",
+      "palette": ["#f8c900", "#0b0b0b", "#ffffff", "#e7e5de"],
+      "materials": ["framed sign bands", "pictogram insets", "edge-locked arrows"],
+      "viewport": "Drawing evidence owns the left field while a monumental member ID and yellow next-decision band lead the right edge.",
+      "risk": "Monumental signs can oversimplify dense comparison and editing tasks.",
+      "sketch": ".impeccable/sketches/challenger-airport.webp",
+      "hero": "https://impeccable.style/worlds/cards/wayfinding-cartography-signage-terminal-yellow-wayfinding-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/wayfinding-cartography-signage-terminal-yellow-wayfinding.webp"
+    },
+    {
+      "id": "challenger-hardware",
+      "label": "Surveyor’s Instrument",
+      "kicker": "CHALLENGER",
+      "lineage": "creator-hardware desk instruments with tactile keys, detents, and one commit control",
+      "thesis": "A repeat-use expert tool whose controls feel learned, certain, and fast under the hand.",
+      "case": "Excellent for daily speed, but the dense control chassis risks becoming the complex UI you rejected.",
+      "palette": ["#292c2d", "#b9b2a4", "#e7e0d3", "#e66722", "#bb8739"],
+      "materials": ["gunmetal chassis", "putty keycaps", "amber status glass", "knurled controls"],
+      "viewport": "A large drawing bed is surrounded by discrete tool keys, a compact member table, and one orange commit action.",
+      "risk": "Too many persistent controls can make the interface feel like specialist hardware before it feels simple.",
+      "sketch": ".impeccable/sketches/challenger-hardware.webp",
+      "hero": "https://impeccable.style/worlds/cards/design-canon-creator-hardware-bench-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/design-canon-creator-hardware-bench.webp"
+    },
+    {
+      "id": "challenger-oscilloscope",
+      "label": "Evidence Signal Bench",
+      "kicker": "CHALLENGER",
+      "lineage": "CRT oscilloscopes, triggered traces, graticules, and measurement cursors",
+      "thesis": "Selecting a member locks noisy drawing evidence into one measured, inspectable signal.",
+      "case": "The evidence mechanism translates well, but the dark instrument language has the weakest audience identification.",
+      "palette": ["#07110f", "#75f09c", "#35443f", "#d99024"],
+      "materials": ["near-black glass", "phosphor trace", "etched graticule", "amber readout"],
+      "viewport": "A gridded drawing field carries the selected member, evidence cursors, member index, and a compact resolve control.",
+      "risk": "Signal density and near-black glass can read as diagnostic software and increase perceived complexity.",
+      "sketch": ".impeccable/sketches/challenger-oscilloscope.webp",
+      "hero": "https://impeccable.style/worlds/cards/scientific-notation-oscilloscope-signal-bench-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/scientific-notation-oscilloscope-signal-bench.webp"
+    }
+  ],
+  "reroll": true,
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard",
+    "lineage": "enterprise document-review SaaS",
+    "thesis": "A conventional PDF viewer, AI chat, and editable data table in three panes.",
+    "palette": ["#ffffff", "#eef2f7", "#334155", "#3b82f6"],
+    "materials": ["neutral panels", "standard form controls", "light borders"],
+    "viewport": "Three familiar columns place the PDF, assistant, and extracted data side by side.",
+    "risk": "Immediately familiar, but likely to become the visually complex workspace you want to avoid.",
+    "sketch": ".impeccable/sketches/canon.webp"
+  },
+  "steer": true
+}

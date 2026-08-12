@@ -1,0 +1,430 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  AlertCircle,
+  ArrowLeft,
+  Check,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  CircleHelp,
+  Download,
+  Edit3,
+  FileJson,
+  FileSpreadsheet,
+  FileText,
+  FolderOpen,
+  Layers3,
+  LoaderCircle,
+  Maximize2,
+  Menu,
+  MessageSquareText,
+  Minus,
+  MousePointer2,
+  Plus,
+  Redo2,
+  Search,
+  SkipForward,
+  Undo2,
+  Upload,
+  X,
+} from 'lucide-react';
+
+const REVIEW_FILTERS = ['all', 'unresolved', 'changed'];
+const SUGGESTIONS = ['400', '450', 'Varies'];
+
+function memberStatus(member) {
+  if (member.reviewStatus) return member.reviewStatus;
+  const dimensionKeys = member.kind === 'beam' ? ['width', 'depth', 'length', 'unit'] : ['width', 'depth', 'height', 'unit'];
+  return dimensionKeys.some((field) => member[field] == null) ? 'unresolved' : 'confirmed';
+}
+
+function normalizeData(data) {
+  return [
+    ...data.beams.map((member) => ({ ...member, kind: 'beam', original: { ...member } })),
+    ...data.columns.map((member) => ({ ...member, kind: 'column', original: { ...member } })),
+  ];
+}
+
+function getMissingField(member) {
+  const fields = member.kind === 'beam' ? ['width', 'depth', 'length', 'unit'] : ['width', 'depth', 'height', 'unit'];
+  return fields.find((field) => member[field] == null) || null;
+}
+
+function downloadBlob(content, filename, type) {
+  const url = URL.createObjectURL(new Blob([content], { type }));
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.click();
+  URL.revokeObjectURL(url);
+}
+
+function App() {
+  const [screen, setScreen] = useState('upload');
+  const [file, setFile] = useState(null);
+  const [members, setMembers] = useState([]);
+  const [selectedKey, setSelectedKey] = useState(null);
+  const [kind, setKind] = useState('beam');
+  const [filter, setFilter] = useState('all');
+  const [search, setSearch] = useState('');
+  const [analysisStep, setAnalysisStep] = useState(0);
+  const [analysisError, setAnalysisError] = useState('');
+  const [history, setHistory] = useState([]);
+  const [future, setFuture] = useState([]);
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState({});
+  const [note, setNote] = useState('');
+  const [exportOpen, setExportOpen] = useState(false);
+  const [exportWarning, setExportWarning] = useState(null);
+  const [pdfZoom, setPdfZoom] = useState(100);
+  const [viewPage, setViewPage] = useState(1);
+  const [toast, setToast] = useState('');
+  const fileInput = useRef(null);
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('demo') !== 'workspace') return;
+    setFile({ name: 'plan.pdf', size: 3431424, sample: true });
+    fetch('/second_pass_result.json')
+      .then((response) => {
+        if (!response.ok) throw new Error('The second-pass extraction file could not be loaded.');
+        return response.json();
+      })
+      .then((payload) => {
+        const data = normalizeData(payload);
+        const firstUnresolved = data.find((member) => memberStatus(member) === 'unresolved') || data[0];
+        setMembers(data);
+        setKind(firstUnresolved.kind);
+        setSelectedKey(firstUnresolved.key);
+        setScreen('workspace');
+      })
+      .catch((error) => {
+        setAnalysisError(error.message);
+        setScreen('analysis-error');
+      });
+  }, []);
+
+  const selected = members.find((member) => member.key === selectedKey) || null;
+  const citedPages = useMemo(() => {
+    if (!selected) return [];
+    const missing = getMissingField(selected);
+    const reason = missing ? selected[`${missing}_null_reason`] || '' : '';
+    return [...new Set([...reason.matchAll(/page\s+(\d+)/gi)].map((match) => Number(match[1])))];
+  }, [selected]);
+  const counts = useMemo(() => ({
+    beam: members.filter((member) => member.kind === 'beam').length,
+    column: members.filter((member) => member.kind === 'column').length,
+    unresolved: members.filter((member) => memberStatus(member) === 'unresolved').length,
+    changed: members.filter((member) => memberStatus(member) === 'changed').length,
+    reviewed: members.filter((member) => ['confirmed', 'changed'].includes(memberStatus(member))).length,
+  }), [members]);
+
+  const visibleMembers = useMemo(() => members.filter((member) => {
+    if (member.kind !== kind) return false;
+    if (filter !== 'all' && memberStatus(member) !== filter) return false;
+    const query = search.trim().toLowerCase();
+    return !query || `${member.drawing_id || ''} ${member.location} ${member.level || ''}`.toLowerCase().includes(query);
+  }), [members, kind, filter, search]);
+
+  const nextUnresolved = () => {
+    const currentIndex = members.findIndex((member) => member.key === selectedKey);
+    const ordered = [...members.slice(currentIndex + 1), ...members.slice(0, currentIndex + 1)];
+    const next = ordered.find((member) => memberStatus(member) === 'unresolved');
+    if (next) {
+      setKind(next.kind);
+      setFilter('all');
+      setSelectedKey(next.key);
+    } else setToast('Every member has been reviewed.');
+  };
+
+  useEffect(() => {
+    if (selected?.page) setViewPage(selected.page);
+  }, [selectedKey]);
+
+  useEffect(() => {
+    if (!toast) return undefined;
+    const timer = window.setTimeout(() => setToast(''), 2600);
+    return () => window.clearTimeout(timer);
+  }, [toast]);
+
+  useEffect(() => {
+    const handleKey = (event) => {
+      if (screen !== 'workspace' || event.target.matches('input, textarea, select')) return;
+      if (event.key.toLowerCase() === 'n') nextUnresolved();
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'z') {
+        event.preventDefault();
+        undo();
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  });
+
+  const loadExtraction = async () => {
+    const response = await fetch('/second_pass_result.json');
+    if (!response.ok) throw new Error('The second-pass extraction file could not be loaded.');
+    const data = normalizeData(await response.json());
+    setMembers(data);
+    const firstUnresolved = data.find((member) => memberStatus(member) === 'unresolved') || data[0];
+    setKind(firstUnresolved.kind);
+    setSelectedKey(firstUnresolved.key);
+  };
+
+  const analyze = async () => {
+    if (!file) return;
+    setAnalysisError('');
+    setAnalysisStep(0);
+    setScreen('analyzing');
+    try {
+      for (let step = 1; step <= 4; step += 1) {
+        await new Promise((resolve) => window.setTimeout(resolve, 520));
+        setAnalysisStep(step);
+      }
+      await loadExtraction();
+      setScreen('workspace');
+    } catch (error) {
+      setAnalysisError(error.message);
+      setScreen('analysis-error');
+    }
+  };
+
+  const openSample = () => {
+    setFile({ name: 'plan.pdf', size: 3431424, sample: true });
+  };
+
+  const snapshotAndUpdate = (nextMember, message) => {
+    setHistory((items) => [...items, { members, selectedKey, message }]);
+    setFuture([]);
+    setMembers((items) => items.map((member) => (member.key === nextMember.key ? nextMember : member)));
+    setToast(message);
+  };
+
+  const resolveField = (value) => {
+    const field = getMissingField(selected);
+    if (!field) return;
+    const nextValue = value === 'Varies' ? value : Number(value);
+    const next = {
+      ...selected,
+      [field]: nextValue,
+      [`${field}_null_reason`]: null,
+      reviewStatus: 'changed',
+      reviewNote: `Resolved from review: ${value}${value === 'Varies' ? '' : ` ${selected.unit || 'mm'}`}`,
+    };
+    snapshotAndUpdate(next, `${selected.drawing_id || 'Member'} updated.`);
+    nextUnresolved();
+  };
+
+  const markUnresolved = (status) => {
+    const next = { ...selected, reviewStatus: status, reviewNote: status === 'skipped' ? 'Skipped for later review.' : 'Reviewer could not determine an exact value.' };
+    snapshotAndUpdate(next, status === 'skipped' ? 'Member skipped.' : 'Marked cannot determine.');
+    nextUnresolved();
+  };
+
+  const beginEdit = () => {
+    setDraft({
+      width: selected.width ?? '',
+      depth: selected.depth ?? '',
+      length: selected.length ?? '',
+      height: selected.height ?? '',
+      level: selected.level ?? '',
+      location: selected.location,
+    });
+    setNote(selected.reviewNote || '');
+    setEditing(true);
+  };
+
+  const saveEdit = () => {
+    const numeric = (value) => (value === '' ? null : Number(value));
+    const next = {
+      ...selected,
+      width: numeric(draft.width),
+      depth: numeric(draft.depth),
+      ...(selected.kind === 'beam' ? { length: numeric(draft.length) } : { height: numeric(draft.height) }),
+      level: draft.level || null,
+      location: draft.location.trim() || selected.location,
+      reviewStatus: 'changed',
+      reviewNote: note.trim(),
+    };
+    snapshotAndUpdate(next, `${selected.drawing_id || 'Member'} changes saved.`);
+    setEditing(false);
+  };
+
+  const undo = () => {
+    const last = history.at(-1);
+    if (!last) return;
+    setFuture((items) => [{ members, selectedKey }, ...items]);
+    setMembers(last.members);
+    setSelectedKey(last.selectedKey);
+    setHistory((items) => items.slice(0, -1));
+    setToast('Last change undone.');
+  };
+
+  const redo = () => {
+    const next = future[0];
+    if (!next) return;
+    setHistory((items) => [...items, { members, selectedKey }]);
+    setMembers(next.members);
+    setSelectedKey(next.selectedKey);
+    setFuture((items) => items.slice(1));
+    setToast('Change restored.');
+  };
+
+  const exportData = (format, acknowledged = false) => {
+    const unresolvedCount = members.filter((member) => ['unresolved', 'skipped', 'cannot-determine'].includes(memberStatus(member))).length;
+    if (unresolvedCount && !acknowledged) {
+      setExportWarning({ format, unresolvedCount });
+      setExportOpen(false);
+      return;
+    }
+    const clean = (member) => {
+      const { original, ...rest } = member;
+      return rest;
+    };
+    if (format === 'json') {
+      downloadBlob(JSON.stringify({ beams: members.filter((m) => m.kind === 'beam').map(clean), columns: members.filter((m) => m.kind === 'column').map(clean) }, null, 2), 'reviewed-members.json', 'application/json');
+    } else {
+      const headers = ['type', 'drawing_id', 'page', 'level', 'location', 'width', 'depth', 'length_or_height', 'unit', 'review_status', 'review_note'];
+      const rows = members.map((member) => [member.kind, member.drawing_id, member.page, member.level, member.location, member.width, member.depth, member.kind === 'beam' ? member.length : member.height, member.unit, memberStatus(member), member.reviewNote || '']);
+      const csv = [headers, ...rows].map((row) => row.map((value) => `"${String(value ?? '').replaceAll('"', '""')}"`).join(',')).join('\n');
+      downloadBlob(csv, 'reviewed-members.csv', 'text/csv');
+    }
+    setExportWarning(null);
+    setToast(`${format.toUpperCase()} export prepared.`);
+  };
+
+  if (screen === 'upload') return <UploadScreen file={file} setFile={setFile} fileInput={fileInput} openSample={openSample} analyze={analyze} />;
+  if (screen === 'analyzing') return <AnalysisScreen file={file} step={analysisStep} onCancel={() => setScreen('upload')} />;
+  if (screen === 'analysis-error') return <ErrorScreen message={analysisError} retry={analyze} back={() => setScreen('upload')} />;
+
+  return (
+    <main className="app-shell">
+      <header className="topbar">
+        <button className="icon-button mobile-menu" aria-label="Open menu"><Menu size={19} /></button>
+        <div className="file-identity">
+          <span className="app-mark"><Layers3 size={18} /></span>
+          <div><strong>{file?.name || 'plan.pdf'}</strong><span>Structural Drawing Assistant</span></div>
+        </div>
+        <div className="review-progress" aria-label={`${counts.reviewed} of ${members.length} reviewed`}>
+          <span>Review progress</span><progress value={counts.reviewed} max={members.length} /><strong>{counts.reviewed} of {members.length}</strong>
+        </div>
+        <div className="top-actions">
+          <button className="button secondary compact" onClick={undo} disabled={!history.length}><Undo2 size={16} />Undo</button>
+          <button className="icon-button" aria-label="Redo" onClick={redo} disabled={!future.length}><Redo2 size={16} /></button>
+          <div className="export-wrap">
+            <button className="button primary" onClick={() => setExportOpen((open) => !open)}><Download size={17} />Export<ChevronDown size={15} /></button>
+            {exportOpen && <div className="export-menu">
+              <button onClick={() => exportData('json')}><FileJson size={18} /><span><strong>Reviewed JSON</strong><small>Preserves null reasons and review notes</small></span></button>
+              <button onClick={() => exportData('csv')}><FileSpreadsheet size={18} /><span><strong>Reviewed CSV</strong><small>Flat table for estimating workflows</small></span></button>
+            </div>}
+          </div>
+        </div>
+      </header>
+
+      <div className="workspace">
+          <MemberNavigator
+          members={visibleMembers} counts={counts} kind={kind} setKind={setKind} filter={filter} setFilter={setFilter}
+          search={search} setSearch={setSearch} selectedKey={selectedKey} setSelectedKey={setSelectedKey}
+        />
+        <section className="evidence-workspace">
+          <div className="viewer-toolbar">
+            <div className="tool-group"><button className="icon-button selected" aria-label="Select"><MousePointer2 size={17} /></button><button className="icon-button" aria-label="Fit page" onClick={() => setPdfZoom(100)}><Maximize2 size={17} /></button></div>
+            <div className="page-label"><FileText size={16} /><button className="icon-button" aria-label="Previous page" onClick={() => setViewPage((page) => Math.max(1, page - 1))} disabled={viewPage === 1}><ChevronLeft size={15} /></button><label>Page <input aria-label="Drawing page" type="number" min="1" max="15" value={viewPage} onChange={(event) => setViewPage(Math.min(15, Math.max(1, Number(event.target.value) || 1)))} /></label><span>of 15</span><button className="icon-button" aria-label="Next page" onClick={() => setViewPage((page) => Math.min(15, page + 1))} disabled={viewPage === 15}><ChevronRight size={15} /></button></div>
+            <div className="tool-group zoom-tools"><button className="icon-button" aria-label="Zoom out" onClick={() => setPdfZoom((zoom) => Math.max(50, zoom - 10))}><Minus size={17} /></button><span>{pdfZoom}%</span><button className="icon-button" aria-label="Zoom in" onClick={() => setPdfZoom((zoom) => Math.min(180, zoom + 10))}><Plus size={17} /></button></div>
+          </div>
+          <div className="pdf-stage">
+            <div className="drawing-scroll">
+              <img
+                alt={`Rendered source drawing page ${viewPage}`}
+                src={`/drawing-pages/page-${viewPage}.webp`}
+                style={{ width: `${pdfZoom}%` }}
+              />
+            </div>
+            <div className="evidence-notice"><CircleHelp size={15} /><span>Showing page {viewPage}. Exact highlight unavailable in the second-pass data.</span>{viewPage !== selected?.page && <button onClick={() => setViewPage(selected.page)}>Occurrence page {selected.page}</button>}{citedPages.filter((page) => page !== viewPage).map((page) => <button key={page} onClick={() => setViewPage(page)}>Cited page {page}</button>)}</div>
+          </div>
+          {selected && <ReviewTray
+            member={selected} editing={editing} setEditing={setEditing} beginEdit={beginEdit} draft={draft} setDraft={setDraft}
+            note={note} setNote={setNote} saveEdit={saveEdit} resolveField={resolveField} markUnresolved={markUnresolved} nextUnresolved={nextUnresolved} citedPages={citedPages} setViewPage={setViewPage}
+          />}
+        </section>
+      </div>
+      {exportWarning && <ExportWarning warning={exportWarning} cancel={() => setExportWarning(null)} proceed={() => exportData(exportWarning.format, true)} />}
+      {toast && <div className="toast" role="status"><Check size={17} />{toast}</div>}
+    </main>
+  );
+}
+
+function UploadScreen({ file, setFile, fileInput, openSample, analyze }) {
+  const acceptFile = (candidate) => {
+    if (candidate?.type === 'application/pdf' || candidate?.name?.toLowerCase().endsWith('.pdf')) setFile(candidate);
+  };
+  return <main className="setup-screen">
+    <header className="setup-header"><span className="app-mark"><Layers3 size={19} /></span><strong>Structural Drawing Assistant</strong><span className="prototype-tag">Review workspace</span></header>
+    <section className="setup-content">
+      <div className="setup-copy"><h1>Review structural members against the drawing.</h1><p>Select a complete construction drawing set. The workspace keeps extracted dimensions, unresolved values, and source pages together.</p></div>
+      <div className={`drop-zone ${file ? 'has-file' : ''}`} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); acceptFile(event.dataTransfer.files[0]); }}>
+        <input ref={fileInput} type="file" accept="application/pdf,.pdf" hidden onChange={(event) => acceptFile(event.target.files[0])} />
+        {file ? <><span className="file-icon"><FileText size={28} /></span><div><strong>{file.name}</strong><span>{(file.size / 1024 / 1024).toFixed(1)} MB · PDF drawing set</span></div><button className="button secondary" onClick={() => fileInput.current?.click()}>Replace</button></> : <><span className="upload-icon"><Upload size={24} /></span><h2>Drop a drawing PDF here</h2><p>Use the complete set so plans, schedules, sections, and details stay together.</p><button className="button secondary" onClick={() => fileInput.current?.click()}><FolderOpen size={17} />Choose PDF</button></>}
+      </div>
+      <div className="setup-actions"><button className="text-button" onClick={openSample}>Use bundled plan.pdf</button><button className="button primary large" disabled={!file} onClick={analyze}>Analyze drawing<ChevronRight size={18} /></button></div>
+      <p className="demo-note"><AlertCircle size={15} />This frontend prototype loads reviewed member data only from the bundled <code>second_pass_result.json</code>.</p>
+    </section>
+  </main>;
+}
+
+function AnalysisScreen({ file, step, onCancel }) {
+  const steps = ['Opening drawing set', 'Reading extracted members', 'Checking unresolved dimensions', 'Preparing review workspace'];
+  return <main className="analysis-screen"><div className="analysis-panel"><span className="analysis-icon"><LoaderCircle size={28} /></span><h1>Preparing {file?.name}</h1><p>Keeping the drawing and second-pass member inventory together for review.</p><div className="analysis-steps">{steps.map((label, index) => <div className={index < step ? 'complete' : index === step ? 'active' : ''} key={label}><span>{index < step ? <Check size={14} /> : index + 1}</span><strong>{label}</strong></div>)}</div><button className="button secondary" onClick={onCancel}>Cancel</button></div></main>;
+}
+
+function ErrorScreen({ message, retry, back }) {
+  return <main className="analysis-screen"><div className="analysis-panel error-panel"><span className="error-icon"><AlertCircle size={28} /></span><h1>Analysis could not be prepared</h1><p>{message}</p><div className="inline-actions"><button className="button secondary" onClick={back}><ArrowLeft size={16} />Choose another PDF</button><button className="button primary" onClick={retry}>Try again</button></div></div></main>;
+}
+
+function MemberNavigator({ members, counts, kind, setKind, filter, setFilter, search, setSearch, selectedKey, setSelectedKey }) {
+  return <aside className="member-nav">
+    <div className="nav-heading"><h2>Members</h2><span className="nav-count">{counts[kind]} total</span></div>
+    <label className="search-field"><Search size={16} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search ID or location" /></label>
+    <div className="tabs" role="tablist"><button className={kind === 'beam' ? 'active' : ''} onClick={() => setKind('beam')}>Beams <span>{counts.beam}</span></button><button className={kind === 'column' ? 'active' : ''} onClick={() => setKind('column')}>Columns <span>{counts.column}</span></button></div>
+    <div className="filter-row">{REVIEW_FILTERS.map((name) => <button key={name} className={filter === name ? 'active' : ''} onClick={() => setFilter(name)}>{name === 'all' ? 'All' : name}<span>{name === 'all' ? counts[kind] : counts[name]}</span></button>)}</div>
+    <div className="member-list" role="listbox" aria-label={`${kind}s`}>
+      {members.length ? members.map((member) => {
+        const status = memberStatus(member);
+        return <button role="option" aria-selected={member.key === selectedKey} className={`member-row ${member.key === selectedKey ? 'selected' : ''}`} key={member.key} onClick={() => setSelectedKey(member.key)}><span className={`status-dot ${status}`} aria-hidden="true" /><span className="member-copy"><strong>{member.drawing_id || 'Unlabelled'}</strong><small>{member.location}</small></span><span className={`status-icon ${status}`}>{status === 'confirmed' ? <Check size={13} /> : status === 'changed' ? <Edit3 size={13} /> : <span>!</span>}</span></button>;
+      }) : <div className="empty-list"><Search size={22} /><strong>No members found</strong><p>Change the search or filter to see more records.</p></div>}
+    </div>
+    <div className="nav-footer"><span>Keyboard</span><strong>N</strong><small>next unresolved</small></div>
+  </aside>;
+}
+
+function ReviewTray({ member, editing, setEditing, beginEdit, draft, setDraft, note, setNote, saveEdit, resolveField, markUnresolved, nextUnresolved, citedPages, setViewPage }) {
+  const missing = getMissingField(member);
+  const status = memberStatus(member);
+  const longitudinal = member.kind === 'beam' ? 'length' : 'height';
+  const reason = missing ? member[`${missing}_null_reason`] : null;
+  return <section className={`review-tray ${editing ? 'editing' : ''}`}>
+    <header className="tray-header"><div className="member-title"><h2>{member.kind === 'beam' ? 'Beam' : 'Column'} {member.drawing_id || 'Unlabelled'}</h2><StatusBadge status={status} /><span>{member.level || 'Level not established'}</span></div><div className="tray-actions">{editing ? <><button className="button secondary compact" onClick={() => setEditing(false)}>Cancel</button><button className="button primary compact" onClick={saveEdit}><Check size={15} />Save changes</button></> : <><button className="button secondary compact" onClick={beginEdit}><Edit3 size={15} />Edit member</button><button className="button secondary compact next-button" onClick={nextUnresolved}>Next unresolved<SkipForward size={15} /></button></>}</div></header>
+    {editing ? <div className="edit-form">
+      <label>ID<span className="read-only-field">{member.drawing_id || '—'}</span></label><label>Level<input value={draft.level} onChange={(e) => setDraft({ ...draft, level: e.target.value })} /></label><label>Width ({member.unit || 'mm'})<input type="number" value={draft.width} onChange={(e) => setDraft({ ...draft, width: e.target.value })} /></label><label>Depth ({member.unit || 'mm'})<input type="number" value={draft.depth} onChange={(e) => setDraft({ ...draft, depth: e.target.value })} /></label><label>{longitudinal === 'length' ? 'Length' : 'Height'} ({member.unit || 'mm'})<input type="number" value={draft[longitudinal]} onChange={(e) => setDraft({ ...draft, [longitudinal]: e.target.value })} /></label><label className="wide-field">Location<input value={draft.location} onChange={(e) => setDraft({ ...draft, location: e.target.value })} /></label><label className="wide-field">Optional change note<input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Why was this value changed?" /></label>
+    </div> : <div className="tray-content">
+      <div className="member-facts"><Fact label="Width" value={member.width} original={member.original.width} unit={member.unit} /><Fact label="Depth" value={member.depth} original={member.original.depth} unit={member.unit} /><Fact label={longitudinal === 'length' ? 'Length' : 'Height'} value={member[longitudinal]} original={member.original[longitudinal]} unit={member.unit} /><Fact label="Location" value={member.location} wide /></div>
+      <div className="review-question">
+        {missing ? <><div className="question-copy"><span className="question-icon"><MessageSquareText size={17} /></span><div><strong>What is the {missing} of {member.drawing_id || 'this member'}?</strong><p>{reason || 'The second-pass extraction did not establish one exact value.'}</p>{citedPages.length > 0 && <div className="citation-links">{citedPages.map((page) => <button key={page} onClick={() => setViewPage(page)}>Open cited page {page}<ChevronRight size={13} /></button>)}</div>}</div></div><div className="answer-row">{missing === 'depth' && member.kind === 'beam' && SUGGESTIONS.map((value) => <button key={value} className="answer-button" onClick={() => resolveField(value)}>{value}{value === 'Varies' ? '' : ` ${member.unit || 'mm'}`}</button>)}<button className="answer-button subtle" onClick={() => markUnresolved('cannot-determine')}>Cannot determine</button><button className="text-button" onClick={() => markUnresolved('skipped')}>Skip</button></div></> : <div className="resolved-message"><span><Check size={17} /></span><div><strong>Member values are complete</strong><p>{member.reviewNote || 'No unresolved dimensions remain for this record.'}</p></div></div>}
+      </div>
+    </div>}
+  </section>;
+}
+
+function Fact({ label, value, original, unit, wide }) {
+  const changed = value !== original;
+  return <div className={`fact ${wide ? 'wide' : ''}`}><span>{label}</span><strong>{value ?? '—'}{typeof value === 'number' ? ` ${unit || ''}` : ''}</strong>{changed && <small>Original: {original ?? 'unresolved'}</small>}</div>;
+}
+
+function StatusBadge({ status }) {
+  const labels = { confirmed: 'Confirmed', unresolved: 'Unresolved', changed: 'Changed', skipped: 'Skipped', 'cannot-determine': 'Cannot determine' };
+  return <span className={`status-badge ${status}`}>{status === 'confirmed' ? <Check size={12} /> : status === 'changed' ? <Edit3 size={12} /> : <AlertCircle size={12} />}{labels[status] || status}</span>;
+}
+
+function ExportWarning({ warning, cancel, proceed }) {
+  return <div className="dialog-backdrop" role="presentation"><section className="dialog" role="dialog" aria-modal="true" aria-labelledby="export-title"><button className="dialog-close" onClick={cancel} aria-label="Close"><X size={18} /></button><span className="warning-icon"><AlertCircle size={22} /></span><h2 id="export-title">Export with unresolved members?</h2><p>{warning.unresolvedCount} members still have unresolved, skipped, or indeterminate values. They will remain explicit in the {warning.format.toUpperCase()} export.</p><div className="dialog-summary"><span><strong>{warning.unresolvedCount}</strong> unresolved</span><span><strong>0</strong> values converted to zero</span></div><div className="dialog-actions"><button className="button secondary" onClick={cancel}>Keep reviewing</button><button className="button primary" onClick={proceed}>Export anyway</button></div></section></div>;
+}
+
+export default App;

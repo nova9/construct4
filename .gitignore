@@ -5,3 +5,5 @@ __pycache__/
 # Local NRM 2 reference/extracted documents (not redistributed)
 /NRN2 document text extracted.txt
 /NRM2-detailed-measurement-clean.md
+
+node_modules/

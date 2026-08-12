@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-12T00:00:00+05:30",
+  "title": "Design System: Structural Drawing Assistant",
+  "extensions": {
+    "colorMeta": {
+      "action-blue": { "role": "primary", "displayName": "Review Blue", "canonical": "#1769e0", "tonalRamp": ["oklch(25% 0.16 255)", "oklch(35% 0.18 255)", "oklch(45% 0.19 255)", "#1769e0", "oklch(68% 0.14 255)", "oklch(78% 0.10 255)", "#eaf3ff", "oklch(96% 0.02 255)"] },
+      "action-blue-strong": { "role": "primary", "displayName": "Deep Review Blue", "canonical": "#0f58c7", "tonalRamp": ["oklch(22% 0.14 255)", "oklch(31% 0.16 255)", "#0f58c7", "oklch(53% 0.17 255)", "oklch(64% 0.14 255)", "oklch(75% 0.10 255)", "oklch(86% 0.06 255)", "oklch(95% 0.02 255)"] },
+      "action-blue-soft": { "role": "primary", "displayName": "Evidence Blue Wash", "canonical": "#eaf3ff", "tonalRamp": ["oklch(25% 0.10 255)", "oklch(35% 0.09 255)", "oklch(46% 0.08 255)", "oklch(58% 0.07 255)", "oklch(70% 0.06 255)", "oklch(81% 0.04 255)", "#eaf3ff", "oklch(96% 0.015 255)"] },
+      "ink-slate": { "role": "neutral", "displayName": "Ink Slate", "canonical": "#172033", "tonalRamp": ["#172033", "oklch(27% 0.025 255)", "oklch(38% 0.022 255)", "oklch(49% 0.019 255)", "oklch(61% 0.016 255)", "oklch(73% 0.013 255)", "oklch(85% 0.010 255)", "oklch(95% 0.006 255)"] },
+      "muted-slate": { "role": "neutral", "displayName": "Muted Slate", "canonical": "#667085", "tonalRamp": ["oklch(22% 0.025 255)", "oklch(32% 0.025 255)", "oklch(42% 0.024 255)", "#667085", "oklch(63% 0.020 255)", "oklch(74% 0.016 255)", "oklch(85% 0.011 255)", "oklch(95% 0.006 255)"] },
+      "separator": { "role": "neutral", "displayName": "Crisp Separator", "canonical": "#d8dee8", "tonalRamp": ["oklch(20% 0.015 255)", "oklch(31% 0.014 255)", "oklch(43% 0.013 255)", "oklch(55% 0.012 255)", "oklch(67% 0.011 255)", "oklch(79% 0.010 255)", "#d8dee8", "oklch(95% 0.005 255)"] },
+      "canvas-cool": { "role": "neutral", "displayName": "Cool Canvas", "canonical": "#eef2f6", "tonalRamp": ["oklch(18% 0.012 255)", "oklch(30% 0.011 255)", "oklch(42% 0.010 255)", "oklch(54% 0.009 255)", "oklch(66% 0.008 255)", "oklch(78% 0.007 255)", "#eef2f6", "oklch(96% 0.004 255)"] },
+      "surface": { "role": "neutral", "displayName": "Paper White", "canonical": "#ffffff", "tonalRamp": ["oklch(15% 0 0)", "oklch(28% 0 0)", "oklch(41% 0 0)", "oklch(54% 0 0)", "oklch(67% 0 0)", "oklch(80% 0 0)", "oklch(92% 0 0)", "#ffffff"] },
+      "surface-soft": { "role": "neutral", "displayName": "Soft Surface", "canonical": "#f7f9fc", "tonalRamp": ["oklch(16% 0.008 255)", "oklch(29% 0.008 255)", "oklch(42% 0.007 255)", "oklch(55% 0.006 255)", "oklch(68% 0.006 255)", "oklch(81% 0.005 255)", "oklch(92% 0.004 255)", "#f7f9fc"] },
+      "unresolved-amber": { "role": "secondary", "displayName": "Unresolved Amber", "canonical": "#d58400", "tonalRamp": ["oklch(25% 0.10 75)", "oklch(35% 0.12 75)", "oklch(45% 0.14 75)", "#d58400", "oklch(66% 0.14 75)", "oklch(77% 0.10 75)", "oklch(87% 0.06 75)", "#fff7df"] },
+      "unresolved-amber-soft": { "role": "secondary", "displayName": "Unresolved Amber Wash", "canonical": "#fff7df", "tonalRamp": ["oklch(25% 0.08 75)", "oklch(36% 0.075 75)", "oklch(47% 0.07 75)", "oklch(58% 0.06 75)", "oklch(69% 0.05 75)", "oklch(80% 0.04 75)", "oklch(89% 0.03 75)", "#fff7df"] },
+      "confirmed-green": { "role": "tertiary", "displayName": "Confirmed Green", "canonical": "#168548", "tonalRamp": ["oklch(23% 0.08 150)", "oklch(33% 0.10 150)", "oklch(43% 0.11 150)", "#168548", "oklch(64% 0.11 150)", "oklch(75% 0.08 150)", "oklch(86% 0.05 150)", "#eaf7ef"] },
+      "confirmed-green-soft": { "role": "tertiary", "displayName": "Confirmed Green Wash", "canonical": "#eaf7ef", "tonalRamp": ["oklch(24% 0.06 150)", "oklch(35% 0.06 150)", "oklch(46% 0.055 150)", "oklch(57% 0.05 150)", "oklch(68% 0.045 150)", "oklch(79% 0.035 150)", "oklch(88% 0.025 150)", "#eaf7ef"] },
+      "error-red": { "role": "secondary", "displayName": "Failure Red", "canonical": "#c93636", "tonalRamp": ["oklch(23% 0.11 25)", "oklch(33% 0.14 25)", "oklch(43% 0.17 25)", "#c93636", "oklch(64% 0.16 25)", "oklch(75% 0.11 25)", "oklch(86% 0.06 25)", "oklch(95% 0.025 25)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Setup Display", "purpose": "The upload-screen proposition only." },
+      "headline": { "displayName": "Process Headline", "purpose": "Dialog and process-state titles." },
+      "title": { "displayName": "Workspace Title", "purpose": "Member, navigator, and tray headings." },
+      "body": { "displayName": "Operational Body", "purpose": "Explanations and setup guidance." },
+      "label": { "displayName": "Compact Label", "purpose": "Metadata, fields, badges, and controls." }
+    },
+    "shadows": [
+      { "name": "action-lift", "value": "0 2px 6px rgba(15, 88, 199, .18)", "purpose": "Restrained lift on the primary action." },
+      { "name": "drawing-lift", "value": "0 4px 18px rgba(24, 35, 53, .14)", "purpose": "Separates the drawing sheet from the PDF stage." },
+      { "name": "floating-notice", "value": "0 4px 15px rgba(24, 35, 53, .12)", "purpose": "Keeps evidence context legible over the drawing." },
+      { "name": "menu-lift", "value": "0 12px 32px rgba(26, 38, 58, .16)", "purpose": "Anchored export menu." },
+      { "name": "dialog-lift", "value": "0 24px 70px rgba(17, 28, 45, .28)", "purpose": "Modal priority above a dimmed workspace." }
+    ],
+    "motion": [
+      { "name": "control-state", "value": "160ms ease-out", "purpose": "Button background, border, and shadow transitions." },
+      { "name": "feedback-duration", "value": "2600ms", "purpose": "Toast visibility window." },
+      { "name": "analysis-spin", "value": "1s linear infinite", "purpose": "Analysis progress indicator only." }
+    ],
+    "breakpoints": [
+      { "name": "desktop-min", "value": "1180px" },
+      { "name": "short-viewport", "value": "760px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The intentional action for analysis, export, and confirmation.",
+      "html": "<button class=\"ds-btn-primary\">Export</button>",
+      "css": ".ds-btn-primary { height: 38px; border: 1px solid transparent; border-radius: 7px; padding: 0 15px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--blue, #1769e0); color: #fff; font: 650 13px ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; cursor: pointer; box-shadow: 0 2px 6px rgba(15,88,199,.18); transition: background 160ms ease-out, box-shadow 160ms ease-out; } .ds-btn-primary:hover { background: var(--blue-strong, #0f58c7); } .ds-btn-primary:focus-visible { outline: 3px solid rgba(23,105,224,.28); outline-offset: 1px; } .ds-btn-primary:active { box-shadow: none; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "A compact bordered action for reversible or lower-priority choices.",
+      "html": "<button class=\"ds-btn-secondary\">Keep reviewing</button>",
+      "css": ".ds-btn-secondary { height: 38px; border: 1px solid #ccd4df; border-radius: 7px; padding: 0 15px; background: #fff; color: var(--slate, #172033); font: 650 13px ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; cursor: pointer; transition: background 160ms ease-out, border-color 160ms ease-out; } .ds-btn-secondary:hover { background: #f5f7fa; border-color: #aeb9c8; } .ds-btn-secondary:focus-visible { outline: 3px solid rgba(23,105,224,.28); outline-offset: 1px; } .ds-btn-secondary:active { background: #edf1f5; }"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "The compact navigator search field.",
+      "html": "<label class=\"ds-search\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><circle cx=\"11\" cy=\"11\" r=\"8\"></circle><path d=\"m21 21-4.3-4.3\"></path></svg><input placeholder=\"Search members\" /></label>",
+      "css": ".ds-search { width: 290px; height: 38px; border: 1px solid #cfd7e2; border-radius: 7px; display: flex; align-items: center; gap: 8px; padding: 0 10px; color: var(--muted, #667085); background: #fff; } .ds-search:focus-within { border-color: var(--blue, #1769e0); box-shadow: 0 0 0 3px rgba(23,105,224,.12); } .ds-search svg { width: 16px; fill: none; stroke: currentColor; stroke-width: 2; } .ds-search input { border: 0; outline: 0; min-width: 0; width: 100%; color: var(--slate, #172033); font: 13px ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }"
+    },
+    {
+      "name": "Member Navigation Row",
+      "kind": "nav",
+      "description": "A dense member row combining identity, location, and explicit review state.",
+      "html": "<button class=\"ds-member-row\"><span class=\"ds-status-dot\"></span><span class=\"ds-member-copy\"><strong>B12</strong><small>Level 02 · Grid A–B</small></span><span class=\"ds-status-icon\">!</span></button>",
+      "css": ".ds-member-row { width: 320px; min-height: 55px; padding: 7px 13px 7px 17px; background: var(--blue-soft, #eaf3ff); border: 0; box-shadow: inset 3px 0 0 var(--blue, #1769e0); display: grid; grid-template-columns: 9px minmax(0,1fr) 24px; gap: 9px; align-items: center; text-align: left; color: var(--slate, #172033); cursor: pointer; } .ds-member-row:hover { background: #e1efff; } .ds-member-row:focus-visible { outline: 3px solid rgba(23,105,224,.28); outline-offset: -3px; } .ds-status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber, #d58400); } .ds-member-copy { display: flex; flex-direction: column; gap: 3px; min-width: 0; } .ds-member-copy strong { font: 700 13px ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; } .ds-member-copy small { color: var(--muted, #667085); font: 11px ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .ds-status-icon { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; color: var(--amber, #d58400); background: var(--amber-soft, #fff7df); font: 800 11px ui-sans-serif, sans-serif; }"
+    },
+    {
+      "name": "Unresolved Status",
+      "kind": "chip",
+      "refersTo": "status-unresolved",
+      "description": "An explicit amber badge for values still requiring professional review.",
+      "html": "<span class=\"ds-status-unresolved\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"M12 8v4m0 4h.01\"></path></svg>Unresolved</span>",
+      "css": ".ds-status-unresolved { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 4px 8px; color: var(--amber, #d58400); background: var(--amber-soft, #fff7df); font: 700 11px ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; } .ds-status-unresolved svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; }"
+    },
+    {
+      "name": "Confirmed Status",
+      "kind": "chip",
+      "refersTo": "status-confirmed",
+      "description": "A green icon-and-label badge for established reviewed values.",
+      "html": "<span class=\"ds-status-confirmed\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><path d=\"m5 12 4 4L19 6\"></path></svg>Confirmed</span>",
+      "css": ".ds-status-confirmed { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 4px 8px; color: var(--green, #168548); background: var(--green-soft, #eaf7ef); font: 700 11px ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; } .ds-status-confirmed svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.5; }"
+    },
+    {
+      "name": "Evidence Notice",
+      "kind": "custom",
+      "description": "A floating contextual notice linking the current sheet to occurrence and cited pages.",
+      "html": "<aside class=\"ds-evidence-notice\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"M9.1 9a3 3 0 1 1 5.4 1.8c-.9.7-1.5 1.2-1.5 2.2m-1 4h.01\"></path></svg><span>Showing page 4. Exact highlight unavailable in the second-pass data.</span><button>Occurrence page 7</button></aside>",
+      "css": ".ds-evidence-notice { max-width: 640px; background: rgba(255,255,255,.96); border: 1px solid #cfd6df; box-shadow: 0 4px 15px rgba(24,35,53,.12); border-radius: 7px; padding: 8px 10px; display: flex; gap: 7px; align-items: center; color: #475467; font: 11px ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; } .ds-evidence-notice svg { width: 15px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 2; } .ds-evidence-notice button { border: 0; border-left: 1px solid var(--border, #d8dee8); background: transparent; color: var(--blue, #1769e0); font-weight: 700; cursor: pointer; white-space: nowrap; padding-left: 9px; } .ds-evidence-notice button:hover { text-decoration: underline; } .ds-evidence-notice button:focus-visible { outline: 3px solid rgba(23,105,224,.28); outline-offset: 1px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Evidence First",
+    "overview": "This is a cool white and slate operating environment for professional drawing review. It feels precise, quiet, and trustworthy: evidence occupies the dominant canvas while navigation and decisions stay compact and immediately adjacent. The interface behaves like a disciplined review instrument rather than a conversational dashboard.\n\nBlue is deliberately scarce and signals selection, navigation, and intentional action. Amber identifies unresolved work, green confirms established values, and labels or icons always reinforce those meanings. The visual system documents only the review experience driven by `second_pass_result.json`; first-pass data is not a UI source or visual dependency.",
+    "keyCharacteristics": [
+      "Evidence-dominant desktop composition with a narrow member navigator and contextual lower review tray.",
+      "Crisp one-pixel separators, cool tonal layers, and compact controls instead of decorative panels.",
+      "Restrained semantic color reinforced by text, icons, and state-specific shapes.",
+      "Dense, scannable sans-serif typography with tabular numerals for quantities and dimensions."
+    ],
+    "rules": [
+      { "name": "The Semantic Reserve Rule", "body": "Blue means action or selection, amber means unresolved, green means confirmed, and red means failure; do not use these colors as decoration.", "section": "colors" },
+      { "name": "The Never Color Alone Rule", "body": "Every state color is paired with a label, icon, shape, or positional treatment.", "section": "colors" },
+      { "name": "The Drawing Leads Rule", "body": "Typography must remain compact enough that interface chrome never competes with the source sheet.", "section": "typography" },
+      { "name": "The Numeric Clarity Rule", "body": "Counts, zoom values, and member dimensions use tabular numerals wherever alignment aids scanning.", "section": "typography" },
+      { "name": "The Evidence Ownership Rule", "body": "The PDF canvas receives all flexible space; navigation remains narrow and review controls remain contextual below the canvas.", "section": "layout" },
+      { "name": "The Two-Zone Rule", "body": "Do not turn the workspace into a permanent three-pane chat layout. Conversation and direct editing belong in the same contextual review tray.", "section": "layout" },
+      { "name": "The Flat Until Floating Rule", "body": "If a surface participates in the workspace grid, separate it with a border or tonal shift; use shadow only when it physically overlays another layer.", "section": "elevation" },
+      { "name": "The Crisp Frame Rule", "body": "Keep working surfaces rectangular and aligned; larger radii belong to isolated setup or modal moments, not the evidence workspace.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do keep the drawing canvas dominant and preserve the 320px navigator / flexible evidence split.",
+      "Do use one-pixel separators and cool tonal layers for ordinary workspace structure.",
+      "Do pair unresolved, confirmed, changed, skipped, and error colors with explicit text or icons.",
+      "Do keep missing dimensions explicit as absent values; never visually imply that null equals zero.",
+      "Do describe and render the review UI from `second_pass_result.json` only."
+    ],
+    "donts": [
+      "Don't add a permanent chat column or reduce the drawing to a secondary preview.",
+      "Don't decorate the interface with semantic blue, amber, green, or red.",
+      "Don't use large cards, generous consumer-app spacing, or rounded containers throughout the operational workspace.",
+      "Don't estimate exact dimensions from the rendered drawing or suggest pixel measurement as evidence.",
+      "Don't expose, blend, or visually depend on first-pass extraction data."
+    ]
+  }
+}

@@ -1,7 +1,7 @@
 {
   "name": "construct4",
   "version": "1.0.0",
-  "description": "This project uses the Codex CLI to inspect a construction drawing PDF and produce structured JSON containing physical beam and column occurrences, locations, and dimensions.",
+  "description": "Evidence-linked structural member review workspace for quantity surveyors.",
   "homepage": "https://github.com/nova9/construct4#readme",
   "bugs": {
     "url": "https://github.com/nova9/construct4/issues"
@@ -12,12 +12,24 @@
   },
   "license": "ISC",
   "author": "",
-  "type": "commonjs",
-  "main": "index.js",
+  "type": "module",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "lucide-react": "latest",
+    "vite": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "vitest": "latest"
   }
 }
