@@ -1,0 +1,23 @@
+{
+  "name": "construct4",
+  "version": "1.0.0",
+  "description": "This project uses the Codex CLI to inspect a construction drawing PDF and produce structured JSON containing physical beam and column occurrences, locations, and dimensions.",
+  "homepage": "https://github.com/nova9/construct4#readme",
+  "bugs": {
+    "url": "https://github.com/nova9/construct4/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nova9/construct4.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
