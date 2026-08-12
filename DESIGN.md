@@ -99,7 +99,7 @@ components:
 
 This is a cool white and slate operating environment for professional drawing review. It feels precise, quiet, and trustworthy: evidence occupies the dominant canvas while navigation and decisions stay compact and immediately adjacent. The interface behaves like a disciplined review instrument rather than a conversational dashboard.
 
-Blue is deliberately scarce and signals selection, navigation, and intentional action. Amber identifies unresolved work, green confirms established values, and labels or icons always reinforce those meanings. The visual system documents only the review experience driven by `second_pass_result.json`; first-pass data is not a UI source or visual dependency.
+Blue is deliberately scarce and signals selection, navigation, and intentional action. Amber identifies unresolved work, green confirms established values, and labels or icons always reinforce those meanings. The review experience joins member data from `second_pass_result.json` with independently verified positions from `third_pass_result.json`; first-pass data is not a UI source or visual dependency.
 
 **Key Characteristics:**
 
@@ -239,7 +239,7 @@ The tray docks beneath the evidence canvas and combines extracted facts, source-
 - **Do** use one-pixel separators and cool tonal layers for ordinary workspace structure.
 - **Do** pair unresolved, confirmed, changed, skipped, and error colors with explicit text or icons.
 - **Do** keep missing dimensions explicit as absent values; never visually imply that null equals zero.
-- **Do** describe and render the review UI from `second_pass_result.json` only.
+- **Do** render member facts from `second_pass_result.json` and overlays from `third_pass_result.json`.
 
 ### Don't:
 

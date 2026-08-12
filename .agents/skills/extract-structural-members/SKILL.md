@@ -61,6 +61,15 @@ only when the drawing explicitly dimensions that endpoint from a grid or support
 centreline; then calculate it using exact stated dimensions and record the
 arithmetic as evidence.
 
+## Member positions
+
+When the output schema requests a member position, return a tight bounding box
+around the physical member linework on its occurrence page. Use normalized page
+coordinates with a top-left origin: `left`, `top`, `right`, and `bottom`, each
+from 0 to 1. Do not use the member label, schedule row, dimension string, or
+cross-page evidence as the occurrence position. Return null with a specific
+reason when the member linework cannot be localized confidently.
+
 ## Trace plan callouts into other views
 
 Do not treat the plan as the only source of a member's dimensions. Plans usually establish that a physical member occurs; sections, elevations, and details can supply dimensions that are absent from the plan.

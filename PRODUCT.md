@@ -26,7 +26,11 @@ Evidence-linked AI extraction with human resolution of ambiguities. The product 
 
 The user selects a complete construction drawing PDF. The system analyzes plans together with relevant schedules, sections, elevations, details, notes, and level information; extracts physical beam and column occurrences; presents relevant drawing evidence; asks one ambiguity question at a time; and lets the user review or edit the resulting data before exporting JSON or CSV.
 
-The existing extraction prototype uses two passes: the first maps drawing conventions, defaults, references, and preliminary evidence; the second independently reinspects the complete PDF and produces the final member inventory.
+The extraction prototype uses three passes: the first maps drawing conventions,
+defaults, references, and preliminary evidence; the second independently
+reinspects the complete PDF and produces the final member inventory; the third
+independently locates those fixed members and visually verifies their page
+positions without changing member facts.
 
 ## Capabilities and Constraints
 
@@ -45,11 +49,11 @@ The existing extraction prototype uses two passes: the first maps drawing conven
 
 ## Evidence on Hand
 
-- [`README.md`](README.md) documents the working two-pass CLI extraction workflow and output semantics.
+- [`README.md`](README.md) documents the working three-pass CLI extraction workflow and output semantics.
 - [`docs/ui.md`](docs/ui.md) contains the confirmed initial interaction model for PDF selection, evidence review, ambiguity resolution, synchronized editing, and export.
 - [`plan.pdf`](plan.pdf) is a sample construction drawing set.
-- [`first_pass_result.json`](first_pass_result.json) and [`second_pass_result.json`](second_pass_result.json) are existing structured extraction outputs.
-- [`first_pass_result.schema.json`](first_pass_result.schema.json) and [`second_pass_result.schema.json`](second_pass_result.schema.json) define the current output structures.
+- [`first_pass_result.json`](first_pass_result.json), [`second_pass_result.json`](second_pass_result.json), and [`third_pass_result.json`](third_pass_result.json) are structured extraction outputs for overview, members, and positions respectively.
+- Their matching `*.schema.json` files define the current output structures.
 - No testimonials, customer logos, performance benchmarks, production claims, or confirmed brand assets are on hand and future work must not fabricate them.
 
 ## Product Principles

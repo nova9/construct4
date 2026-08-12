@@ -2,7 +2,7 @@
 
 This project uses the Codex CLI to inspect a construction drawing PDF and produce structured JSON containing physical beam and column occurrences, locations, and dimensions.
 
-It uses two passes:
+It uses three passes:
 
 ```text
 plan.pdf
@@ -12,11 +12,16 @@ plan.pdf
    |      +-- first_pass_log.jsonl
    |
    +-- Second pass: independently inspect the PDF and extract occurrences
-          +-- second_pass_result.json
-          +-- second_pass_log.jsonl
+   |      +-- second_pass_result.json
+   |      +-- second_pass_log.jsonl
+   |
+   +-- Third pass: independently locate those members on their pages
+          +-- third_pass_result.json
+          +-- third_pass_log.jsonl
 ```
 
-The final file most users want is `second_pass_result.json`.
+Member facts live in `second_pass_result.json`; independently checked overlay
+positions live in `third_pass_result.json`.
 
 ## What the final result contains
 
@@ -168,7 +173,27 @@ The second pass explicitly uses the repository skill at:
 
 That skill instructs Codex to follow plan callouts into sections, elevations, and details; apply drawing conventions; use exact arithmetic; and revisit unresolved dimensions before returning `null`.
 
-## 6. Inspect the results
+## 6. Run the third pass
+
+After the second pass succeeds:
+
+```bash
+bash ./run_third_pass.sh
+```
+
+The third pass reads the final member inventory and independently locates every
+member on its specified PDF page. It does not change member identities, pages,
+locations, levels, or dimensions. It writes:
+
+- `third_pass_result.json`: normalized member positions keyed to the second pass
+- `third_pass_log.jsonl`: complete positioning and visual-verification log
+- `third_pass_result.schema.json`: generated position-output schema
+- `output/member-overlays/`: one diagnostic full-page PNG per positioned member
+
+The runner validates that the beam and column key sets and page numbers match
+the second pass exactly.
+
+## 7. Inspect the results
 
 Pretty-print the complete final result:
 
@@ -188,6 +213,22 @@ Show only columns:
 jq '.columns' second_pass_result.json
 ```
 
+### Generate one overlay image per member
+
+Create a full-page PNG for every beam and column, with only that member's
+third-pass position highlighted:
+
+```bash
+source .venv/bin/activate
+python ./generate_member_overlay_images.py
+```
+
+The images are written to `output/member-overlays/beam/` and
+`output/member-overlays/column/`. `output/member-overlays/manifest.json` maps
+each image to its member key, page, normalized position, pixel position, and
+location. Use `--dpi`, `--pdf`, `--result`, `--positions`, or `--output` to
+override defaults.
+
 List members that still contain a missing dimension:
 
 ```bash
@@ -203,11 +244,18 @@ jq '{
 }' second_pass_result.json
 ```
 
-## Understanding the two JSON files
+## Understanding the three JSON files
 
 `first_pass_result.json` is an analysis and evidence map. It can contain defaults, reference sources, dimension conventions, preliminary elements, bounding boxes, confidence values, and verification flags.
 
-`second_pass_result.json` is the simplified final inventory. It separates beams and columns and contains one record for each physical occurrence found by the second pass.
+`second_pass_result.json` is the simplified final inventory. It separates beams
+and columns and contains one record for each physical occurrence found by the
+second pass. It contains semantic locations and dimensions, but no page
+coordinates.
+
+`third_pass_result.json` contains only normalized `position` bounding boxes
+(`left`, `top`, `right`, `bottom`) keyed to second-pass members, or a specific
+`position_null_reason` when an occurrence cannot be localized confidently.
 
 A schedule row alone does not prove that a member occurs. A plan or other positional drawing must establish the physical occurrence; schedules and details provide dimension evidence.
 
@@ -224,7 +272,7 @@ rg -n 'error|failed' first_pass_log.jsonl second_pass_log.jsonl
 Confirm that the extraction skill was read:
 
 ```bash
-rg -n 'extract-structural-members/SKILL.md' first_pass_log.jsonl second_pass_log.jsonl
+rg -n 'extract-structural-members/SKILL.md' first_pass_log.jsonl second_pass_log.jsonl third_pass_log.jsonl
 ```
 
 Inspect commands used during a run:
@@ -261,7 +309,7 @@ ls -lh ./plan.pdf
 
 ### Requested model is unavailable
 
-The runners currently request `gpt-5.6-sol`. If your account cannot use that model, update the `-m` value in both runner scripts to a Codex-capable model available to your account. Model changes can affect extraction quality, so review the result carefully after changing it.
+The runners currently request `gpt-5.6-sol`. If your account cannot use that model, update the `-m` value in the runner scripts to a Codex-capable model available to your account. Model changes can affect extraction quality, so review the result carefully after changing it.
 
 ### Some dimensions are null
 
@@ -280,11 +328,12 @@ If the drawing contains a reliable resolution procedure that Codex missed, add t
 
 The scripts use fixed filenames and overwrite their previous outputs and logs. Before starting another project, copy any results you need to keep.
 
-Then replace `plan.pdf` and run both passes again:
+Then replace `plan.pdf` and run all three passes again:
 
 ```bash
 bash ./run_first_pass.sh
 bash ./run_second_pass.sh
+bash ./run_third_pass.sh
 ```
 
 Do not reuse an old `first_pass_result.json` with a different `plan.pdf`.
@@ -293,9 +342,13 @@ Do not reuse an old `first_pass_result.json` with a different `plan.pdf`.
 
 - `run_first_pass.sh`: runs drawing-set discovery and preliminary extraction
 - `run_second_pass.sh`: runs the final physical-member extraction
+- `run_third_pass.sh`: independently locates and visually verifies members
 - `first_pass_schema.py`: defines the detailed first-pass output
 - `second_pass_schema.py`: defines the simplified final output
+- `third_pass_schema.py`: defines the position-only output and cross-pass checks
 - `export_first_pass_schema.py`: generates the first-pass JSON Schema
 - `export_second_pass_schema.py`: generates the second-pass JSON Schema
+- `export_third_pass_schema.py`: generates the third-pass JSON Schema
+- `generate_member_overlay_images.py`: renders one diagnostic PNG per member
 - `.agents/skills/extract-structural-members/SKILL.md`: reusable extraction and cross-view reasoning instructions
 - `requirements.txt`: Python dependencies

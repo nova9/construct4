@@ -1,0 +1,109 @@
+{
+  "$defs": {
+    "MemberPosition": {
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "minLength": 1,
+          "title": "Key",
+          "type": "string"
+        },
+        "page": {
+          "exclusiveMinimum": 0,
+          "title": "Page",
+          "type": "integer"
+        },
+        "position": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NormalizedBBox"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "position_null_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Position Null Reason"
+        }
+      },
+      "required": [
+        "key",
+        "page",
+        "position",
+        "position_null_reason"
+      ],
+      "title": "MemberPosition",
+      "type": "object"
+    },
+    "NormalizedBBox": {
+      "additionalProperties": false,
+      "description": "Member linework position using top-left normalized page coordinates.",
+      "properties": {
+        "left": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Left",
+          "type": "number"
+        },
+        "top": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Top",
+          "type": "number"
+        },
+        "right": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Right",
+          "type": "number"
+        },
+        "bottom": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Bottom",
+          "type": "number"
+        }
+      },
+      "required": [
+        "left",
+        "top",
+        "right",
+        "bottom"
+      ],
+      "title": "NormalizedBBox",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "beams": {
+      "items": {
+        "$ref": "#/$defs/MemberPosition"
+      },
+      "title": "Beams",
+      "type": "array"
+    },
+    "columns": {
+      "items": {
+        "$ref": "#/$defs/MemberPosition"
+      },
+      "title": "Columns",
+      "type": "array"
+    }
+  },
+  "required": [
+    "beams",
+    "columns"
+  ],
+  "title": "ThirdPassResult",
+  "type": "object"
+}

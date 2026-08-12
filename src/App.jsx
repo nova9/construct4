@@ -38,11 +38,35 @@ function memberStatus(member) {
   return dimensionKeys.some((field) => member[field] == null) ? 'unresolved' : 'confirmed';
 }
 
-function normalizeData(data) {
+function normalizeData(data, positionData) {
+  const positions = new Map([
+    ...positionData.beams,
+    ...positionData.columns,
+  ].map((record) => [record.key, record]));
+  const withPosition = (member, kind) => {
+    const record = positions.get(member.key);
+    return {
+      ...member,
+      position: record?.position ?? null,
+      position_null_reason: record?.position_null_reason ?? 'No third-pass position record was loaded.',
+      kind,
+      original: { ...member },
+    };
+  };
   return [
-    ...data.beams.map((member) => ({ ...member, kind: 'beam', original: { ...member } })),
-    ...data.columns.map((member) => ({ ...member, kind: 'column', original: { ...member } })),
+    ...data.beams.map((member) => withPosition(member, 'beam')),
+    ...data.columns.map((member) => withPosition(member, 'column')),
   ];
+}
+
+async function fetchReviewData() {
+  const [memberResponse, positionResponse] = await Promise.all([
+    fetch('/second_pass_result.json'),
+    fetch('/third_pass_result.json'),
+  ]);
+  if (!memberResponse.ok) throw new Error('The second-pass member file could not be loaded.');
+  if (!positionResponse.ok) throw new Error('The third-pass position file could not be loaded.');
+  return normalizeData(await memberResponse.json(), await positionResponse.json());
 }
 
 function getMissingField(member) {
@@ -84,13 +108,8 @@ function App() {
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get('demo') !== 'workspace') return;
     setFile({ name: 'plan.pdf', size: 3431424, sample: true });
-    fetch('/second_pass_result.json')
-      .then((response) => {
-        if (!response.ok) throw new Error('The second-pass extraction file could not be loaded.');
-        return response.json();
-      })
-      .then((payload) => {
-        const data = normalizeData(payload);
+    fetchReviewData()
+      .then((data) => {
         const firstUnresolved = data.find((member) => memberStatus(member) === 'unresolved') || data[0];
         setMembers(data);
         setKind(firstUnresolved.kind);
@@ -124,6 +143,10 @@ function App() {
     const query = search.trim().toLowerCase();
     return !query || `${member.drawing_id || ''} ${member.location} ${member.level || ''}`.toLowerCase().includes(query);
   }), [members, kind, filter, search]);
+  const pageMembers = useMemo(() => members
+    .filter((member) => member.page === viewPage && member.position)
+    .sort((a, b) => Number(a.key === selectedKey) - Number(b.key === selectedKey)),
+  [members, selectedKey, viewPage]);
 
   const nextUnresolved = () => {
     const currentIndex = members.findIndex((member) => member.key === selectedKey);
@@ -160,9 +183,7 @@ function App() {
   });
 
   const loadExtraction = async () => {
-    const response = await fetch('/second_pass_result.json');
-    if (!response.ok) throw new Error('The second-pass extraction file could not be loaded.');
-    const data = normalizeData(await response.json());
+    const data = await fetchReviewData();
     setMembers(data);
     const firstUnresolved = data.find((member) => memberStatus(member) === 'unresolved') || data[0];
     setKind(firstUnresolved.kind);
@@ -326,19 +347,32 @@ function App() {
         />
         <section className="evidence-workspace">
           <div className="viewer-toolbar">
-            <div className="tool-group"><button className="icon-button selected" aria-label="Select"><MousePointer2 size={17} /></button><button className="icon-button" aria-label="Fit page" onClick={() => setPdfZoom(100)}><Maximize2 size={17} /></button></div>
+            <div className="tool-group"><button className="icon-button selected" aria-label="Select"><MousePointer2 size={17} /></button><button className="icon-button" aria-label="Fit page" onClick={() => setPdfZoom(100)}><Maximize2 size={17} /></button><div className="overlay-legend" aria-label="Member overlay legend"><span><i className="beam-swatch">B</i>Beam</span><span><i className="column-swatch">C</i>Column</span></div></div>
             <div className="page-label"><FileText size={16} /><button className="icon-button" aria-label="Previous page" onClick={() => setViewPage((page) => Math.max(1, page - 1))} disabled={viewPage === 1}><ChevronLeft size={15} /></button><label>Page <input aria-label="Drawing page" type="number" min="1" max="15" value={viewPage} onChange={(event) => setViewPage(Math.min(15, Math.max(1, Number(event.target.value) || 1)))} /></label><span>of 15</span><button className="icon-button" aria-label="Next page" onClick={() => setViewPage((page) => Math.min(15, page + 1))} disabled={viewPage === 15}><ChevronRight size={15} /></button></div>
             <div className="tool-group zoom-tools"><button className="icon-button" aria-label="Zoom out" onClick={() => setPdfZoom((zoom) => Math.max(50, zoom - 10))}><Minus size={17} /></button><span>{pdfZoom}%</span><button className="icon-button" aria-label="Zoom in" onClick={() => setPdfZoom((zoom) => Math.min(180, zoom + 10))}><Plus size={17} /></button></div>
           </div>
           <div className="pdf-stage">
             <div className="drawing-scroll">
-              <img
-                alt={`Rendered source drawing page ${viewPage}`}
-                src={`/drawing-pages/page-${viewPage}.webp`}
-                style={{ width: `${pdfZoom}%` }}
-              />
+              <div className="drawing-sheet" style={{ width: `${pdfZoom}%` }}>
+                <img
+                  alt={`Rendered source drawing page ${viewPage}`}
+                  src={`/drawing-pages/page-${viewPage}.webp`}
+                />
+                <div className="member-overlay" aria-label={`Structural members on page ${viewPage}`}>
+                  {pageMembers.map((member) => <MemberPosition
+                    key={member.key}
+                    member={member}
+                    selected={member.key === selectedKey}
+                    onSelect={() => {
+                      setKind(member.kind);
+                      setFilter('all');
+                      setSelectedKey(member.key);
+                    }}
+                  />)}
+                </div>
+              </div>
             </div>
-            <div className="evidence-notice"><CircleHelp size={15} /><span>Showing page {viewPage}. Exact highlight unavailable in the second-pass data.</span>{viewPage !== selected?.page && <button onClick={() => setViewPage(selected.page)}>Occurrence page {selected.page}</button>}{citedPages.filter((page) => page !== viewPage).map((page) => <button key={page} onClick={() => setViewPage(page)}>Cited page {page}</button>)}</div>
+            <div className="evidence-notice"><CircleHelp size={15} /><span>{pageMembers.length ? `${pageMembers.length} member ${pageMembers.length === 1 ? 'location' : 'locations'} on page ${viewPage}. Select an outline to review it.` : `No positioned members on page ${viewPage}.`}</span>{viewPage !== selected?.page && <button onClick={() => setViewPage(selected.page)}>Occurrence page {selected.page}</button>}{citedPages.filter((page) => page !== viewPage).map((page) => <button key={page} onClick={() => setViewPage(page)}>Cited page {page}</button>)}</div>
           </div>
           {selected && <ReviewTray
             member={selected} editing={editing} setEditing={setEditing} beginEdit={beginEdit} draft={draft} setDraft={setDraft}
@@ -350,6 +384,24 @@ function App() {
       {toast && <div className="toast" role="status"><Check size={17} />{toast}</div>}
     </main>
   );
+}
+
+function MemberPosition({ member, selected, onSelect }) {
+  const { left, top, right, bottom } = member.position;
+  const label = `${member.kind === 'beam' ? 'Beam' : 'Column'} ${member.drawing_id || 'unlabelled'}: ${member.location}`;
+  return <button
+    type="button"
+    className={`member-position ${member.kind} ${selected ? 'selected' : ''}`}
+    style={{
+      left: `${left * 100}%`,
+      top: `${top * 100}%`,
+      width: `${(right - left) * 100}%`,
+      height: `${(bottom - top) * 100}%`,
+    }}
+    aria-label={`Select ${label}`}
+    title={label}
+    onClick={onSelect}
+  ><span aria-hidden="true">{member.kind === 'beam' ? 'B' : 'C'} · {member.drawing_id || '—'}</span></button>;
 }
 
 function UploadScreen({ file, setFile, fileInput, openSample, analyze }) {
@@ -365,7 +417,7 @@ function UploadScreen({ file, setFile, fileInput, openSample, analyze }) {
         {file ? <><span className="file-icon"><FileText size={28} /></span><div><strong>{file.name}</strong><span>{(file.size / 1024 / 1024).toFixed(1)} MB · PDF drawing set</span></div><button className="button secondary" onClick={() => fileInput.current?.click()}>Replace</button></> : <><span className="upload-icon"><Upload size={24} /></span><h2>Drop a drawing PDF here</h2><p>Use the complete set so plans, schedules, sections, and details stay together.</p><button className="button secondary" onClick={() => fileInput.current?.click()}><FolderOpen size={17} />Choose PDF</button></>}
       </div>
       <div className="setup-actions"><button className="text-button" onClick={openSample}>Use bundled plan.pdf</button><button className="button primary large" disabled={!file} onClick={analyze}>Analyze drawing<ChevronRight size={18} /></button></div>
-      <p className="demo-note"><AlertCircle size={15} />This frontend prototype loads reviewed member data only from the bundled <code>second_pass_result.json</code>.</p>
+      <p className="demo-note"><AlertCircle size={15} />This prototype joins members from <code>second_pass_result.json</code> with positions from <code>third_pass_result.json</code>.</p>
     </section>
   </main>;
 }

@@ -58,8 +58,12 @@ default note, or member type exists. Schedules, details, and defaults are
 dimension evidence; they are not proof that a physical member occurs.
 
 Create a separate record for each physical occurrence. If the same drawing ID
-appears at multiple positions or levels, create a unique key for each occurrence
+appears at multiple locations or levels, create a unique key for each occurrence
 and describe its location precisely enough to distinguish it.
+
+This pass does not produce visual positions. Do not return bounding boxes,
+normalized coordinates, pixel coordinates, or overlay geometry. A separate
+third pass is responsible for locating these fixed member records on the page.
 
 Each beam has exactly three dimension fields:
 - width: cross-section width
@@ -98,6 +102,9 @@ from second_pass_schema import SecondPassResult
 result_path = Path("second_pass_result.json")
 SecondPassResult.model_validate_json(result_path.read_text(encoding="utf-8"))
 PY
+
+mkdir -p ./public
+cp ./second_pass_result.json ./public/second_pass_result.json
 
 echo
 echo "Second pass complete."

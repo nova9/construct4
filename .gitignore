@@ -7,3 +7,6 @@ __pycache__/
 /NRM2-detailed-measurement-clean.md
 
 node_modules/
+dist/
+.work/
+output/
