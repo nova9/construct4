@@ -65,6 +65,76 @@ function formatDimension(value) {
   );
 }
 
+function crossSectionArea(station) {
+  if (station.vertices?.length >= 3) {
+    return Math.abs(
+      station.vertices.reduce((sum, point, index, points) => {
+        const next = points[(index + 1) % points.length];
+        return sum + point.x * next.y - next.x * point.y;
+      }, 0) / 2,
+    );
+  }
+  const width = Number(station.width);
+  const depth = Number(station.depth);
+  return Number.isFinite(width) && Number.isFinite(depth)
+    ? width * depth
+    : null;
+}
+
+function memberVolumeCubicMeters(member) {
+  const longitudinal = Number(
+    member.kind === "beam" ? member.length : member.height,
+  );
+  if (!Number.isFinite(longitudinal) || longitudinal <= 0) return null;
+
+  let rawVolume;
+  if (member.kind === "beam" && member.profile) {
+    const stations = member.profile.stations || [];
+    const areas = stations.map(crossSectionArea);
+    if (
+      !stations.length ||
+      areas.some((area) => !Number.isFinite(area) || area <= 0) ||
+      Number(stations[0].distance) !== 0
+    )
+      return null;
+    if (stations.length === 1) {
+      rawVolume = areas[0] * longitudinal;
+    } else {
+      if (Number(stations.at(-1).distance) !== longitudinal) return null;
+      rawVolume = stations.slice(1).reduce((volume, station, index) => {
+        const span = Number(station.distance) - Number(stations[index].distance);
+        return volume + ((areas[index] + areas[index + 1]) / 2) * span;
+      }, 0);
+    }
+  } else {
+    const width = Number(member.width);
+    const depth = Number(member.depth);
+    if (!Number.isFinite(width) || !Number.isFinite(depth)) return null;
+    rawVolume = width * depth * longitudinal;
+  }
+
+  if (member.unit === "mm") return rawVolume / 1_000_000_000;
+  if (member.unit === "in") return rawVolume * 0.000016387064;
+  return null;
+}
+
+function volumeSummary(members, kind) {
+  const matching = members.filter((member) => member.kind === kind);
+  const volumes = matching.map(memberVolumeCubicMeters);
+  return {
+    volume: volumes.reduce((sum, volume) => sum + (volume || 0), 0),
+    included: volumes.filter((volume) => volume != null).length,
+    excluded: volumes.filter((volume) => volume == null).length,
+  };
+}
+
+function formatVolume(value) {
+  return `${new Intl.NumberFormat(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 3,
+  }).format(value)} m³`;
+}
+
 function cloneProfile(profile) {
   return profile ? structuredClone(profile) : null;
 }
@@ -266,6 +336,13 @@ function App() {
       reviewed: members.filter((member) =>
         ["confirmed", "changed"].includes(memberStatus(member)),
       ).length,
+    }),
+    [members],
+  );
+  const volumes = useMemo(
+    () => ({
+      beam: volumeSummary(members, "beam"),
+      column: volumeSummary(members, "column"),
     }),
     [members],
   );
@@ -644,15 +721,16 @@ function App() {
             <span>Structural Drawing Assistant</span>
           </div>
         </div>
-        <div
-          className="review-progress"
-          aria-label={`${counts.reviewed} of ${members.length} reviewed`}
-        >
-          <span>Review progress</span>
-          <progress value={counts.reviewed} max={members.length} />
-          <strong>
-            {counts.reviewed} of {members.length}
-          </strong>
+        <div className="project-metrics" aria-label="Project totals">
+          <div className="progress-metric">
+            <span>Reviewed</span>
+            <progress value={counts.reviewed} max={members.length} />
+            <strong>
+              {counts.reviewed}/{members.length}
+            </strong>
+          </div>
+          <VolumeMetric label="Beams" summary={volumes.beam} />
+          <VolumeMetric label="Columns" summary={volumes.column} />
         </div>
         <div className="top-actions">
           <button
@@ -883,6 +961,24 @@ function App() {
         </div>
       )}
     </main>
+  );
+}
+
+function VolumeMetric({ label, summary }) {
+  const excludedText = summary.excluded
+    ? `${summary.excluded} member${summary.excluded === 1 ? "" : "s"} excluded because exact geometry is unresolved.`
+    : "All members included.";
+  return (
+    <div
+      className={`volume-metric ${summary.excluded ? "incomplete" : ""}`}
+      title={`${summary.included} members included. ${excludedText} Rectangular members use section area × length or height; multi-station beam profiles use linear area interpolation between complete stations.`}
+    >
+      <span>{label}</span>
+      <strong>{formatVolume(summary.volume)}</strong>
+      {summary.excluded > 0 && (
+        <small aria-label={excludedText}>+{summary.excluded} unresolved</small>
+      )}
+    </div>
   );
 }
 
