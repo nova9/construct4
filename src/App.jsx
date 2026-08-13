@@ -51,6 +51,14 @@ function profileLabel(shape) {
   return label ? `${label[0].toUpperCase()}${label.slice(1)}` : "Complex profile";
 }
 
+function profileSummary(profile) {
+  if (!profile) return null;
+  const stationCount = profile.stations?.length || 0;
+  return `${profileLabel(profile.shape)} · ${stationCount} ${
+    stationCount === 1 ? "station" : "stations"
+  }`;
+}
+
 function formatDimension(value) {
   return new Intl.NumberFormat(undefined, { maximumFractionDigits: 3 }).format(
     value,
@@ -1409,11 +1417,12 @@ function ReviewTray({
               {member.kind === "beam" && member.profile && (
                 <Fact
                   label="Profile"
-                  value={`${member.profile.shape.replaceAll("_", " ")} · ${member.profile.stations.length} ${
-                    member.profile.stations.length === 1
-                      ? "station"
-                      : "stations"
-                  }`}
+                  value={profileSummary(member.profile)}
+                  original={profileSummary(member.original.profile)}
+                  changed={
+                    JSON.stringify(member.profile) !==
+                    JSON.stringify(member.original.profile)
+                  }
                 />
               )}
               <Fact
@@ -1846,8 +1855,8 @@ function ProfileEditor({ profile, onChange, unit, beamLength }) {
   );
 }
 
-function Fact({ label, value, original, unit, wide, fallback }) {
-  const changed = value !== original;
+function Fact({ label, value, original, unit, wide, fallback, changed }) {
+  const wasChanged = changed ?? value !== original;
   return (
     <div className={`fact ${wide ? "wide" : ""}`}>
       <span>{label}</span>
@@ -1855,7 +1864,7 @@ function Fact({ label, value, original, unit, wide, fallback }) {
         {value ?? fallback ?? "—"}
         {typeof value === "number" ? ` ${unit || ""}` : ""}
       </strong>
-      {changed && <small>Original: {original ?? "unresolved"}</small>}
+      {wasChanged && <small>Original: {original ?? "unresolved"}</small>}
     </div>
   );
 }
