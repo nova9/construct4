@@ -223,6 +223,7 @@
         "width": {
           "anyOf": [
             {
+              "exclusiveMinimum": 0,
               "type": "number"
             },
             {
@@ -234,6 +235,7 @@
         "depth": {
           "anyOf": [
             {
+              "exclusiveMinimum": 0,
               "type": "number"
             },
             {
@@ -419,10 +421,12 @@
       "description": "Exactly dimensioned section coordinate from its lower-left envelope.",
       "properties": {
         "x": {
+          "minimum": 0,
           "title": "X",
           "type": "number"
         },
         "y": {
+          "minimum": 0,
           "title": "Y",
           "type": "number"
         }

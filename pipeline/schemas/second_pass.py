@@ -26,25 +26,39 @@ class BeamProfileShape(StrEnum):
 class CrossSectionPoint(StrictModel):
     """Exactly dimensioned section coordinate from its lower-left envelope."""
 
-    x: float
-    y: float
+    x: float = Field(ge=0)
+    y: float = Field(ge=0)
 
 
 class BeamProfileStation(StrictModel):
     """Cross-section at an exact distance from the beam's start centreline."""
 
     distance: float = Field(ge=0)
-    width: float | None
-    depth: float | None
+    width: float | None = Field(gt=0)
+    depth: float | None = Field(gt=0)
     vertices: list[CrossSectionPoint] | None = Field(default=None, min_length=3)
 
     @model_validator(mode="after")
     def validate_geometry(self) -> BeamProfileStation:
-        has_dimensions = self.width is not None or self.depth is not None
-        if has_dimensions and (self.width is None or self.depth is None):
+        has_any_dimension = self.width is not None or self.depth is not None
+        has_dimensions = self.width is not None and self.depth is not None
+        if has_any_dimension and not has_dimensions:
             raise ValueError("station width and depth must be populated together")
-        if not has_dimensions and self.vertices is None:
+        if has_dimensions and self.vertices is not None:
+            raise ValueError("station cannot combine width/depth with vertices")
+        if not has_any_dimension and self.vertices is None:
             raise ValueError("station requires width/depth or cross-section vertices")
+        if self.vertices is not None:
+            area = abs(
+                sum(
+                    point.x * self.vertices[(index + 1) % len(self.vertices)].y
+                    - self.vertices[(index + 1) % len(self.vertices)].x * point.y
+                    for index, point in enumerate(self.vertices)
+                )
+                / 2
+            )
+            if area == 0:
+                raise ValueError("station vertices must enclose a cross-section area")
         return self
 
 

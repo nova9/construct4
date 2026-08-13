@@ -12,19 +12,14 @@
       "sheet_default",
       "beam_detail"
     ],
-    "column_dimension_methods": [
-      "direct_annotation",
-      "sheet_default",
-      "column_schedule",
-      "column_detail"
-    ]
+    "column_dimension_methods": ["sheet_default", "column_schedule"]
   },
   "defaults": [
     {
       "element_type": "column",
-      "scope": "Ground-floor and first-floor general-arrangement plans; unless otherwise stated",
+      "scope": "Ground- and first-floor plans unless superseded by the column schedule or a local callout",
       "size": {
-        "raw": "225 x 225",
+        "raw": "225x225",
         "first": { "raw": "225", "values": [225] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -32,14 +27,14 @@
         "depth": { "raw": "225", "values": [225] }
       },
       "page": 9,
-      "bbox": { "left": 0.455, "top": 0.842, "right": 0.75, "bottom": 0.905 },
-      "confidence": 0.99
+      "bbox": { "left": 0.52, "top": 0.864, "right": 0.696, "bottom": 0.887 },
+      "confidence": 0.98
     },
     {
       "element_type": "beam",
-      "scope": "First-floor general-arrangement plan; unless otherwise stated",
+      "scope": "First-floor beams unless otherwise stated; dedicated 1B3 and 1B8 details override this default",
       "size": {
-        "raw": "450 x 225",
+        "raw": "450x225",
         "first": { "raw": "450", "values": [450] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -47,14 +42,14 @@
         "depth": { "raw": "450", "values": [450] }
       },
       "page": 9,
-      "bbox": { "left": 0.455, "top": 0.842, "right": 0.75, "bottom": 0.905 },
+      "bbox": { "left": 0.52, "top": 0.884, "right": 0.702, "bottom": 0.907 },
       "confidence": 0.99
     },
     {
       "element_type": "beam",
-      "scope": "Roof plan; unless otherwise stated",
+      "scope": "Roof beams unless otherwise stated; named RB7, RB8 and RB12 sections override this default",
       "size": {
-        "raw": "225 x 225",
+        "raw": "225x225",
         "first": { "raw": "225", "values": [225] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -62,1168 +57,83 @@
         "depth": { "raw": "225", "values": [225] }
       },
       "page": 10,
-      "bbox": { "left": 0.08, "top": 0.86, "right": 0.46, "bottom": 0.92 },
+      "bbox": { "left": 0.13, "top": 0.904, "right": 0.345, "bottom": 0.936 },
       "confidence": 0.98
     }
   ],
   "reference_sources": [
     {
-      "type": "default_size_note",
-      "page": 9,
-      "bbox": { "left": 0.455, "top": 0.842, "right": 0.75, "bottom": 0.905 },
-      "readability": "high",
-      "needs_high_resolution": false
-    },
-    {
-      "type": "beam_details",
-      "page": 10,
-      "bbox": { "left": 0.03, "top": 0.02, "right": 0.93, "bottom": 0.91 },
-      "readability": "high",
-      "needs_high_resolution": false
-    },
-    {
-      "type": "column_details",
-      "page": 11,
-      "bbox": { "left": 0.07, "top": 0.2, "right": 0.76, "bottom": 0.91 },
+      "type": "general_notes",
+      "page": 12,
+      "bbox": { "left": 0.35, "top": 0.045, "right": 0.76, "bottom": 0.43 },
       "readability": "high",
       "needs_high_resolution": false
     },
     {
       "type": "column_schedule",
       "page": 12,
-      "bbox": { "left": 0.12, "top": 0.34, "right": 0.44, "bottom": 0.89 },
+      "bbox": { "left": 0.13, "top": 0.46, "right": 0.56, "bottom": 0.91 },
       "readability": "high",
       "needs_high_resolution": false
     },
     {
-      "type": "general_notes",
-      "page": 12,
-      "bbox": { "left": 0.36, "top": 0.05, "right": 0.88, "bottom": 0.31 },
+      "type": "default_size_note",
+      "page": 9,
+      "bbox": { "left": 0.52, "top": 0.864, "right": 0.702, "bottom": 0.907 },
+      "readability": "high",
+      "needs_high_resolution": false
+    },
+    {
+      "type": "default_size_note",
+      "page": 10,
+      "bbox": { "left": 0.13, "top": 0.904, "right": 0.345, "bottom": 0.936 },
+      "readability": "high",
+      "needs_high_resolution": false
+    },
+    {
+      "type": "beam_details",
+      "page": 10,
+      "bbox": { "left": 0.63, "top": 0.28, "right": 0.79, "bottom": 0.94 },
       "readability": "high",
       "needs_high_resolution": false
     },
     {
       "type": "beam_details",
       "page": 13,
-      "bbox": { "left": 0.03, "top": 0.02, "right": 0.94, "bottom": 0.91 },
+      "bbox": { "left": 0.02, "top": 0.02, "right": 0.98, "bottom": 0.97 },
       "readability": "high",
       "needs_high_resolution": false
     },
     {
       "type": "beam_details",
       "page": 14,
-      "bbox": { "left": 0.12, "top": 0.08, "right": 0.72, "bottom": 0.78 },
+      "bbox": { "left": 0.51, "top": 0.64, "right": 0.68, "bottom": 0.79 },
       "readability": "high",
       "needs_high_resolution": false
     },
     {
       "type": "beam_details",
       "page": 15,
-      "bbox": { "left": 0.04, "top": 0.05, "right": 0.72, "bottom": 0.84 },
+      "bbox": { "left": 0.39, "top": 0.68, "right": 0.53, "bottom": 0.86 },
       "readability": "high",
       "needs_high_resolution": false
+    },
+    {
+      "type": "column_details",
+      "page": 5,
+      "bbox": { "left": 0.14, "top": 0.05, "right": 0.84, "bottom": 0.66 },
+      "readability": "medium",
+      "needs_high_resolution": true
     }
   ],
   "elements": [
-    {
-      "key": "C2-A5-footing-ground",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "Footing to ground floor",
-      "size": {
-        "raw": "300 x 300",
-        "first": { "raw": "300", "values": [300] },
-        "second": { "raw": "300", "values": [300] },
-        "unit": "mm",
-        "width": { "raw": "300", "values": [300] },
-        "depth": { "raw": "300", "values": [300] }
-      },
-      "vertical_extent": {
-        "bottom_level": "footing",
-        "top_level": "ground floor",
-        "bottom_elevation": null,
-        "top_elevation": 300,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.45
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.74, "right": 0.35, "bottom": 0.88 },
-          "raw_text": "C2, footing to ground floor: 300 x 300"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.19, "top": 0.398, "right": 0.202, "bottom": 0.412 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C3-B5-footing-ground",
-      "drawing_id": "C3",
-      "type": "column",
-      "level": "Footing to ground floor",
-      "size": {
-        "raw": "300 x 300",
-        "first": { "raw": "300", "values": [300] },
-        "second": { "raw": "300", "values": [300] },
-        "unit": "mm",
-        "width": { "raw": "300", "values": [300] },
-        "depth": { "raw": "300", "values": [300] }
-      },
-      "vertical_extent": {
-        "bottom_level": "footing",
-        "top_level": "ground floor",
-        "bottom_elevation": null,
-        "top_elevation": 300,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.45
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.35, "top": 0.74, "right": 0.44, "bottom": 0.88 },
-          "raw_text": "C3, footing to ground floor: 300 x 300"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.249, "top": 0.398, "right": 0.261, "bottom": 0.412 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C2-D5-footing-ground",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "Footing to ground floor",
-      "size": {
-        "raw": "300 x 300",
-        "first": { "raw": "300", "values": [300] },
-        "second": { "raw": "300", "values": [300] },
-        "unit": "mm",
-        "width": { "raw": "300", "values": [300] },
-        "depth": { "raw": "300", "values": [300] }
-      },
-      "vertical_extent": {
-        "bottom_level": "footing",
-        "top_level": "ground floor",
-        "bottom_elevation": null,
-        "top_elevation": 300,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.45
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.74, "right": 0.35, "bottom": 0.88 },
-          "raw_text": "C2, footing to ground floor: 300 x 300"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.427, "top": 0.398, "right": 0.439, "bottom": 0.412 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C1-A4-footing-ground",
-      "drawing_id": "C1",
-      "type": "column",
-      "level": "Footing to ground floor",
-      "size": {
-        "raw": "300 x 350",
-        "first": { "raw": "300", "values": [300] },
-        "second": { "raw": "350", "values": [350] },
-        "unit": "mm",
-        "width": { "raw": "300", "values": [300] },
-        "depth": { "raw": "350", "values": [350] }
-      },
-      "vertical_extent": {
-        "bottom_level": "footing",
-        "top_level": "ground floor",
-        "bottom_elevation": null,
-        "top_elevation": 300,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.45
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.14, "top": 0.74, "right": 0.26, "bottom": 0.88 },
-          "raw_text": "C1, footing to ground floor: 300 x 350"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.19, "top": 0.573, "right": 0.202, "bottom": 0.589 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C3-B4-footing-ground",
-      "drawing_id": "C3",
-      "type": "column",
-      "level": "Footing to ground floor",
-      "size": {
-        "raw": "300 x 300",
-        "first": { "raw": "300", "values": [300] },
-        "second": { "raw": "300", "values": [300] },
-        "unit": "mm",
-        "width": { "raw": "300", "values": [300] },
-        "depth": { "raw": "300", "values": [300] }
-      },
-      "vertical_extent": {
-        "bottom_level": "footing",
-        "top_level": "ground floor",
-        "bottom_elevation": null,
-        "top_elevation": 300,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.45
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.35, "top": 0.74, "right": 0.44, "bottom": 0.88 },
-          "raw_text": "C3, footing to ground floor: 300 x 300"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.249, "top": 0.573, "right": 0.261, "bottom": 0.589 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C2-D4-footing-ground",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "Footing to ground floor",
-      "size": {
-        "raw": "300 x 300",
-        "first": { "raw": "300", "values": [300] },
-        "second": { "raw": "300", "values": [300] },
-        "unit": "mm",
-        "width": { "raw": "300", "values": [300] },
-        "depth": { "raw": "300", "values": [300] }
-      },
-      "vertical_extent": {
-        "bottom_level": "footing",
-        "top_level": "ground floor",
-        "bottom_elevation": null,
-        "top_elevation": 300,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.45
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.74, "right": 0.35, "bottom": 0.88 },
-          "raw_text": "C2, footing to ground floor: 300 x 300"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.427, "top": 0.573, "right": 0.439, "bottom": 0.589 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C2-B-offset-footing-ground",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "Footing to ground floor",
-      "size": {
-        "raw": "300 x 300",
-        "first": { "raw": "300", "values": [300] },
-        "second": { "raw": "300", "values": [300] },
-        "unit": "mm",
-        "width": { "raw": "300", "values": [300] },
-        "depth": { "raw": "300", "values": [300] }
-      },
-      "vertical_extent": {
-        "bottom_level": "footing",
-        "top_level": "ground floor",
-        "bottom_elevation": null,
-        "top_elevation": 300,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.45
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.74, "right": 0.35, "bottom": 0.88 },
-          "raw_text": "C2, footing to ground floor: 300 x 300"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.249, "top": 0.665, "right": 0.261, "bottom": 0.681 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C1-B2-footing-ground",
-      "drawing_id": "C1",
-      "type": "column",
-      "level": "Footing to ground floor",
-      "size": {
-        "raw": "300 x 350",
-        "first": { "raw": "300", "values": [300] },
-        "second": { "raw": "350", "values": [350] },
-        "unit": "mm",
-        "width": { "raw": "300", "values": [300] },
-        "depth": { "raw": "350", "values": [350] }
-      },
-      "vertical_extent": {
-        "bottom_level": "footing",
-        "top_level": "ground floor",
-        "bottom_elevation": null,
-        "top_elevation": 300,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.45
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.14, "top": 0.74, "right": 0.26, "bottom": 0.88 },
-          "raw_text": "C1, footing to ground floor: 300 x 350"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.249, "top": 0.805, "right": 0.261, "bottom": 0.821 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C2-C2-footing-ground",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "Footing to ground floor",
-      "size": {
-        "raw": "300 x 300",
-        "first": { "raw": "300", "values": [300] },
-        "second": { "raw": "300", "values": [300] },
-        "unit": "mm",
-        "width": { "raw": "300", "values": [300] },
-        "depth": { "raw": "300", "values": [300] }
-      },
-      "vertical_extent": {
-        "bottom_level": "footing",
-        "top_level": "ground floor",
-        "bottom_elevation": null,
-        "top_elevation": 300,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.45
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.74, "right": 0.35, "bottom": 0.88 },
-          "raw_text": "C2, footing to ground floor: 300 x 300"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.397, "top": 0.805, "right": 0.409, "bottom": 0.821 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C2-D2-footing-ground",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "Footing to ground floor",
-      "size": {
-        "raw": "300 x 300",
-        "first": { "raw": "300", "values": [300] },
-        "second": { "raw": "300", "values": [300] },
-        "unit": "mm",
-        "width": { "raw": "300", "values": [300] },
-        "depth": { "raw": "300", "values": [300] }
-      },
-      "vertical_extent": {
-        "bottom_level": "footing",
-        "top_level": "ground floor",
-        "bottom_elevation": null,
-        "top_elevation": 300,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.45
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.74, "right": 0.35, "bottom": 0.88 },
-          "raw_text": "C2, footing to ground floor: 300 x 300"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.427, "top": 0.805, "right": 0.439, "bottom": 0.821 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C2-A5-ground-first",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "Ground floor to first floor",
-      "size": {
-        "raw": "225 x 225",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "225", "values": [225] }
-      },
-      "vertical_extent": {
-        "bottom_level": "ground floor",
-        "top_level": "first floor",
-        "bottom_elevation": 300,
-        "top_elevation": 3450,
-        "floor_to_floor_height": 3150,
-        "unit": "mm",
-        "confidence": 0.99
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.99,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.55, "right": 0.35, "bottom": 0.74 },
-          "raw_text": "C2, ground floor to first floor: 225 x 225"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.19, "top": 0.398, "right": 0.202, "bottom": 0.412 }
-      },
-      "needs_verification": false
-    },
-    {
-      "key": "C3-B5-ground-first",
-      "drawing_id": "C3",
-      "type": "column",
-      "level": "Ground floor to first floor",
-      "size": {
-        "raw": "225 x 225",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "225", "values": [225] }
-      },
-      "vertical_extent": {
-        "bottom_level": "ground floor",
-        "top_level": "first floor",
-        "bottom_elevation": 300,
-        "top_elevation": 3450,
-        "floor_to_floor_height": 3150,
-        "unit": "mm",
-        "confidence": 0.99
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.99,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.35, "top": 0.55, "right": 0.44, "bottom": 0.74 },
-          "raw_text": "C3, ground floor to first floor: 225 x 225"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.249, "top": 0.398, "right": 0.261, "bottom": 0.412 }
-      },
-      "needs_verification": false
-    },
-    {
-      "key": "C2-D5-ground-first",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "Ground floor to first floor",
-      "size": {
-        "raw": "225 x 225",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "225", "values": [225] }
-      },
-      "vertical_extent": {
-        "bottom_level": "ground floor",
-        "top_level": "first floor",
-        "bottom_elevation": 300,
-        "top_elevation": 3450,
-        "floor_to_floor_height": 3150,
-        "unit": "mm",
-        "confidence": 0.99
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.99,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.55, "right": 0.35, "bottom": 0.74 },
-          "raw_text": "C2, ground floor to first floor: 225 x 225"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.427, "top": 0.398, "right": 0.439, "bottom": 0.412 }
-      },
-      "needs_verification": false
-    },
-    {
-      "key": "C1-A4-ground-first",
-      "drawing_id": "C1",
-      "type": "column",
-      "level": "Ground floor to first floor",
-      "size": {
-        "raw": "225 x 300",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "300", "values": [300] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "300", "values": [300] }
-      },
-      "vertical_extent": {
-        "bottom_level": "ground floor",
-        "top_level": "first floor",
-        "bottom_elevation": 300,
-        "top_elevation": 3450,
-        "floor_to_floor_height": 3150,
-        "unit": "mm",
-        "confidence": 0.99
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.99,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.14, "top": 0.55, "right": 0.26, "bottom": 0.74 },
-          "raw_text": "C1, ground floor to first floor: 225 x 300"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.19, "top": 0.573, "right": 0.202, "bottom": 0.589 }
-      },
-      "needs_verification": false
-    },
-    {
-      "key": "C3-B4-ground-first",
-      "drawing_id": "C3",
-      "type": "column",
-      "level": "Ground floor to first floor",
-      "size": {
-        "raw": "225 x 225",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "225", "values": [225] }
-      },
-      "vertical_extent": {
-        "bottom_level": "ground floor",
-        "top_level": "first floor",
-        "bottom_elevation": 300,
-        "top_elevation": 3450,
-        "floor_to_floor_height": 3150,
-        "unit": "mm",
-        "confidence": 0.99
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.99,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.35, "top": 0.55, "right": 0.44, "bottom": 0.74 },
-          "raw_text": "C3, ground floor to first floor: 225 x 225"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.249, "top": 0.573, "right": 0.261, "bottom": 0.589 }
-      },
-      "needs_verification": false
-    },
-    {
-      "key": "C2-D4-ground-first",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "Ground floor to first floor",
-      "size": {
-        "raw": "225 x 225",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "225", "values": [225] }
-      },
-      "vertical_extent": {
-        "bottom_level": "ground floor",
-        "top_level": "first floor",
-        "bottom_elevation": 300,
-        "top_elevation": 3450,
-        "floor_to_floor_height": 3150,
-        "unit": "mm",
-        "confidence": 0.99
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.99,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.55, "right": 0.35, "bottom": 0.74 },
-          "raw_text": "C2, ground floor to first floor: 225 x 225"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.427, "top": 0.573, "right": 0.439, "bottom": 0.589 }
-      },
-      "needs_verification": false
-    },
-    {
-      "key": "C2-B-offset-ground-first",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "Ground floor to first floor",
-      "size": {
-        "raw": "225 x 225",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "225", "values": [225] }
-      },
-      "vertical_extent": {
-        "bottom_level": "ground floor",
-        "top_level": "first floor",
-        "bottom_elevation": 300,
-        "top_elevation": 3450,
-        "floor_to_floor_height": 3150,
-        "unit": "mm",
-        "confidence": 0.99
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.99,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.55, "right": 0.35, "bottom": 0.74 },
-          "raw_text": "C2, ground floor to first floor: 225 x 225"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.249, "top": 0.665, "right": 0.261, "bottom": 0.681 }
-      },
-      "needs_verification": false
-    },
-    {
-      "key": "C1-B2-ground-first",
-      "drawing_id": "C1",
-      "type": "column",
-      "level": "Ground floor to first floor",
-      "size": {
-        "raw": "225 x 300",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "300", "values": [300] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "300", "values": [300] }
-      },
-      "vertical_extent": {
-        "bottom_level": "ground floor",
-        "top_level": "first floor",
-        "bottom_elevation": 300,
-        "top_elevation": 3450,
-        "floor_to_floor_height": 3150,
-        "unit": "mm",
-        "confidence": 0.99
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.99,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.14, "top": 0.55, "right": 0.26, "bottom": 0.74 },
-          "raw_text": "C1, ground floor to first floor: 225 x 300"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.249, "top": 0.805, "right": 0.261, "bottom": 0.821 }
-      },
-      "needs_verification": false
-    },
-    {
-      "key": "C2-C2-ground-first",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "Ground floor to first floor",
-      "size": {
-        "raw": "225 x 225",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "225", "values": [225] }
-      },
-      "vertical_extent": {
-        "bottom_level": "ground floor",
-        "top_level": "first floor",
-        "bottom_elevation": 300,
-        "top_elevation": 3450,
-        "floor_to_floor_height": 3150,
-        "unit": "mm",
-        "confidence": 0.99
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.99,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.55, "right": 0.35, "bottom": 0.74 },
-          "raw_text": "C2, ground floor to first floor: 225 x 225"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.397, "top": 0.805, "right": 0.409, "bottom": 0.821 }
-      },
-      "needs_verification": false
-    },
-    {
-      "key": "C2-D2-ground-first",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "Ground floor to first floor",
-      "size": {
-        "raw": "225 x 225",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "225", "values": [225] }
-      },
-      "vertical_extent": {
-        "bottom_level": "ground floor",
-        "top_level": "first floor",
-        "bottom_elevation": 300,
-        "top_elevation": 3450,
-        "floor_to_floor_height": 3150,
-        "unit": "mm",
-        "confidence": 0.99
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.99,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.55, "right": 0.35, "bottom": 0.74 },
-          "raw_text": "C2, ground floor to first floor: 225 x 225"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.427, "top": 0.805, "right": 0.439, "bottom": 0.821 }
-      },
-      "needs_verification": false
-    },
-    {
-      "key": "C2-A5-first-roof",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "First floor to roof level",
-      "size": {
-        "raw": "225 x 225",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "225", "values": [225] }
-      },
-      "vertical_extent": {
-        "bottom_level": "first floor",
-        "top_level": "roof/wall-plate level",
-        "bottom_elevation": 3450,
-        "top_elevation": null,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.55
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.36, "right": 0.35, "bottom": 0.55 },
-          "raw_text": "C2, first floor to roof level: 225 x 225"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.484, "top": 0.398, "right": 0.496, "bottom": 0.412 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C2-D5-first-roof",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "First floor to roof level",
-      "size": {
-        "raw": "225 x 225",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "225", "values": [225] }
-      },
-      "vertical_extent": {
-        "bottom_level": "first floor",
-        "top_level": "roof/wall-plate level",
-        "bottom_elevation": 3450,
-        "top_elevation": null,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.55
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.36, "right": 0.35, "bottom": 0.55 },
-          "raw_text": "C2, first floor to roof level: 225 x 225"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.729, "top": 0.398, "right": 0.741, "bottom": 0.412 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C1-A4-first-roof",
-      "drawing_id": "C1",
-      "type": "column",
-      "level": "First floor to roof level",
-      "size": {
-        "raw": "225 x 225",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "225", "values": [225] }
-      },
-      "vertical_extent": {
-        "bottom_level": "first floor",
-        "top_level": "roof/wall-plate level",
-        "bottom_elevation": 3450,
-        "top_elevation": null,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.55
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.14, "top": 0.36, "right": 0.26, "bottom": 0.55 },
-          "raw_text": "C1, first floor to roof level: 225 x 225"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.484, "top": 0.573, "right": 0.496, "bottom": 0.589 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C2-D4-first-roof",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "First floor to roof level",
-      "size": {
-        "raw": "225 x 225",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "225", "values": [225] }
-      },
-      "vertical_extent": {
-        "bottom_level": "first floor",
-        "top_level": "roof/wall-plate level",
-        "bottom_elevation": 3450,
-        "top_elevation": null,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.55
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.36, "right": 0.35, "bottom": 0.55 },
-          "raw_text": "C2, first floor to roof level: 225 x 225"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.729, "top": 0.573, "right": 0.741, "bottom": 0.589 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C2-B-offset-first-roof",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "First floor to roof level",
-      "size": {
-        "raw": "225 x 225",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "225", "values": [225] }
-      },
-      "vertical_extent": {
-        "bottom_level": "first floor",
-        "top_level": "roof/wall-plate level",
-        "bottom_elevation": 3450,
-        "top_elevation": null,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.55
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.36, "right": 0.35, "bottom": 0.55 },
-          "raw_text": "C2, first floor to roof level: 225 x 225"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.549, "top": 0.665, "right": 0.561, "bottom": 0.681 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C1-B2-first-roof",
-      "drawing_id": "C1",
-      "type": "column",
-      "level": "First floor to roof level",
-      "size": {
-        "raw": "225 x 225",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "225", "values": [225] }
-      },
-      "vertical_extent": {
-        "bottom_level": "first floor",
-        "top_level": "roof/wall-plate level",
-        "bottom_elevation": 3450,
-        "top_elevation": null,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.55
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.14, "top": 0.36, "right": 0.26, "bottom": 0.55 },
-          "raw_text": "C1, first floor to roof level: 225 x 225"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.549, "top": 0.805, "right": 0.561, "bottom": 0.821 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C2-C2-first-roof",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "First floor to roof level",
-      "size": {
-        "raw": "225 x 225",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "225", "values": [225] }
-      },
-      "vertical_extent": {
-        "bottom_level": "first floor",
-        "top_level": "roof/wall-plate level",
-        "bottom_elevation": 3450,
-        "top_elevation": null,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.55
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.36, "right": 0.35, "bottom": 0.55 },
-          "raw_text": "C2, first floor to roof level: 225 x 225"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.698, "top": 0.805, "right": 0.71, "bottom": 0.821 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "C2-D2-first-roof",
-      "drawing_id": "C2",
-      "type": "column",
-      "level": "First floor to roof level",
-      "size": {
-        "raw": "225 x 225",
-        "first": { "raw": "225", "values": [225] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "225", "values": [225] }
-      },
-      "vertical_extent": {
-        "bottom_level": "first floor",
-        "top_level": "roof/wall-plate level",
-        "bottom_elevation": 3450,
-        "top_elevation": null,
-        "floor_to_floor_height": null,
-        "unit": "mm",
-        "confidence": 0.55
-      },
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "column_schedule",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "column_schedule",
-          "page": 12,
-          "bbox": { "left": 0.26, "top": 0.36, "right": 0.35, "bottom": 0.55 },
-          "raw_text": "C2, first floor to roof level: 225 x 225"
-        }
-      },
-      "location": {
-        "page": 9,
-        "bbox": { "left": 0.729, "top": 0.805, "right": 0.741, "bottom": 0.821 }
-      },
-      "needs_verification": true
-    },
     {
       "key": "1B1-first-floor",
       "drawing_id": "1B1",
       "type": "beam",
       "level": "First floor",
       "size": {
-        "raw": "450 x 225",
+        "raw": "450x225",
         "first": { "raw": "450", "values": [450] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1232,15 +142,25 @@
       },
       "vertical_extent": null,
       "beam_extent": {
-        "start_support": null,
-        "end_support": null,
+        "start_support": "Column/wall at grid A",
+        "end_support": "Column/wall at grid D",
         "start_grid": "A",
         "end_grid": "D",
         "centreline_span": 7575,
         "clear_span": null,
         "overall_length": null,
         "unit": "mm",
-        "confidence": 0.96
+        "confidence": 0.99
+      },
+      "beam_shape": {
+        "shape": "rectangular",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 13,
+          "bbox": { "left": 0.02, "top": 0.77, "right": 0.98, "bottom": 0.97 },
+          "raw_text": "BEAM - 1B1; section 1-1, 450x225"
+        }
       },
       "resolution": {
         "source_type": "beam_detail",
@@ -1248,13 +168,13 @@
         "evidence": {
           "source_type": "beam_detail",
           "page": 13,
-          "bbox": { "left": 0.03, "top": 0.82, "right": 0.77, "bottom": 0.96 },
-          "raw_text": "BEAM - 1B1; section 1-1: 450 deep x 225 wide"
+          "bbox": { "left": 0.02, "top": 0.77, "right": 0.98, "bottom": 0.97 },
+          "raw_text": "BEAM - 1B1; section 1-1, 450x225"
         }
       },
       "location": {
         "page": 9,
-        "bbox": { "left": 0.49, "top": 0.398, "right": 0.741, "bottom": 0.414 }
+        "bbox": { "left": 0.501, "top": 0.507, "right": 0.629, "bottom": 0.515 }
       },
       "needs_verification": false
     },
@@ -1264,7 +184,7 @@
       "type": "beam",
       "level": "First floor",
       "size": {
-        "raw": "400/450 x 225",
+        "raw": "400/450x225",
         "first": { "raw": "400/450", "values": [400, 450] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1273,15 +193,25 @@
       },
       "vertical_extent": null,
       "beam_extent": {
-        "start_support": null,
-        "end_support": null,
+        "start_support": "Column/wall at grid A",
+        "end_support": "Column/wall at grid D",
         "start_grid": "A",
         "end_grid": "D",
         "centreline_span": 7575,
         "clear_span": null,
         "overall_length": null,
         "unit": "mm",
-        "confidence": 0.95
+        "confidence": 0.99
+      },
+      "beam_shape": {
+        "shape": "haunched",
+        "confidence": 0.98,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 13,
+          "bbox": { "left": 0.02, "top": 0.58, "right": 0.98, "bottom": 0.83 },
+          "raw_text": "BEAM - 1B3; section 2a-2a is 400x225 and section 2-2 is 450x225; longitudinal detail shows the depth transition"
+        }
       },
       "resolution": {
         "source_type": "beam_detail",
@@ -1289,13 +219,13 @@
         "evidence": {
           "source_type": "beam_detail",
           "page": 13,
-          "bbox": { "left": 0.03, "top": 0.66, "right": 0.77, "bottom": 0.83 },
-          "raw_text": "BEAM - 1B3; sections 2a-2a and 2-2: 400/450 deep x 225 wide"
+          "bbox": { "left": 0.02, "top": 0.58, "right": 0.98, "bottom": 0.83 },
+          "raw_text": "BEAM - 1B3; dedicated sections 2a-2a and 2-2 override the 450x225 plan default"
         }
       },
       "location": {
         "page": 9,
-        "bbox": { "left": 0.49, "top": 0.575, "right": 0.741, "bottom": 0.591 }
+        "bbox": { "left": 0.501, "top": 0.62, "right": 0.629, "bottom": 0.628 }
       },
       "needs_verification": false
     },
@@ -1305,7 +235,7 @@
       "type": "beam",
       "level": "First floor",
       "size": {
-        "raw": "450 x 225",
+        "raw": "450x225",
         "first": { "raw": "450", "values": [450] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1314,15 +244,25 @@
       },
       "vertical_extent": null,
       "beam_extent": {
-        "start_support": null,
-        "end_support": null,
-        "start_grid": "A",
-        "end_grid": "B",
-        "centreline_span": 1925,
+        "start_support": "Support at grid 4",
+        "end_support": "Support 1763 mm below grid 3",
+        "start_grid": "4",
+        "end_grid": null,
+        "centreline_span": 2828,
         "clear_span": null,
         "overall_length": null,
         "unit": "mm",
-        "confidence": 0.81
+        "confidence": 0.96
+      },
+      "beam_shape": {
+        "shape": "rectangular",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 13,
+          "bbox": { "left": 0.75, "top": 0.37, "right": 0.9, "bottom": 0.69 },
+          "raw_text": "BEAM - 1B4; 450x225 rectangular section"
+        }
       },
       "resolution": {
         "source_type": "beam_detail",
@@ -1330,15 +270,15 @@
         "evidence": {
           "source_type": "beam_detail",
           "page": 13,
-          "bbox": { "left": 0.5, "top": 0.48, "right": 0.7, "bottom": 0.69 },
-          "raw_text": "BEAM - 1B4; typical section: 450 deep x 225 wide"
+          "bbox": { "left": 0.75, "top": 0.37, "right": 0.9, "bottom": 0.69 },
+          "raw_text": "BEAM - 1B4; 450x225"
         }
       },
       "location": {
         "page": 9,
-        "bbox": { "left": 0.49, "top": 0.616, "right": 0.56, "bottom": 0.634 }
+        "bbox": { "left": 0.497, "top": 0.624, "right": 0.505, "bottom": 0.692 }
       },
-      "needs_verification": true
+      "needs_verification": false
     },
     {
       "key": "1B5-first-floor",
@@ -1346,7 +286,7 @@
       "type": "beam",
       "level": "First floor",
       "size": {
-        "raw": "450 x 225",
+        "raw": "450x225",
         "first": { "raw": "450", "values": [450] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1355,15 +295,25 @@
       },
       "vertical_extent": null,
       "beam_extent": {
-        "start_support": null,
-        "end_support": null,
+        "start_support": "Column at grid B",
+        "end_support": "Column at grid D",
         "start_grid": "B",
         "end_grid": "D",
         "centreline_span": 5650,
         "clear_span": null,
         "overall_length": null,
         "unit": "mm",
-        "confidence": 0.94
+        "confidence": 0.99
+      },
+      "beam_shape": {
+        "shape": "rectangular",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 13,
+          "bbox": { "left": 0.02, "top": 0.51, "right": 0.75, "bottom": 0.7 },
+          "raw_text": "BEAM - 1B5; section 3-3, 450x225"
+        }
       },
       "resolution": {
         "source_type": "beam_detail",
@@ -1371,13 +321,13 @@
         "evidence": {
           "source_type": "beam_detail",
           "page": 13,
-          "bbox": { "left": 0.03, "top": 0.48, "right": 0.54, "bottom": 0.67 },
-          "raw_text": "BEAM - 1B5; section 3-3: 450 deep x 225 wide"
+          "bbox": { "left": 0.02, "top": 0.51, "right": 0.75, "bottom": 0.7 },
+          "raw_text": "BEAM - 1B5; section 3-3, 450x225"
         }
       },
       "location": {
         "page": 9,
-        "bbox": { "left": 0.55, "top": 0.805, "right": 0.741, "bottom": 0.821 }
+        "bbox": { "left": 0.533, "top": 0.743, "right": 0.629, "bottom": 0.751 }
       },
       "needs_verification": false
     },
@@ -1387,7 +337,7 @@
       "type": "beam",
       "level": "First floor",
       "size": {
-        "raw": "450 x 225",
+        "raw": "450x225",
         "first": { "raw": "450", "values": [450] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1396,15 +346,25 @@
       },
       "vertical_extent": null,
       "beam_extent": {
-        "start_support": null,
-        "end_support": null,
-        "start_grid": "4",
-        "end_grid": "5",
+        "start_support": "Support at grid 5",
+        "end_support": "Support at grid 4",
+        "start_grid": "5",
+        "end_grid": "4",
         "centreline_span": 4710,
         "clear_span": null,
         "overall_length": null,
         "unit": "mm",
-        "confidence": 0.96
+        "confidence": 0.99
+      },
+      "beam_shape": {
+        "shape": "rectangular",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 13,
+          "bbox": { "left": 0.02, "top": 0.33, "right": 0.82, "bottom": 0.59 },
+          "raw_text": "BEAM - 1B6; section 4-4, 450x225"
+        }
       },
       "resolution": {
         "source_type": "beam_detail",
@@ -1412,13 +372,13 @@
         "evidence": {
           "source_type": "beam_detail",
           "page": 13,
-          "bbox": { "left": 0.03, "top": 0.29, "right": 0.69, "bottom": 0.49 },
-          "raw_text": "BEAM - 1B6; section 4-4: 450 deep x 225 wide"
+          "bbox": { "left": 0.02, "top": 0.33, "right": 0.82, "bottom": 0.59 },
+          "raw_text": "BEAM - 1B6; section 4-4, 450x225"
         }
       },
       "location": {
         "page": 9,
-        "bbox": { "left": 0.484, "top": 0.403, "right": 0.5, "bottom": 0.585 }
+        "bbox": { "left": 0.497, "top": 0.511, "right": 0.505, "bottom": 0.624 }
       },
       "needs_verification": false
     },
@@ -1428,38 +388,48 @@
       "type": "beam",
       "level": "First floor",
       "size": {
-        "raw": "450/400 x 225",
-        "first": { "raw": "450/400", "values": [450, 400] },
+        "raw": "450x225",
+        "first": { "raw": "450", "values": [450] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
         "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "450/400", "values": [450, 400] }
+        "depth": { "raw": "450", "values": [450] }
       },
       "vertical_extent": null,
       "beam_extent": {
-        "start_support": null,
-        "end_support": null,
-        "start_grid": "2",
-        "end_grid": "4",
+        "start_support": "Support at grid 4",
+        "end_support": "Support at grid 2",
+        "start_grid": "4",
+        "end_grid": "2",
         "centreline_span": 5440,
         "clear_span": null,
         "overall_length": null,
         "unit": "mm",
-        "confidence": 0.94
+        "confidence": 0.99
       },
-      "resolution": {
-        "source_type": "beam_detail",
-        "confidence": 0.98,
+      "beam_shape": {
+        "shape": "rectangular",
+        "confidence": 0.99,
         "evidence": {
           "source_type": "beam_detail",
           "page": 13,
-          "bbox": { "left": 0.03, "top": 0.15, "right": 0.62, "bottom": 0.32 },
-          "raw_text": "BEAM - 1B7; sections 5-5 and 6-6: 450/400 deep x 225 wide"
+          "bbox": { "left": 0.02, "top": 0.17, "right": 0.76, "bottom": 0.38 },
+          "raw_text": "BEAM - 1B7; section 5-5, 450x225"
+        }
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 13,
+          "bbox": { "left": 0.02, "top": 0.17, "right": 0.76, "bottom": 0.38 },
+          "raw_text": "BEAM - 1B7; section 5-5, 450x225"
         }
       },
       "location": {
         "page": 9,
-        "bbox": { "left": 0.549, "top": 0.576, "right": 0.565, "bottom": 0.815 }
+        "bbox": { "left": 0.529, "top": 0.624, "right": 0.537, "bottom": 0.747 }
       },
       "needs_verification": false
     },
@@ -1469,7 +439,7 @@
       "type": "beam",
       "level": "First floor",
       "size": {
-        "raw": "400 x 225",
+        "raw": "400x225",
         "first": { "raw": "400", "values": [400] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1478,34 +448,39 @@
       },
       "vertical_extent": null,
       "beam_extent": {
-        "start_support": null,
-        "end_support": null,
-        "start_grid": "4",
-        "end_grid": "5",
+        "start_support": "Support at grid 5",
+        "end_support": "Support at grid 4",
+        "start_grid": "5",
+        "end_grid": "4",
         "centreline_span": 4710,
         "clear_span": null,
         "overall_length": null,
         "unit": "mm",
-        "confidence": 0.96
+        "confidence": 0.99
       },
-      "resolution": {
-        "source_type": "direct_annotation",
+      "beam_shape": {
+        "shape": "rectangular",
         "confidence": 0.99,
         "evidence": {
-          "source_type": "direct_annotation",
-          "page": 9,
-          "bbox": {
-            "left": 0.548,
-            "top": 0.405,
-            "right": 0.59,
-            "bottom": 0.58
-          },
-          "raw_text": "400x225 BM 1B8"
+          "source_type": "beam_detail",
+          "page": 13,
+          "bbox": { "left": 0.63, "top": 0.12, "right": 0.98, "bottom": 0.37 },
+          "raw_text": "BEAM - 1B8; section 7-7, 400x225"
+        }
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 13,
+          "bbox": { "left": 0.63, "top": 0.12, "right": 0.98, "bottom": 0.37 },
+          "raw_text": "BEAM - 1B8; section 7-7, 400x225"
         }
       },
       "location": {
         "page": 9,
-        "bbox": { "left": 0.549, "top": 0.403, "right": 0.565, "bottom": 0.585 }
+        "bbox": { "left": 0.529, "top": 0.511, "right": 0.537, "bottom": 0.624 }
       },
       "needs_verification": false
     },
@@ -1515,7 +490,7 @@
       "type": "beam",
       "level": "First floor",
       "size": {
-        "raw": "450 x 225",
+        "raw": "450x225",
         "first": { "raw": "450", "values": [450] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1524,15 +499,25 @@
       },
       "vertical_extent": null,
       "beam_extent": {
-        "start_support": null,
-        "end_support": null,
-        "start_grid": "2",
-        "end_grid": "5",
+        "start_support": "Support at grid 5",
+        "end_support": "Support at grid 2",
+        "start_grid": "5",
+        "end_grid": "2",
         "centreline_span": 10150,
         "clear_span": null,
         "overall_length": null,
         "unit": "mm",
-        "confidence": 0.97
+        "confidence": 0.99
+      },
+      "beam_shape": {
+        "shape": "rectangular",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 13,
+          "bbox": { "left": 0.02, "top": 0.02, "right": 0.98, "bottom": 0.2 },
+          "raw_text": "BEAM - 1B9; section 8-8, 450x225"
+        }
       },
       "resolution": {
         "source_type": "beam_detail",
@@ -1540,13 +525,13 @@
         "evidence": {
           "source_type": "beam_detail",
           "page": 13,
-          "bbox": { "left": 0.03, "top": 0.02, "right": 0.91, "bottom": 0.19 },
-          "raw_text": "BEAM - 1B9; section 8-8: 450 deep x 225 wide"
+          "bbox": { "left": 0.02, "top": 0.02, "right": 0.98, "bottom": 0.2 },
+          "raw_text": "BEAM - 1B9; section 8-8, 450x225"
         }
       },
       "location": {
         "page": 9,
-        "bbox": { "left": 0.729, "top": 0.403, "right": 0.745, "bottom": 0.815 }
+        "bbox": { "left": 0.625, "top": 0.511, "right": 0.633, "bottom": 0.747 }
       },
       "needs_verification": false
     },
@@ -1556,7 +541,7 @@
       "type": "beam",
       "level": "First floor",
       "size": {
-        "raw": "175 x 600",
+        "raw": "175x600",
         "first": { "raw": "175", "values": [175] },
         "second": { "raw": "600", "values": [600] },
         "unit": "mm",
@@ -1565,15 +550,25 @@
       },
       "vertical_extent": null,
       "beam_extent": {
-        "start_support": null,
-        "end_support": null,
-        "start_grid": "2",
-        "end_grid": "4",
+        "start_support": "Support at grid 4",
+        "end_support": "Support at grid 2",
+        "start_grid": "4",
+        "end_grid": "2",
         "centreline_span": 5440,
         "clear_span": null,
         "overall_length": null,
         "unit": "mm",
-        "confidence": 0.92
+        "confidence": 0.98
+      },
+      "beam_shape": {
+        "shape": "rectangular",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 14,
+          "bbox": { "left": 0.52, "top": 0.64, "right": 0.68, "bottom": 0.79 },
+          "raw_text": "BEAM - SB1; typical section of slab beam, 600 wide x 175 deep"
+        }
       },
       "resolution": {
         "source_type": "beam_detail",
@@ -1581,13 +576,13 @@
         "evidence": {
           "source_type": "beam_detail",
           "page": 14,
-          "bbox": { "left": 0.47, "top": 0.52, "right": 0.64, "bottom": 0.68 },
-          "raw_text": "BEAM - SB1; 175 deep x 600 wide"
+          "bbox": { "left": 0.52, "top": 0.64, "right": 0.68, "bottom": 0.79 },
+          "raw_text": "BEAM - SB1; 600 wide x 175 deep"
         }
       },
       "location": {
         "page": 9,
-        "bbox": { "left": 0.665, "top": 0.576, "right": 0.69, "bottom": 0.815 }
+        "bbox": { "left": 0.594, "top": 0.624, "right": 0.602, "bottom": 0.747 }
       },
       "needs_verification": false
     },
@@ -1597,7 +592,7 @@
       "type": "beam",
       "level": "Roof",
       "size": {
-        "raw": "225 x 225",
+        "raw": "225x225",
         "first": { "raw": "225", "values": [225] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1605,20 +600,40 @@
         "depth": { "raw": "225", "values": [225] }
       },
       "vertical_extent": null,
-      "beam_extent": null,
+      "beam_extent": {
+        "start_support": "Support at grid B",
+        "end_support": "Support at grid C",
+        "start_grid": "B",
+        "end_grid": "C",
+        "centreline_span": 4475,
+        "clear_span": null,
+        "overall_length": null,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_shape": {
+        "shape": "rectangular",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 10,
+          "bbox": { "left": 0.67, "top": 0.61, "right": 0.79, "bottom": 0.81 },
+          "raw_text": "BEAM - RB1; RB2, RB3, RB4, RB5, RB6, RB9 and RB10 R/F similar; 225x225"
+        }
+      },
       "resolution": {
         "source_type": "beam_detail",
         "confidence": 0.99,
         "evidence": {
           "source_type": "beam_detail",
           "page": 10,
-          "bbox": { "left": 0.66, "top": 0.53, "right": 0.77, "bottom": 0.68 },
-          "raw_text": "BEAM - RB1: 225 x 225"
+          "bbox": { "left": 0.67, "top": 0.61, "right": 0.79, "bottom": 0.81 },
+          "raw_text": "BEAM - RB1, 225x225"
         }
       },
       "location": {
         "page": 10,
-        "bbox": { "left": 0.157, "top": 0.438, "right": 0.412, "bottom": 0.456 }
+        "bbox": { "left": 0.125, "top": 0.584, "right": 0.2, "bottom": 0.593 }
       },
       "needs_verification": false
     },
@@ -1628,7 +643,7 @@
       "type": "beam",
       "level": "Roof",
       "size": {
-        "raw": "225 x 225",
+        "raw": "225x225",
         "first": { "raw": "225", "values": [225] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1636,20 +651,40 @@
         "depth": { "raw": "225", "values": [225] }
       },
       "vertical_extent": null,
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "beam_detail",
-        "confidence": 0.98,
+      "beam_extent": {
+        "start_support": "Support at grid A",
+        "end_support": "Support at grid B",
+        "start_grid": "A",
+        "end_grid": "B",
+        "centreline_span": 1925,
+        "clear_span": null,
+        "overall_length": null,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_shape": {
+        "shape": "rectangular",
+        "confidence": 0.99,
         "evidence": {
           "source_type": "beam_detail",
           "page": 10,
-          "bbox": { "left": 0.66, "top": 0.53, "right": 0.77, "bottom": 0.7 },
-          "raw_text": "RB2 reinforcement similar to RB1; roof default 225 x 225"
+          "bbox": { "left": 0.67, "top": 0.61, "right": 0.79, "bottom": 0.81 },
+          "raw_text": "RB2 R/F similar to BEAM - RB1, 225x225"
+        }
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 10,
+          "bbox": { "left": 0.67, "top": 0.61, "right": 0.79, "bottom": 0.81 },
+          "raw_text": "RB2 R/F similar to RB1"
         }
       },
       "location": {
         "page": 10,
-        "bbox": { "left": 0.099, "top": 0.448, "right": 0.163, "bottom": 0.466 }
+        "bbox": { "left": 0.092, "top": 0.611, "right": 0.125, "bottom": 0.619 }
       },
       "needs_verification": false
     },
@@ -1659,7 +694,7 @@
       "type": "beam",
       "level": "Roof",
       "size": {
-        "raw": "225 x 225",
+        "raw": "225x225",
         "first": { "raw": "225", "values": [225] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1667,20 +702,40 @@
         "depth": { "raw": "225", "values": [225] }
       },
       "vertical_extent": null,
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "beam_detail",
-        "confidence": 0.98,
+      "beam_extent": {
+        "start_support": "Support at grid C",
+        "end_support": "Support at grid D",
+        "start_grid": "C",
+        "end_grid": "D",
+        "centreline_span": 1175,
+        "clear_span": null,
+        "overall_length": null,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_shape": {
+        "shape": "rectangular",
+        "confidence": 0.99,
         "evidence": {
           "source_type": "beam_detail",
           "page": 10,
-          "bbox": { "left": 0.66, "top": 0.53, "right": 0.77, "bottom": 0.7 },
-          "raw_text": "RB3 reinforcement similar to RB1; roof default 225 x 225"
+          "bbox": { "left": 0.67, "top": 0.61, "right": 0.79, "bottom": 0.81 },
+          "raw_text": "RB3 R/F similar to BEAM - RB1, 225x225"
+        }
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 10,
+          "bbox": { "left": 0.67, "top": 0.61, "right": 0.79, "bottom": 0.81 },
+          "raw_text": "RB3 R/F similar to RB1"
         }
       },
       "location": {
         "page": 10,
-        "bbox": { "left": 0.407, "top": 0.448, "right": 0.437, "bottom": 0.466 }
+        "bbox": { "left": 0.2, "top": 0.611, "right": 0.22, "bottom": 0.619 }
       },
       "needs_verification": false
     },
@@ -1690,7 +745,7 @@
       "type": "beam",
       "level": "Roof",
       "size": {
-        "raw": "225 x 225",
+        "raw": "225x225",
         "first": { "raw": "225", "values": [225] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1698,20 +753,40 @@
         "depth": { "raw": "225", "values": [225] }
       },
       "vertical_extent": null,
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "beam_detail",
-        "confidence": 0.98,
+      "beam_extent": {
+        "start_support": "Support at grid A",
+        "end_support": "Support 613 mm right of grid B",
+        "start_grid": "A",
+        "end_grid": null,
+        "centreline_span": 2538,
+        "clear_span": null,
+        "overall_length": null,
+        "unit": "mm",
+        "confidence": 0.97
+      },
+      "beam_shape": {
+        "shape": "rectangular",
+        "confidence": 0.99,
         "evidence": {
           "source_type": "beam_detail",
           "page": 10,
-          "bbox": { "left": 0.66, "top": 0.53, "right": 0.77, "bottom": 0.7 },
-          "raw_text": "RB4 reinforcement similar to RB1; roof default 225 x 225"
+          "bbox": { "left": 0.67, "top": 0.61, "right": 0.79, "bottom": 0.81 },
+          "raw_text": "RB4 R/F similar to BEAM - RB1, 225x225"
+        }
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 10,
+          "bbox": { "left": 0.67, "top": 0.61, "right": 0.79, "bottom": 0.81 },
+          "raw_text": "RB4 R/F similar to RB1"
         }
       },
       "location": {
         "page": 10,
-        "bbox": { "left": 0.099, "top": 0.631, "right": 0.165, "bottom": 0.65 }
+        "bbox": { "left": 0.092, "top": 0.793, "right": 0.135, "bottom": 0.801 }
       },
       "needs_verification": false
     },
@@ -1721,7 +796,7 @@
       "type": "beam",
       "level": "Roof",
       "size": {
-        "raw": "225 x 225",
+        "raw": "225x225",
         "first": { "raw": "225", "values": [225] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1729,20 +804,40 @@
         "depth": { "raw": "225", "values": [225] }
       },
       "vertical_extent": null,
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "beam_detail",
-        "confidence": 0.98,
+      "beam_extent": {
+        "start_support": "Support at grid C",
+        "end_support": "Support at grid D",
+        "start_grid": "C",
+        "end_grid": "D",
+        "centreline_span": 1175,
+        "clear_span": null,
+        "overall_length": null,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_shape": {
+        "shape": "rectangular",
+        "confidence": 0.99,
         "evidence": {
           "source_type": "beam_detail",
           "page": 10,
-          "bbox": { "left": 0.66, "top": 0.53, "right": 0.77, "bottom": 0.7 },
-          "raw_text": "RB5 reinforcement similar to RB1; roof default 225 x 225"
+          "bbox": { "left": 0.67, "top": 0.61, "right": 0.79, "bottom": 0.81 },
+          "raw_text": "RB5 R/F similar to BEAM - RB1, 225x225"
+        }
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 10,
+          "bbox": { "left": 0.67, "top": 0.61, "right": 0.79, "bottom": 0.81 },
+          "raw_text": "RB5 R/F similar to RB1"
         }
       },
       "location": {
         "page": 10,
-        "bbox": { "left": 0.16, "top": 0.812, "right": 0.416, "bottom": 0.831 }
+        "bbox": { "left": 0.2, "top": 0.872, "right": 0.22, "bottom": 0.88 }
       },
       "needs_verification": false
     },
@@ -1752,7 +847,7 @@
       "type": "beam",
       "level": "Roof",
       "size": {
-        "raw": "225 x 225",
+        "raw": "225x225",
         "first": { "raw": "225", "values": [225] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1760,20 +855,40 @@
         "depth": { "raw": "225", "values": [225] }
       },
       "vertical_extent": null,
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "beam_detail",
-        "confidence": 0.98,
+      "beam_extent": {
+        "start_support": "Support at grid B",
+        "end_support": "Support at grid C",
+        "start_grid": "B",
+        "end_grid": "C",
+        "centreline_span": 4475,
+        "clear_span": null,
+        "overall_length": null,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_shape": {
+        "shape": "rectangular",
+        "confidence": 0.99,
         "evidence": {
           "source_type": "beam_detail",
           "page": 10,
-          "bbox": { "left": 0.66, "top": 0.53, "right": 0.77, "bottom": 0.7 },
-          "raw_text": "RB6 reinforcement similar to RB1; roof default 225 x 225"
+          "bbox": { "left": 0.67, "top": 0.61, "right": 0.79, "bottom": 0.81 },
+          "raw_text": "RB6 R/F similar to BEAM - RB1, 225x225"
+        }
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 10,
+          "bbox": { "left": 0.67, "top": 0.61, "right": 0.79, "bottom": 0.81 },
+          "raw_text": "RB6 R/F similar to RB1"
         }
       },
       "location": {
         "page": 10,
-        "bbox": { "left": 0.16, "top": 0.85, "right": 0.416, "bottom": 0.87 }
+        "bbox": { "left": 0.125, "top": 0.898, "right": 0.2, "bottom": 0.906 }
       },
       "needs_verification": false
     },
@@ -1783,30 +898,50 @@
       "type": "beam",
       "level": "Roof",
       "size": {
-        "raw": "300 x 225",
-        "first": { "raw": "300", "values": [300] },
-        "second": { "raw": "225", "values": [225] },
+        "raw": "600+300 x 150/225 T-section",
+        "first": { "raw": "600+300", "values": [600, 300] },
+        "second": { "raw": "150/225", "values": [150, 225] },
         "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "300", "values": [300] }
+        "width": { "raw": "150/225", "values": [150, 225] },
+        "depth": { "raw": "600+300", "values": [600, 300] }
       },
       "vertical_extent": null,
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "direct_annotation",
-        "confidence": 0.96,
+      "beam_extent": {
+        "start_support": "Support at grid 5",
+        "end_support": "Support 1763 mm below grid 3",
+        "start_grid": "5",
+        "end_grid": null,
+        "centreline_span": 7538,
+        "clear_span": null,
+        "overall_length": null,
+        "unit": "mm",
+        "confidence": 0.96
+      },
+      "beam_shape": {
+        "shape": "tee",
+        "confidence": 0.99,
         "evidence": {
-          "source_type": "direct_annotation",
+          "source_type": "beam_detail",
           "page": 10,
-          "bbox": { "left": 0.075, "top": 0.43, "right": 0.13, "bottom": 0.66 },
-          "raw_text": "300x225 BM RB7"
+          "bbox": { "left": 0.63, "top": 0.31, "right": 0.72, "bottom": 0.66 },
+          "raw_text": "BEAM - RB7; RB12 R/F similar; 150-wide upper stem 600 high over a 225-wide, 300-deep flange"
+        }
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 10,
+          "bbox": { "left": 0.63, "top": 0.31, "right": 0.72, "bottom": 0.66 },
+          "raw_text": "Dedicated BEAM - RB7 T-section overrides the nominal roof-plan size"
         }
       },
       "location": {
         "page": 10,
-        "bbox": { "left": 0.092, "top": 0.445, "right": 0.11, "bottom": 0.65 }
+        "bbox": { "left": 0.088, "top": 0.615, "right": 0.096, "bottom": 0.797 }
       },
-      "needs_verification": true
+      "needs_verification": false
     },
     {
       "key": "RB8-roof",
@@ -1814,7 +949,7 @@
       "type": "beam",
       "level": "Roof",
       "size": {
-        "raw": "400 x 225",
+        "raw": "400x225",
         "first": { "raw": "400", "values": [400] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1822,84 +957,42 @@
         "depth": { "raw": "400", "values": [400] }
       },
       "vertical_extent": null,
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "direct_annotation",
+      "beam_extent": {
+        "start_support": "Support at grid 5",
+        "end_support": "Support 1763 mm below grid 3",
+        "start_grid": "5",
+        "end_grid": null,
+        "centreline_span": 7538,
+        "clear_span": null,
+        "overall_length": null,
+        "unit": "mm",
+        "confidence": 0.96
+      },
+      "beam_shape": {
+        "shape": "rectangular",
         "confidence": 0.99,
         "evidence": {
-          "source_type": "direct_annotation",
+          "source_type": "beam_detail",
           "page": 10,
-          "bbox": { "left": 0.055, "top": 0.02, "right": 0.36, "bottom": 0.31 },
-          "raw_text": "400x225 BM RB8"
+          "bbox": { "left": 0.66, "top": 0.8, "right": 0.77, "bottom": 0.94 },
+          "raw_text": "BEAM - RB8; 400x225 rectangular section"
+        }
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 10,
+          "bbox": { "left": 0.66, "top": 0.8, "right": 0.77, "bottom": 0.94 },
+          "raw_text": "BEAM - RB8, 400x225"
         }
       },
       "location": {
         "page": 10,
-        "bbox": { "left": 0.16, "top": 0.445, "right": 0.18, "bottom": 0.65 }
+        "bbox": { "left": 0.121, "top": 0.615, "right": 0.129, "bottom": 0.797 }
       },
       "needs_verification": false
-    },
-    {
-      "key": "RB8a-roof",
-      "drawing_id": "RB8a",
-      "type": "beam",
-      "level": "Roof",
-      "size": {
-        "raw": "400 x 225",
-        "first": { "raw": "400", "values": [400] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "400", "values": [400] }
-      },
-      "vertical_extent": null,
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "direct_annotation",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "direct_annotation",
-          "page": 10,
-          "bbox": { "left": 0.41, "top": 0.61, "right": 0.74, "bottom": 0.9 },
-          "raw_text": "400x225 BM RB8a"
-        }
-      },
-      "location": {
-        "page": 10,
-        "bbox": { "left": 0.16, "top": 0.445, "right": 0.18, "bottom": 0.65 }
-      },
-      "needs_verification": true
-    },
-    {
-      "key": "RB8b-roof",
-      "drawing_id": "RB8b",
-      "type": "beam",
-      "level": "Roof",
-      "size": {
-        "raw": "400 x 225",
-        "first": { "raw": "400", "values": [400] },
-        "second": { "raw": "225", "values": [225] },
-        "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "400", "values": [400] }
-      },
-      "vertical_extent": null,
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "direct_annotation",
-        "confidence": 0.98,
-        "evidence": {
-          "source_type": "direct_annotation",
-          "page": 10,
-          "bbox": { "left": 0.41, "top": 0.61, "right": 0.74, "bottom": 0.9 },
-          "raw_text": "400x225 BM RB8b"
-        }
-      },
-      "location": {
-        "page": 10,
-        "bbox": { "left": 0.16, "top": 0.445, "right": 0.18, "bottom": 0.65 }
-      },
-      "needs_verification": true
     },
     {
       "key": "RB9-roof",
@@ -1907,7 +1000,7 @@
       "type": "beam",
       "level": "Roof",
       "size": {
-        "raw": "225 x 225",
+        "raw": "225x225",
         "first": { "raw": "225", "values": [225] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1915,20 +1008,40 @@
         "depth": { "raw": "225", "values": [225] }
       },
       "vertical_extent": null,
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "sheet_default",
-        "confidence": 0.97,
+      "beam_extent": {
+        "start_support": "Support 1763 mm below grid 3",
+        "end_support": "Support at grid 2",
+        "start_grid": null,
+        "end_grid": "2",
+        "centreline_span": 2612,
+        "clear_span": null,
+        "overall_length": null,
+        "unit": "mm",
+        "confidence": 0.96
+      },
+      "beam_shape": {
+        "shape": "rectangular",
+        "confidence": 0.99,
         "evidence": {
-          "source_type": "sheet_default",
+          "source_type": "beam_detail",
           "page": 10,
-          "bbox": { "left": 0.08, "top": 0.86, "right": 0.46, "bottom": 0.92 },
-          "raw_text": "All beams are 225x225 unless otherwise stated"
+          "bbox": { "left": 0.67, "top": 0.61, "right": 0.79, "bottom": 0.81 },
+          "raw_text": "RB9 R/F similar to BEAM - RB1, 225x225"
+        }
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 10,
+          "bbox": { "left": 0.67, "top": 0.61, "right": 0.79, "bottom": 0.81 },
+          "raw_text": "RB9 R/F similar to RB1"
         }
       },
       "location": {
         "page": 10,
-        "bbox": { "left": 0.153, "top": 0.635, "right": 0.171, "bottom": 0.86 }
+        "bbox": { "left": 0.121, "top": 0.797, "right": 0.129, "bottom": 0.876 }
       },
       "needs_verification": false
     },
@@ -1938,7 +1051,7 @@
       "type": "beam",
       "level": "Roof",
       "size": {
-        "raw": "225 x 225",
+        "raw": "225x225",
         "first": { "raw": "225", "values": [225] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1946,20 +1059,40 @@
         "depth": { "raw": "225", "values": [225] }
       },
       "vertical_extent": null,
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "sheet_default",
-        "confidence": 0.97,
+      "beam_extent": {
+        "start_support": "Support at grid 2",
+        "end_support": "Support at grid 1",
+        "start_grid": "2",
+        "end_grid": "1",
+        "centreline_span": 800,
+        "clear_span": null,
+        "overall_length": null,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_shape": {
+        "shape": "rectangular",
+        "confidence": 0.99,
         "evidence": {
-          "source_type": "sheet_default",
+          "source_type": "beam_detail",
           "page": 10,
-          "bbox": { "left": 0.08, "top": 0.86, "right": 0.46, "bottom": 0.92 },
-          "raw_text": "All beams are 225x225 unless otherwise stated"
+          "bbox": { "left": 0.67, "top": 0.61, "right": 0.79, "bottom": 0.81 },
+          "raw_text": "RB10 R/F similar to BEAM - RB1, 225x225"
+        }
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 10,
+          "bbox": { "left": 0.67, "top": 0.61, "right": 0.79, "bottom": 0.81 },
+          "raw_text": "RB10 R/F similar to RB1"
         }
       },
       "location": {
         "page": 10,
-        "bbox": { "left": 0.407, "top": 0.812, "right": 0.426, "bottom": 0.87 }
+        "bbox": { "left": 0.196, "top": 0.876, "right": 0.204, "bottom": 0.902 }
       },
       "needs_verification": false
     },
@@ -1969,7 +1102,7 @@
       "type": "beam",
       "level": "Roof",
       "size": {
-        "raw": "225 x 225",
+        "raw": "225x225",
         "first": { "raw": "225", "values": [225] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -1977,20 +1110,45 @@
         "depth": { "raw": "225", "values": [225] }
       },
       "vertical_extent": null,
-      "beam_extent": null,
+      "beam_extent": {
+        "start_support": "Support 1151 mm above grid 5",
+        "end_support": "Support at grid 5",
+        "start_grid": null,
+        "end_grid": "5",
+        "centreline_span": 1151,
+        "clear_span": null,
+        "overall_length": null,
+        "unit": "mm",
+        "confidence": 0.96
+      },
+      "beam_shape": {
+        "shape": "unknown",
+        "confidence": 0.35,
+        "evidence": {
+          "source_type": "unresolved",
+          "page": 10,
+          "bbox": { "left": 0.08, "top": 0.05, "right": 0.8, "bottom": 0.95 },
+          "raw_text": "RB11 is shown on the roof plan and receives the 225x225 sheet default, but it is omitted from the RB1 similar-members note and no dedicated RB11 cross-section was found in the complete set"
+        }
+      },
       "resolution": {
         "source_type": "sheet_default",
         "confidence": 0.96,
         "evidence": {
           "source_type": "sheet_default",
           "page": 10,
-          "bbox": { "left": 0.08, "top": 0.86, "right": 0.46, "bottom": 0.92 },
-          "raw_text": "All beams are 225x225 unless otherwise stated"
+          "bbox": {
+            "left": 0.13,
+            "top": 0.904,
+            "right": 0.345,
+            "bottom": 0.936
+          },
+          "raw_text": "ALL BEAMS ARE 225x225 UNLESS OTHERWISE STATED"
         }
       },
       "location": {
         "page": 10,
-        "bbox": { "left": 0.407, "top": 0.445, "right": 0.426, "bottom": 0.61 }
+        "bbox": { "left": 0.196, "top": 0.584, "right": 0.204, "bottom": 0.615 }
       },
       "needs_verification": true
     },
@@ -2000,38 +1158,58 @@
       "type": "beam",
       "level": "Roof",
       "size": {
-        "raw": "300 x 225",
-        "first": { "raw": "300", "values": [300] },
-        "second": { "raw": "225", "values": [225] },
+        "raw": "600+300 x 150/225 T-section",
+        "first": { "raw": "600+300", "values": [600, 300] },
+        "second": { "raw": "150/225", "values": [150, 225] },
         "unit": "mm",
-        "width": { "raw": "225", "values": [225] },
-        "depth": { "raw": "300", "values": [300] }
+        "width": { "raw": "150/225", "values": [150, 225] },
+        "depth": { "raw": "600+300", "values": [600, 300] }
       },
       "vertical_extent": null,
-      "beam_extent": null,
-      "resolution": {
-        "source_type": "direct_annotation",
-        "confidence": 0.96,
+      "beam_extent": {
+        "start_support": "Support at grid 5",
+        "end_support": "Support at grid 2",
+        "start_grid": "5",
+        "end_grid": "2",
+        "centreline_span": 10150,
+        "clear_span": null,
+        "overall_length": null,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_shape": {
+        "shape": "tee",
+        "confidence": 0.99,
         "evidence": {
-          "source_type": "direct_annotation",
+          "source_type": "beam_detail",
           "page": 10,
-          "bbox": { "left": 0.405, "top": 0.43, "right": 0.46, "bottom": 0.67 },
-          "raw_text": "300x225 BM RB12"
+          "bbox": { "left": 0.63, "top": 0.31, "right": 0.72, "bottom": 0.66 },
+          "raw_text": "BEAM - RB7; BEAM-RB12 R/F SIMILAR; 150-wide upper stem 600 high over a 225-wide, 300-deep flange"
+        }
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 10,
+          "bbox": { "left": 0.63, "top": 0.31, "right": 0.72, "bottom": 0.66 },
+          "raw_text": "RB12 is explicitly R/F similar to the dedicated RB7 T-section, overriding the nominal 300x225 plan callout"
         }
       },
       "location": {
         "page": 10,
-        "bbox": { "left": 0.425, "top": 0.445, "right": 0.443, "bottom": 0.65 }
+        "bbox": { "left": 0.216, "top": 0.615, "right": 0.224, "bottom": 0.876 }
       },
-      "needs_verification": true
+      "needs_verification": false
     },
     {
-      "key": "B1-stair",
+      "key": "B1-stair-ground-to-first",
       "drawing_id": "B1",
       "type": "beam",
-      "level": "Ground floor to first floor staircase",
+      "level": "Ground-to-first-floor stair",
       "size": {
-        "raw": "450 x 225",
+        "raw": "450x225",
         "first": { "raw": "450", "values": [450] },
         "second": { "raw": "225", "values": [225] },
         "unit": "mm",
@@ -2040,29 +1218,1159 @@
       },
       "vertical_extent": null,
       "beam_extent": {
-        "start_support": "ground-floor stair landing/column",
-        "end_support": "first-floor stair landing/column",
-        "start_grid": "2",
-        "end_grid": "4",
+        "start_support": "Lower stair landing/support near grid 2",
+        "end_support": "Upper stair landing/support at grid 4",
+        "start_grid": null,
+        "end_grid": null,
         "centreline_span": null,
         "clear_span": null,
         "overall_length": null,
         "unit": "mm",
-        "confidence": 0.62
+        "confidence": 0.55
       },
-      "resolution": {
-        "source_type": "direct_annotation",
+      "beam_shape": {
+        "shape": "rectangular",
         "confidence": 0.99,
         "evidence": {
-          "source_type": "direct_annotation",
+          "source_type": "beam_detail",
           "page": 15,
-          "bbox": { "left": 0.06, "top": 0.07, "right": 0.49, "bottom": 0.45 },
-          "raw_text": "450x225 BM B1"
+          "bbox": { "left": 0.39, "top": 0.68, "right": 0.53, "bottom": 0.86 },
+          "raw_text": "BEAM - B1; 450x225 rectangular section"
+        }
+      },
+      "resolution": {
+        "source_type": "beam_detail",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "beam_detail",
+          "page": 15,
+          "bbox": { "left": 0.39, "top": 0.68, "right": 0.53, "bottom": 0.86 },
+          "raw_text": "BEAM - B1; 450x225"
         }
       },
       "location": {
         "page": 15,
-        "bbox": { "left": 0.075, "top": 0.075, "right": 0.49, "bottom": 0.44 }
+        "bbox": { "left": 0.098, "top": 0.12, "right": 0.505, "bottom": 0.578 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C2-A5-footing-ground",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "Footing to ground floor",
+      "size": {
+        "raw": "300x300",
+        "first": { "raw": "300", "values": [300] },
+        "second": { "raw": "300", "values": [300] },
+        "unit": "mm",
+        "width": { "raw": "300", "values": [300] },
+        "depth": { "raw": "300", "values": [300] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Footing/founding level",
+        "top_level": "Ground floor level",
+        "bottom_elevation": null,
+        "top_elevation": 300,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.45
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.75, "right": 0.56, "bottom": 0.91 },
+          "raw_text": "C2, footing to ground floor: 300x300"
+        }
+      },
+      "location": {
+        "page": 11,
+        "bbox": { "left": 0.097, "top": 0.513, "right": 0.103, "bottom": 0.519 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C3-Bplus613-5-footing-ground",
+      "drawing_id": "C3",
+      "type": "column",
+      "level": "Footing to ground floor",
+      "size": {
+        "raw": "300x300",
+        "first": { "raw": "300", "values": [300] },
+        "second": { "raw": "300", "values": [300] },
+        "unit": "mm",
+        "width": { "raw": "300", "values": [300] },
+        "depth": { "raw": "300", "values": [300] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Footing/founding level",
+        "top_level": "Ground floor level",
+        "bottom_elevation": null,
+        "top_elevation": 300,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.45
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.75, "right": 0.56, "bottom": 0.91 },
+          "raw_text": "C3, footing to ground floor: 300x300"
+        }
+      },
+      "location": {
+        "page": 11,
+        "bbox": { "left": 0.139, "top": 0.513, "right": 0.145, "bottom": 0.519 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C2-D5-footing-ground",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "Footing to ground floor",
+      "size": {
+        "raw": "300x300",
+        "first": { "raw": "300", "values": [300] },
+        "second": { "raw": "300", "values": [300] },
+        "unit": "mm",
+        "width": { "raw": "300", "values": [300] },
+        "depth": { "raw": "300", "values": [300] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Footing/founding level",
+        "top_level": "Ground floor level",
+        "bottom_elevation": null,
+        "top_elevation": 300,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.45
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.75, "right": 0.56, "bottom": 0.91 },
+          "raw_text": "C2, footing to ground floor: 300x300"
+        }
+      },
+      "location": {
+        "page": 11,
+        "bbox": { "left": 0.224, "top": 0.513, "right": 0.23, "bottom": 0.519 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C1-A4-footing-ground",
+      "drawing_id": "C1",
+      "type": "column",
+      "level": "Footing to ground floor",
+      "size": {
+        "raw": "300x350",
+        "first": { "raw": "300", "values": [300] },
+        "second": { "raw": "350", "values": [350] },
+        "unit": "mm",
+        "width": { "raw": "300", "values": [300] },
+        "depth": { "raw": "350", "values": [350] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Footing/founding level",
+        "top_level": "Ground floor level",
+        "bottom_elevation": null,
+        "top_elevation": 300,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.45
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.75, "right": 0.56, "bottom": 0.91 },
+          "raw_text": "C1, footing to ground floor: 300 wide x 350 deep"
+        }
+      },
+      "location": {
+        "page": 11,
+        "bbox": { "left": 0.097, "top": 0.703, "right": 0.103, "bottom": 0.709 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C3-Bplus613-4-footing-ground",
+      "drawing_id": "C3",
+      "type": "column",
+      "level": "Footing to ground floor",
+      "size": {
+        "raw": "300x300",
+        "first": { "raw": "300", "values": [300] },
+        "second": { "raw": "300", "values": [300] },
+        "unit": "mm",
+        "width": { "raw": "300", "values": [300] },
+        "depth": { "raw": "300", "values": [300] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Footing/founding level",
+        "top_level": "Ground floor level",
+        "bottom_elevation": null,
+        "top_elevation": 300,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.45
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.75, "right": 0.56, "bottom": 0.91 },
+          "raw_text": "C3, footing to ground floor: 300x300"
+        }
+      },
+      "location": {
+        "page": 11,
+        "bbox": { "left": 0.139, "top": 0.703, "right": 0.145, "bottom": 0.709 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C2-D4-footing-ground",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "Footing to ground floor",
+      "size": {
+        "raw": "300x300",
+        "first": { "raw": "300", "values": [300] },
+        "second": { "raw": "300", "values": [300] },
+        "unit": "mm",
+        "width": { "raw": "300", "values": [300] },
+        "depth": { "raw": "300", "values": [300] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Footing/founding level",
+        "top_level": "Ground floor level",
+        "bottom_elevation": null,
+        "top_elevation": 300,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.45
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.75, "right": 0.56, "bottom": 0.91 },
+          "raw_text": "C2, footing to ground floor: 300x300"
+        }
+      },
+      "location": {
+        "page": 11,
+        "bbox": { "left": 0.224, "top": 0.703, "right": 0.23, "bottom": 0.709 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C2-B-offset-footing-ground",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "Footing to ground floor",
+      "size": {
+        "raw": "300x300",
+        "first": { "raw": "300", "values": [300] },
+        "second": { "raw": "300", "values": [300] },
+        "unit": "mm",
+        "width": { "raw": "300", "values": [300] },
+        "depth": { "raw": "300", "values": [300] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Footing/founding level",
+        "top_level": "Ground floor level",
+        "bottom_elevation": null,
+        "top_elevation": 300,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.45
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.75, "right": 0.56, "bottom": 0.91 },
+          "raw_text": "C2, footing to ground floor: 300x300"
+        }
+      },
+      "location": {
+        "page": 11,
+        "bbox": { "left": 0.129, "top": 0.773, "right": 0.135, "bottom": 0.779 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C1-B2-footing-ground",
+      "drawing_id": "C1",
+      "type": "column",
+      "level": "Footing to ground floor",
+      "size": {
+        "raw": "300x350",
+        "first": { "raw": "300", "values": [300] },
+        "second": { "raw": "350", "values": [350] },
+        "unit": "mm",
+        "width": { "raw": "300", "values": [300] },
+        "depth": { "raw": "350", "values": [350] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Footing/founding level",
+        "top_level": "Ground floor level",
+        "bottom_elevation": null,
+        "top_elevation": 300,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.45
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.75, "right": 0.56, "bottom": 0.91 },
+          "raw_text": "C1, footing to ground floor: 300 wide x 350 deep"
+        }
+      },
+      "location": {
+        "page": 11,
+        "bbox": { "left": 0.129, "top": 0.838, "right": 0.135, "bottom": 0.844 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C2-C2-footing-ground",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "Footing to ground floor",
+      "size": {
+        "raw": "300x300",
+        "first": { "raw": "300", "values": [300] },
+        "second": { "raw": "300", "values": [300] },
+        "unit": "mm",
+        "width": { "raw": "300", "values": [300] },
+        "depth": { "raw": "300", "values": [300] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Footing/founding level",
+        "top_level": "Ground floor level",
+        "bottom_elevation": null,
+        "top_elevation": 300,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.45
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.75, "right": 0.56, "bottom": 0.91 },
+          "raw_text": "C2, footing to ground floor: 300x300"
+        }
+      },
+      "location": {
+        "page": 11,
+        "bbox": { "left": 0.204, "top": 0.838, "right": 0.21, "bottom": 0.844 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C2-D2-footing-ground",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "Footing to ground floor",
+      "size": {
+        "raw": "300x300",
+        "first": { "raw": "300", "values": [300] },
+        "second": { "raw": "300", "values": [300] },
+        "unit": "mm",
+        "width": { "raw": "300", "values": [300] },
+        "depth": { "raw": "300", "values": [300] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Footing/founding level",
+        "top_level": "Ground floor level",
+        "bottom_elevation": null,
+        "top_elevation": 300,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.45
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.75, "right": 0.56, "bottom": 0.91 },
+          "raw_text": "C2, footing to ground floor: 300x300"
+        }
+      },
+      "location": {
+        "page": 11,
+        "bbox": { "left": 0.224, "top": 0.838, "right": 0.23, "bottom": 0.844 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C2-A5-ground-first",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "Ground floor to first floor",
+      "size": {
+        "raw": "225x225",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "225", "values": [225] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "225", "values": [225] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Ground floor level",
+        "top_level": "First floor level",
+        "bottom_elevation": 300,
+        "top_elevation": 3450,
+        "floor_to_floor_height": 3150,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.62, "right": 0.56, "bottom": 0.77 },
+          "raw_text": "C2, ground to first floor: 225x225"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.208, "top": 0.509, "right": 0.214, "bottom": 0.515 }
+      },
+      "needs_verification": false
+    },
+    {
+      "key": "C3-Bplus613-5-ground-first",
+      "drawing_id": "C3",
+      "type": "column",
+      "level": "Ground floor to first floor",
+      "size": {
+        "raw": "225x225",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "225", "values": [225] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "225", "values": [225] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Ground floor level",
+        "top_level": "First floor level",
+        "bottom_elevation": 300,
+        "top_elevation": 3450,
+        "floor_to_floor_height": 3150,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.62, "right": 0.56, "bottom": 0.77 },
+          "raw_text": "C3, ground to first floor: 225x225"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.251, "top": 0.509, "right": 0.257, "bottom": 0.515 }
+      },
+      "needs_verification": false
+    },
+    {
+      "key": "C2-D5-ground-first",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "Ground floor to first floor",
+      "size": {
+        "raw": "225x225",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "225", "values": [225] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "225", "values": [225] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Ground floor level",
+        "top_level": "First floor level",
+        "bottom_elevation": 300,
+        "top_elevation": 3450,
+        "floor_to_floor_height": 3150,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.62, "right": 0.56, "bottom": 0.77 },
+          "raw_text": "C2, ground to first floor: 225x225"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.336, "top": 0.509, "right": 0.342, "bottom": 0.515 }
+      },
+      "needs_verification": false
+    },
+    {
+      "key": "C1-A4-ground-first",
+      "drawing_id": "C1",
+      "type": "column",
+      "level": "Ground floor to first floor",
+      "size": {
+        "raw": "225x300",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "300", "values": [300] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "300", "values": [300] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Ground floor level",
+        "top_level": "First floor level",
+        "bottom_elevation": 300,
+        "top_elevation": 3450,
+        "floor_to_floor_height": 3150,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.62, "right": 0.56, "bottom": 0.77 },
+          "raw_text": "C1, ground to first floor: 225 wide x 300 deep"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.208, "top": 0.622, "right": 0.214, "bottom": 0.628 }
+      },
+      "needs_verification": false
+    },
+    {
+      "key": "C3-Bplus613-4-ground-first",
+      "drawing_id": "C3",
+      "type": "column",
+      "level": "Ground floor to first floor",
+      "size": {
+        "raw": "225x225",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "225", "values": [225] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "225", "values": [225] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Ground floor level",
+        "top_level": "First floor level",
+        "bottom_elevation": 300,
+        "top_elevation": 3450,
+        "floor_to_floor_height": 3150,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.62, "right": 0.56, "bottom": 0.77 },
+          "raw_text": "C3, ground to first floor: 225x225"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.251, "top": 0.622, "right": 0.257, "bottom": 0.628 }
+      },
+      "needs_verification": false
+    },
+    {
+      "key": "C2-D4-ground-first",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "Ground floor to first floor",
+      "size": {
+        "raw": "225x225",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "225", "values": [225] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "225", "values": [225] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Ground floor level",
+        "top_level": "First floor level",
+        "bottom_elevation": 300,
+        "top_elevation": 3450,
+        "floor_to_floor_height": 3150,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.62, "right": 0.56, "bottom": 0.77 },
+          "raw_text": "C2, ground to first floor: 225x225"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.336, "top": 0.622, "right": 0.342, "bottom": 0.628 }
+      },
+      "needs_verification": false
+    },
+    {
+      "key": "C2-B-offset-ground-first",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "Ground floor to first floor",
+      "size": {
+        "raw": "225x225",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "225", "values": [225] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "225", "values": [225] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Ground floor level",
+        "top_level": "First floor level",
+        "bottom_elevation": 300,
+        "top_elevation": 3450,
+        "floor_to_floor_height": 3150,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.62, "right": 0.56, "bottom": 0.77 },
+          "raw_text": "C2, ground to first floor: 225x225"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.241, "top": 0.698, "right": 0.247, "bottom": 0.704 }
+      },
+      "needs_verification": false
+    },
+    {
+      "key": "C1-B2-ground-first",
+      "drawing_id": "C1",
+      "type": "column",
+      "level": "Ground floor to first floor",
+      "size": {
+        "raw": "225x300",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "300", "values": [300] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "300", "values": [300] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Ground floor level",
+        "top_level": "First floor level",
+        "bottom_elevation": 300,
+        "top_elevation": 3450,
+        "floor_to_floor_height": 3150,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.62, "right": 0.56, "bottom": 0.77 },
+          "raw_text": "C1, ground to first floor: 225 wide x 300 deep"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.241, "top": 0.75, "right": 0.247, "bottom": 0.756 }
+      },
+      "needs_verification": false
+    },
+    {
+      "key": "C2-C2-ground-first",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "Ground floor to first floor",
+      "size": {
+        "raw": "225x225",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "225", "values": [225] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "225", "values": [225] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Ground floor level",
+        "top_level": "First floor level",
+        "bottom_elevation": 300,
+        "top_elevation": 3450,
+        "floor_to_floor_height": 3150,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.62, "right": 0.56, "bottom": 0.77 },
+          "raw_text": "C2, ground to first floor: 225x225"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.316, "top": 0.75, "right": 0.322, "bottom": 0.756 }
+      },
+      "needs_verification": false
+    },
+    {
+      "key": "C2-D2-ground-first",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "Ground floor to first floor",
+      "size": {
+        "raw": "225x225",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "225", "values": [225] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "225", "values": [225] }
+      },
+      "vertical_extent": {
+        "bottom_level": "Ground floor level",
+        "top_level": "First floor level",
+        "bottom_elevation": 300,
+        "top_elevation": 3450,
+        "floor_to_floor_height": 3150,
+        "unit": "mm",
+        "confidence": 0.99
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.62, "right": 0.56, "bottom": 0.77 },
+          "raw_text": "C2, ground to first floor: 225x225"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.336, "top": 0.75, "right": 0.342, "bottom": 0.756 }
+      },
+      "needs_verification": false
+    },
+    {
+      "key": "C2-A5-first-roof",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "First floor to roof",
+      "size": {
+        "raw": "225x225",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "225", "values": [225] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "225", "values": [225] }
+      },
+      "vertical_extent": {
+        "bottom_level": "First floor level",
+        "top_level": "Roof/wall-plate level",
+        "bottom_elevation": 3450,
+        "top_elevation": null,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.55
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.47, "right": 0.56, "bottom": 0.63 },
+          "raw_text": "C2, first floor to roof level: 225x225"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.498, "top": 0.508, "right": 0.504, "bottom": 0.514 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C2-D5-first-roof",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "First floor to roof",
+      "size": {
+        "raw": "225x225",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "225", "values": [225] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "225", "values": [225] }
+      },
+      "vertical_extent": {
+        "bottom_level": "First floor level",
+        "top_level": "Roof/wall-plate level",
+        "bottom_elevation": 3450,
+        "top_elevation": null,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.55
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.47, "right": 0.56, "bottom": 0.63 },
+          "raw_text": "C2, first floor to roof level: 225x225"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.626, "top": 0.508, "right": 0.632, "bottom": 0.514 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C1-A4-first-roof",
+      "drawing_id": "C1",
+      "type": "column",
+      "level": "First floor to roof",
+      "size": {
+        "raw": "225x225",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "225", "values": [225] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "225", "values": [225] }
+      },
+      "vertical_extent": {
+        "bottom_level": "First floor level",
+        "top_level": "Roof/wall-plate level",
+        "bottom_elevation": 3450,
+        "top_elevation": null,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.55
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.47, "right": 0.56, "bottom": 0.63 },
+          "raw_text": "C1, first floor to roof level: 225x225"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.498, "top": 0.621, "right": 0.504, "bottom": 0.627 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C2-D4-first-roof",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "First floor to roof",
+      "size": {
+        "raw": "225x225",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "225", "values": [225] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "225", "values": [225] }
+      },
+      "vertical_extent": {
+        "bottom_level": "First floor level",
+        "top_level": "Roof/wall-plate level",
+        "bottom_elevation": 3450,
+        "top_elevation": null,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.55
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.47, "right": 0.56, "bottom": 0.63 },
+          "raw_text": "C2, first floor to roof level: 225x225"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.626, "top": 0.621, "right": 0.632, "bottom": 0.627 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C2-B-offset-first-roof",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "First floor to roof",
+      "size": {
+        "raw": "225x225",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "225", "values": [225] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "225", "values": [225] }
+      },
+      "vertical_extent": {
+        "bottom_level": "First floor level",
+        "top_level": "Roof/wall-plate level",
+        "bottom_elevation": 3450,
+        "top_elevation": null,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.55
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.47, "right": 0.56, "bottom": 0.63 },
+          "raw_text": "C2, first floor to roof level: 225x225"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.53, "top": 0.689, "right": 0.536, "bottom": 0.695 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C1-B2-first-roof",
+      "drawing_id": "C1",
+      "type": "column",
+      "level": "First floor to roof",
+      "size": {
+        "raw": "225x225",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "225", "values": [225] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "225", "values": [225] }
+      },
+      "vertical_extent": {
+        "bottom_level": "First floor level",
+        "top_level": "Roof/wall-plate level",
+        "bottom_elevation": 3450,
+        "top_elevation": null,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.55
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.47, "right": 0.56, "bottom": 0.63 },
+          "raw_text": "C1, first floor to roof level: 225x225"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.53, "top": 0.744, "right": 0.536, "bottom": 0.75 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C2-C2-first-roof",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "First floor to roof",
+      "size": {
+        "raw": "225x225",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "225", "values": [225] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "225", "values": [225] }
+      },
+      "vertical_extent": {
+        "bottom_level": "First floor level",
+        "top_level": "Roof/wall-plate level",
+        "bottom_elevation": 3450,
+        "top_elevation": null,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.55
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.47, "right": 0.56, "bottom": 0.63 },
+          "raw_text": "C2, first floor to roof level: 225x225"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.606, "top": 0.744, "right": 0.612, "bottom": 0.75 }
+      },
+      "needs_verification": true
+    },
+    {
+      "key": "C2-D2-first-roof",
+      "drawing_id": "C2",
+      "type": "column",
+      "level": "First floor to roof",
+      "size": {
+        "raw": "225x225",
+        "first": { "raw": "225", "values": [225] },
+        "second": { "raw": "225", "values": [225] },
+        "unit": "mm",
+        "width": { "raw": "225", "values": [225] },
+        "depth": { "raw": "225", "values": [225] }
+      },
+      "vertical_extent": {
+        "bottom_level": "First floor level",
+        "top_level": "Roof/wall-plate level",
+        "bottom_elevation": 3450,
+        "top_elevation": null,
+        "floor_to_floor_height": null,
+        "unit": "mm",
+        "confidence": 0.55
+      },
+      "beam_extent": null,
+      "beam_shape": null,
+      "resolution": {
+        "source_type": "column_schedule",
+        "confidence": 0.99,
+        "evidence": {
+          "source_type": "column_schedule",
+          "page": 12,
+          "bbox": { "left": 0.13, "top": 0.47, "right": 0.56, "bottom": 0.63 },
+          "raw_text": "C2, first floor to roof level: 225x225"
+        }
+      },
+      "location": {
+        "page": 9,
+        "bbox": { "left": 0.626, "top": 0.744, "right": 0.632, "bottom": 0.75 }
       },
       "needs_verification": true
     }

@@ -31,6 +31,90 @@ import {
 
 const REVIEW_FILTERS = ["all", "unresolved", "changed"];
 const SUGGESTIONS = ["400", "450", "Varies"];
+const POLYGON_PROFILE_SHAPES = new Set([
+  "tee",
+  "inverted_tee",
+  "l_shape",
+  "custom",
+]);
+const PROFILE_SHAPES = [
+  "tapered",
+  "haunched",
+  "tee",
+  "inverted_tee",
+  "l_shape",
+  "custom",
+];
+
+function profileLabel(shape) {
+  const label = shape?.replaceAll("_", " ");
+  return label ? `${label[0].toUpperCase()}${label.slice(1)}` : "Complex profile";
+}
+
+function formatDimension(value) {
+  return new Intl.NumberFormat(undefined, { maximumFractionDigits: 3 }).format(
+    value,
+  );
+}
+
+function cloneProfile(profile) {
+  return profile ? structuredClone(profile) : null;
+}
+
+function validateProfile(profile, beamLength) {
+  if (!profile) return "";
+  if (!PROFILE_SHAPES.includes(profile.shape)) return "Choose a profile shape.";
+  if (!profile.start_location?.trim())
+    return "Name the grid or support used as station zero.";
+  if (!profile.stations?.length) return "Add at least one profile station.";
+
+  let previousDistance = -1;
+  for (const [index, station] of profile.stations.entries()) {
+    const distance = Number(station.distance);
+    if (!Number.isFinite(distance) || distance < 0)
+      return `Station ${index + 1} needs a non-negative distance.`;
+    if (distance <= previousDistance)
+      return "Station distances must be strictly increasing.";
+    if (Number.isFinite(beamLength) && distance > beamLength)
+      return `Station ${index + 1} lies beyond the beam length.`;
+    previousDistance = distance;
+
+    if (POLYGON_PROFILE_SHAPES.has(profile.shape)) {
+      if (!station.vertices || station.vertices.length < 3)
+        return `Station ${index + 1} needs at least three vertices.`;
+      if (
+        station.vertices.some(
+          (point) =>
+            !Number.isFinite(Number(point.x)) ||
+            !Number.isFinite(Number(point.y)) ||
+            Number(point.x) < 0 ||
+            Number(point.y) < 0,
+        )
+      )
+        return `Station ${index + 1} needs non-negative x and y coordinates.`;
+      const area = Math.abs(
+        station.vertices.reduce((sum, point, pointIndex, points) => {
+          const next = points[(pointIndex + 1) % points.length];
+          return (
+            sum +
+            Number(point.x) * Number(next.y) -
+            Number(next.x) * Number(point.y)
+          );
+        }, 0) / 2,
+      );
+      if (area === 0)
+        return `Station ${index + 1} vertices must enclose a cross-section area.`;
+    } else if (
+      !Number.isFinite(Number(station.width)) ||
+      Number(station.width) <= 0 ||
+      !Number.isFinite(Number(station.depth)) ||
+      Number(station.depth) <= 0
+    ) {
+      return `Station ${index + 1} needs positive width and depth values.`;
+    }
+  }
+  return "";
+}
 
 function memberDimensionKeys(member) {
   if (member.kind === "column") return ["width", "depth", "height", "unit"];
@@ -122,6 +206,7 @@ function App() {
   const [future, setFuture] = useState([]);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState({});
+  const [editError, setEditError] = useState("");
   const [note, setNote] = useState("");
   const [exportOpen, setExportOpen] = useState(false);
   const [exportWarning, setExportWarning] = useState(null);
@@ -331,20 +416,79 @@ function App() {
       height: selected.height ?? "",
       level: selected.level ?? "",
       location: selected.location,
+      profile: cloneProfile(selected.profile),
+      profile_null_reason: selected.profile_null_reason ?? "",
     });
     setNote(selected.reviewNote || "");
+    setEditError("");
     setEditing(true);
   };
 
   const saveEdit = () => {
     const numeric = (value) => (value === "" ? null : Number(value));
+    const length = selected.kind === "beam" ? numeric(draft.length) : null;
+    const profileError = validateProfile(draft.profile, length);
+    if (profileError) {
+      setEditError(profileError);
+      return;
+    }
+    const profile = cloneProfile(draft.profile);
+    const width = profile ? null : numeric(draft.width);
+    const depth = profile ? null : numeric(draft.depth);
+    if (profile) {
+      profile.start_location = profile.start_location.trim();
+      profile.stations = profile.stations.map((station) => ({
+        distance: Number(station.distance),
+        width: POLYGON_PROFILE_SHAPES.has(profile.shape)
+          ? null
+          : Number(station.width),
+        depth: POLYGON_PROFILE_SHAPES.has(profile.shape)
+          ? null
+          : Number(station.depth),
+        vertices: POLYGON_PROFILE_SHAPES.has(profile.shape)
+          ? station.vertices.map((point) => ({
+              x: Number(point.x),
+              y: Number(point.y),
+            }))
+          : null,
+      }));
+    }
     const next = {
       ...selected,
-      width: numeric(draft.width),
-      depth: numeric(draft.depth),
+      width,
+      width_null_reason: profile
+        ? "The cross-section is represented by exact profile stations."
+        : width == null
+          ? selected.width_null_reason || "Not established in manual review."
+          : null,
+      depth,
+      depth_null_reason: profile
+        ? "The cross-section is represented by exact profile stations."
+        : depth == null
+          ? selected.depth_null_reason || "Not established in manual review."
+          : null,
       ...(selected.kind === "beam"
-        ? { length: numeric(draft.length) }
-        : { height: numeric(draft.height) }),
+        ? {
+            length,
+            length_null_reason:
+              length == null
+                ? selected.length_null_reason ||
+                  "Not established in manual review."
+                : null,
+            profile,
+            profile_null_reason: profile
+              ? null
+              : draft.profile_null_reason.trim() ||
+                "Legacy extraction has no profile assessment; verify the applicable section or detail.",
+          }
+        : {
+            height: numeric(draft.height),
+            height_null_reason:
+              numeric(draft.height) == null
+                ? selected.height_null_reason ||
+                  "Not established in manual review."
+                : null,
+          }),
       level: draft.level || null,
       location: draft.location.trim() || selected.location,
       reviewStatus: "changed",
@@ -354,6 +498,7 @@ function App() {
       next,
       `${selected.drawing_id || "Member"} changes saved.`,
     );
+    setEditError("");
     setEditing(false);
   };
 
@@ -705,6 +850,7 @@ function App() {
               setDraft={setDraft}
               note={note}
               setNote={setNote}
+              editError={editError}
               saveEdit={saveEdit}
               resolveField={resolveField}
               markUnresolved={markUnresolved}
@@ -1001,7 +1147,12 @@ function MemberNavigator({
                 <span className={`status-dot ${status}`} aria-hidden="true" />
                 <span className="member-copy">
                   <strong>{member.drawing_id || "Unlabelled"}</strong>
-                  <small>{member.location}</small>
+                  <small>
+                    {member.location}
+                    {member.profile
+                      ? ` · ${profileLabel(member.profile.shape)}`
+                      : ""}
+                  </small>
                 </span>
                 <span className={`status-icon ${status}`}>
                   {status === "confirmed" ? (
@@ -1041,6 +1192,7 @@ function ReviewTray({
   setDraft,
   note,
   setNote,
+  editError,
   saveEdit,
   resolveField,
   markUnresolved,
@@ -1052,8 +1204,11 @@ function ReviewTray({
   const status = memberStatus(member);
   const longitudinal = member.kind === "beam" ? "length" : "height";
   const reason = missing ? member[`${missing}_null_reason`] : null;
+  const hasProfile = editing ? Boolean(draft.profile) : Boolean(member.profile);
   return (
-    <section className={`review-tray ${editing ? "editing" : ""}`}>
+    <section
+      className={`review-tray ${editing ? "editing" : ""} ${hasProfile ? "has-profile" : ""}`}
+    >
       <header className="tray-header">
         <div className="member-title">
           <h2>
@@ -1094,6 +1249,12 @@ function ReviewTray({
           )}
         </div>
       </header>
+      {editing && editError && (
+        <div className="edit-error" role="alert">
+          <AlertCircle size={15} />
+          {editError}
+        </div>
+      )}
       {editing ? (
         <div className="edit-form">
           <label>
@@ -1109,7 +1270,7 @@ function ReviewTray({
           </label>
           <label>
             Width ({member.unit || "mm"})
-            {member.profile ? (
+            {draft.profile ? (
               <span className="read-only-field">See profile stations</span>
             ) : (
               <input
@@ -1121,7 +1282,7 @@ function ReviewTray({
           </label>
           <label>
             Depth ({member.unit || "mm"})
-            {member.profile ? (
+            {draft.profile ? (
               <span className="read-only-field">See profile stations</span>
             ) : (
               <input
@@ -1157,112 +1318,530 @@ function ReviewTray({
               placeholder="Why was this value changed?"
             />
           </label>
+          {member.kind === "beam" && (
+            <div className="profile-edit-region">
+              {draft.profile ? (
+                <ProfileEditor
+                  profile={draft.profile}
+                  onChange={(profile) => setDraft({ ...draft, profile })}
+                  unit={member.unit}
+                  beamLength={draft.length}
+                />
+              ) : (
+                <div className="add-profile-row">
+                  <div>
+                    <strong>Complex cross-section</strong>
+                    <span>
+                      Add exact stations when one rectangular width and depth
+                      cannot represent this beam.
+                    </span>
+                    <label>
+                      Profile assessment
+                      <input
+                        value={draft.profile_null_reason}
+                        onChange={(e) =>
+                          setDraft({
+                            ...draft,
+                            profile_null_reason: e.target.value,
+                          })
+                        }
+                        placeholder="Section/detail checked and conclusion"
+                      />
+                    </label>
+                  </div>
+                  <button
+                    type="button"
+                    className="button secondary compact"
+                    onClick={() =>
+                      setDraft({
+                        ...draft,
+                        profile: {
+                          shape: "custom",
+                          start_location: "",
+                          stations: [
+                            {
+                              distance: 0,
+                              width: null,
+                              depth: null,
+                              vertices: [
+                                { x: "", y: "" },
+                                { x: "", y: "" },
+                                { x: "", y: "" },
+                              ],
+                            },
+                          ],
+                        },
+                      })
+                    }
+                  >
+                    <Plus size={15} />
+                    Add profile
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       ) : (
-        <div className="tray-content">
-          <div className="member-facts">
-            <Fact
-              label="Width"
-              value={member.width}
-              original={member.original.width}
-              unit={member.unit}
-              fallback={member.profile ? "See profile" : undefined}
-            />
-            <Fact
-              label="Depth"
-              value={member.depth}
-              original={member.original.depth}
-              unit={member.unit}
-              fallback={member.profile ? "See profile" : undefined}
-            />
-            <Fact
-              label={longitudinal === "length" ? "Length" : "Height"}
-              value={member[longitudinal]}
-              original={member.original[longitudinal]}
-              unit={member.unit}
-            />
-            {member.kind === "beam" && member.profile && (
+        <>
+          <div className="tray-content">
+            <div className="member-facts">
               <Fact
-                label="Profile"
-                value={`${member.profile.shape.replaceAll("_", " ")} · ${member.profile.stations.length} ${
-                  member.profile.stations.length === 1 ? "station" : "stations"
-                }`}
+                label="Width"
+                value={member.width}
+                original={member.original.width}
+                unit={member.unit}
+                fallback={member.profile ? "See profile" : undefined}
               />
-            )}
-            <Fact label="Location" value={member.location} wide />
-          </div>
-          <div className="review-question">
-            {missing ? (
-              <>
-                <div className="question-copy">
-                  <span className="question-icon">
-                    <MessageSquareText size={17} />
+              <Fact
+                label="Depth"
+                value={member.depth}
+                original={member.original.depth}
+                unit={member.unit}
+                fallback={member.profile ? "See profile" : undefined}
+              />
+              <Fact
+                label={longitudinal === "length" ? "Length" : "Height"}
+                value={member[longitudinal]}
+                original={member.original[longitudinal]}
+                unit={member.unit}
+              />
+              {member.kind === "beam" && member.profile && (
+                <Fact
+                  label="Profile"
+                  value={`${member.profile.shape.replaceAll("_", " ")} · ${member.profile.stations.length} ${
+                    member.profile.stations.length === 1
+                      ? "station"
+                      : "stations"
+                  }`}
+                />
+              )}
+              <Fact
+                label="Location"
+                value={member.location}
+                original={member.original.location}
+                wide
+              />
+            </div>
+            <div className="review-question">
+              {missing ? (
+                <>
+                  <div className="question-copy">
+                    <span className="question-icon">
+                      <MessageSquareText size={17} />
+                    </span>
+                    <div>
+                      <strong>
+                        What is the {missing} of{" "}
+                        {member.drawing_id || "this member"}?
+                      </strong>
+                      <p>
+                        {reason ||
+                          "The second-pass extraction did not establish one exact value."}
+                      </p>
+                      {citedPages.length > 0 && (
+                        <div className="citation-links">
+                          {citedPages.map((page) => (
+                            <button key={page} onClick={() => setViewPage(page)}>
+                              Open cited page {page}
+                              <ChevronRight size={13} />
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="answer-row">
+                    {missing === "depth" &&
+                      member.kind === "beam" &&
+                      SUGGESTIONS.map((value) => (
+                        <button
+                          key={value}
+                          className="answer-button"
+                          onClick={() => resolveField(value)}
+                        >
+                          {value}
+                          {value === "Varies" ? "" : ` ${member.unit || "mm"}`}
+                        </button>
+                      ))}
+                    <button
+                      className="answer-button subtle"
+                      onClick={() => markUnresolved("cannot-determine")}
+                    >
+                      Cannot determine
+                    </button>
+                    <button
+                      className="text-button"
+                      onClick={() => markUnresolved("skipped")}
+                    >
+                      Skip
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="resolved-message">
+                  <span>
+                    <Check size={17} />
                   </span>
                   <div>
-                    <strong>
-                      What is the {missing} of{" "}
-                      {member.drawing_id || "this member"}?
-                    </strong>
+                    <strong>Member values are complete</strong>
                     <p>
-                      {reason ||
-                        "The second-pass extraction did not establish one exact value."}
+                      {member.reviewNote ||
+                        "No unresolved dimensions remain for this record."}
                     </p>
-                    {citedPages.length > 0 && (
-                      <div className="citation-links">
-                        {citedPages.map((page) => (
-                          <button key={page} onClick={() => setViewPage(page)}>
-                            Open cited page {page}
-                            <ChevronRight size={13} />
-                          </button>
-                        ))}
-                      </div>
-                    )}
                   </div>
                 </div>
-                <div className="answer-row">
-                  {missing === "depth" &&
-                    member.kind === "beam" &&
-                    SUGGESTIONS.map((value) => (
-                      <button
-                        key={value}
-                        className="answer-button"
-                        onClick={() => resolveField(value)}
-                      >
-                        {value}
-                        {value === "Varies" ? "" : ` ${member.unit || "mm"}`}
-                      </button>
-                    ))}
-                  <button
-                    className="answer-button subtle"
-                    onClick={() => markUnresolved("cannot-determine")}
-                  >
-                    Cannot determine
-                  </button>
-                  <button
-                    className="text-button"
-                    onClick={() => markUnresolved("skipped")}
-                  >
-                    Skip
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div className="resolved-message">
+              )}
+            </div>
+          </div>
+          {member.kind === "beam" && member.profile && (
+            <ProfileReview profile={member.profile} unit={member.unit} />
+          )}
+        </>
+      )}
+    </section>
+  );
+}
+
+function ProfileReview({ profile, unit }) {
+  return (
+    <section className="profile-review" aria-labelledby="profile-review-title">
+      <header>
+        <div>
+          <h3 id="profile-review-title">Cross-section profile</h3>
+          <p>
+            {profileLabel(profile.shape)} · station zero at{" "}
+            {profile.start_location}
+          </p>
+        </div>
+        <span className="profile-coordinate-note">
+          Origin: lower-left · +x right · +y up
+        </span>
+      </header>
+      <div className="profile-stations">
+        {profile.stations.map((station, index) => (
+          <article
+            className="profile-station"
+            key={`${station.distance}-${index}`}
+          >
+            <ProfileDiagram
+              station={station}
+              unit={unit}
+              label={`Cross-section at station ${station.distance} ${unit || "units"}`}
+            />
+            <div className="profile-station-data">
+              <strong>
+                Station {station.distance} {unit || ""}
+              </strong>
+              {station.vertices ? (
+                <span>{station.vertices.length} exact vertices</span>
+              ) : (
                 <span>
-                  <Check size={17} />
+                  {station.width} × {station.depth} {unit || ""}
                 </span>
-                <div>
-                  <strong>Member values are complete</strong>
-                  <p>
-                    {member.reviewNote ||
-                      "No unresolved dimensions remain for this record."}
-                  </p>
+              )}
+              {station.vertices && (
+                <ol aria-label="Ordered cross-section vertices">
+                  {station.vertices.map((point, pointIndex) => (
+                    <li key={`${point.x}-${point.y}-${pointIndex}`}>
+                      ({point.x}, {point.y})
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ProfileDiagram({ station, unit, label }) {
+  const points = station.vertices?.length
+    ? station.vertices
+    : Number(station.width) > 0 && Number(station.depth) > 0
+      ? [
+          { x: 0, y: 0 },
+          { x: Number(station.width), y: 0 },
+          { x: Number(station.width), y: Number(station.depth) },
+          { x: 0, y: Number(station.depth) },
+        ]
+      : [];
+  const numericPoints = points
+    .map((point) => ({ x: Number(point.x), y: Number(point.y) }))
+    .filter((point) => Number.isFinite(point.x) && Number.isFinite(point.y));
+  if (numericPoints.length < 3)
+    return <div className="profile-diagram empty">Preview unavailable</div>;
+
+  const xs = numericPoints.map((point) => point.x);
+  const ys = numericPoints.map((point) => point.y);
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
+  const width = Math.max(maxX - minX, 1);
+  const height = Math.max(maxY - minY, 1);
+  const padding = Math.max(width, height) * 0.12;
+  const svgPoints = numericPoints
+    .map((point) => `${point.x},${maxY - point.y + minY}`)
+    .join(" ");
+  return (
+    <figure className="profile-diagram">
+      <svg
+        viewBox={`${minX - padding} ${minY - padding} ${width + padding * 2} ${height + padding * 2}`}
+        role="img"
+        aria-label={label}
+        preserveAspectRatio="xMidYMid meet"
+      >
+        <polygon points={svgPoints} />
+      </svg>
+      <figcaption>
+        {formatDimension(width)} × {formatDimension(height)} {unit || ""}{" "}
+        envelope
+      </figcaption>
+    </figure>
+  );
+}
+
+function ProfileEditor({ profile, onChange, unit, beamLength }) {
+  const polygon = POLYGON_PROFILE_SHAPES.has(profile.shape);
+  const updateStation = (stationIndex, patch) =>
+    onChange({
+      ...profile,
+      stations: profile.stations.map((station, index) =>
+        index === stationIndex ? { ...station, ...patch } : station,
+      ),
+    });
+  const updateVertex = (stationIndex, vertexIndex, axis, value) => {
+    const station = profile.stations[stationIndex];
+    updateStation(stationIndex, {
+      vertices: station.vertices.map((point, index) =>
+        index === vertexIndex ? { ...point, [axis]: value } : point,
+      ),
+    });
+  };
+  const changeShape = (shape) =>
+    onChange({
+      ...profile,
+      shape,
+      stations: profile.stations.map((station) => ({
+        ...station,
+        width: POLYGON_PROFILE_SHAPES.has(shape) ? null : station.width ?? "",
+        depth: POLYGON_PROFILE_SHAPES.has(shape) ? null : station.depth ?? "",
+        vertices: POLYGON_PROFILE_SHAPES.has(shape)
+          ? station.vertices || [
+              { x: "", y: "" },
+              { x: "", y: "" },
+              { x: "", y: "" },
+            ]
+          : null,
+      })),
+    });
+
+  return (
+    <section className="profile-editor" aria-labelledby="profile-editor-title">
+      <header>
+        <div>
+          <strong id="profile-editor-title">Complex cross-section</strong>
+          <span>All coordinates use {unit || "the member unit"}.</span>
+        </div>
+        <button
+          type="button"
+          className="text-button"
+          onClick={() => onChange(null)}
+        >
+          Remove profile
+        </button>
+      </header>
+      <div className="profile-editor-basics">
+        <label>
+          Shape
+          <select
+            value={profile.shape}
+            onChange={(e) => changeShape(e.target.value)}
+          >
+            {PROFILE_SHAPES.map((shape) => (
+              <option key={shape} value={shape}>
+                {profileLabel(shape)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Station-zero grid or support
+          <input
+            value={profile.start_location}
+            onChange={(e) =>
+              onChange({ ...profile, start_location: e.target.value })
+            }
+            placeholder="e.g. Grid 3 support centreline"
+          />
+        </label>
+        <span className="profile-length-note">
+          Beam length: {beamLength || "unresolved"} {unit || ""}
+        </span>
+      </div>
+      <div className="profile-editor-stations">
+        {profile.stations.map((station, stationIndex) => (
+          <fieldset key={stationIndex}>
+            <legend>Station {stationIndex + 1}</legend>
+            <label>
+              Distance ({unit || "unit"})
+              <input
+                type="number"
+                min="0"
+                value={station.distance}
+                onChange={(e) =>
+                  updateStation(stationIndex, { distance: e.target.value })
+                }
+              />
+            </label>
+            {polygon ? (
+              <div className="vertex-editor">
+                <div className="vertex-heading">
+                  <span>Ordered vertices</span>
+                  <span>Lower-left origin; +x right, +y up</span>
                 </div>
+                {station.vertices.map((point, vertexIndex) => (
+                  <div className="vertex-row" key={vertexIndex}>
+                    <strong>{vertexIndex + 1}</strong>
+                    <label>
+                      x
+                      <input
+                        type="number"
+                        min="0"
+                        value={point.x}
+                        onChange={(e) =>
+                          updateVertex(
+                            stationIndex,
+                            vertexIndex,
+                            "x",
+                            e.target.value,
+                          )
+                        }
+                      />
+                    </label>
+                    <label>
+                      y
+                      <input
+                        type="number"
+                        min="0"
+                        value={point.y}
+                        onChange={(e) =>
+                          updateVertex(
+                            stationIndex,
+                            vertexIndex,
+                            "y",
+                            e.target.value,
+                          )
+                        }
+                      />
+                    </label>
+                    <button
+                      type="button"
+                      className="icon-button"
+                      aria-label={`Remove vertex ${vertexIndex + 1}`}
+                      disabled={station.vertices.length <= 3}
+                      onClick={() =>
+                        updateStation(stationIndex, {
+                          vertices: station.vertices.filter(
+                            (_, index) => index !== vertexIndex,
+                          ),
+                        })
+                      }
+                    >
+                      <X size={14} />
+                    </button>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  className="text-button"
+                  onClick={() =>
+                    updateStation(stationIndex, {
+                      vertices: [...station.vertices, { x: "", y: "" }],
+                    })
+                  }
+                >
+                  <Plus size={14} /> Add vertex
+                </button>
+              </div>
+            ) : (
+              <div className="station-dimensions">
+                <label>
+                  Width ({unit || "unit"})
+                  <input
+                    type="number"
+                    min="0"
+                    value={station.width ?? ""}
+                    onChange={(e) =>
+                      updateStation(stationIndex, { width: e.target.value })
+                    }
+                  />
+                </label>
+                <label>
+                  Depth ({unit || "unit"})
+                  <input
+                    type="number"
+                    min="0"
+                    value={station.depth ?? ""}
+                    onChange={(e) =>
+                      updateStation(stationIndex, { depth: e.target.value })
+                    }
+                  />
+                </label>
               </div>
             )}
-          </div>
-        </div>
-      )}
+            <ProfileDiagram
+              station={station}
+              unit={unit}
+              label={`Draft cross-section at station ${station.distance}`}
+            />
+            <button
+              type="button"
+              className="text-button remove-station"
+              disabled={profile.stations.length <= 1}
+              onClick={() =>
+                onChange({
+                  ...profile,
+                  stations: profile.stations.filter(
+                    (_, index) => index !== stationIndex,
+                  ),
+                })
+              }
+            >
+              Remove station
+            </button>
+          </fieldset>
+        ))}
+      </div>
+      <button
+        type="button"
+        className="button secondary compact add-station"
+        onClick={() =>
+          onChange({
+            ...profile,
+            stations: [
+              ...profile.stations,
+              {
+                distance: "",
+                width: polygon ? null : "",
+                depth: polygon ? null : "",
+                vertices: polygon
+                  ? [
+                      { x: "", y: "" },
+                      { x: "", y: "" },
+                      { x: "", y: "" },
+                    ]
+                  : null,
+              },
+            ],
+          })
+        }
+      >
+        <Plus size={14} /> Add station
+      </button>
     </section>
   );
 }
