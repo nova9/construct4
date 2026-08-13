@@ -115,15 +115,21 @@ def draw_member(
     kind: str,
     font: str,
 ) -> dict[str, object]:
-    if position_record.position is None:
+    if not position_record.boxes:
         raise ValueError(f"{member.key} has no position")
 
     width, height = image_size(source_page)
-    position = position_record.position
-    x1 = round(position.left * width)
-    y1 = round(position.top * height)
-    x2 = round(position.right * width)
-    y2 = round(position.bottom * height)
+    boxes = position_record.boxes
+    pixel_boxes = [
+        (
+            round(position.left * width),
+            round(position.top * height),
+            round(position.right * width),
+            round(position.bottom * height),
+        )
+        for position in boxes
+    ]
+    x1, y1, x2, y2 = pixel_boxes[0]
 
     line_width = max(5, round(min(width, height) / 330))
     handle = line_width * 2
@@ -138,14 +144,21 @@ def draw_member(
 
     color = COLORS[kind]
     rectangles = [
-        (x1 - handle, y1 - handle, x1 + handle, y1 + handle),
-        (x2 - handle, y1 - handle, x2 + handle, y1 + handle),
-        (x1 - handle, y2 - handle, x1 + handle, y2 + handle),
-        (x2 - handle, y2 - handle, x2 + handle, y2 + handle),
+        corner
+        for box_x1, box_y1, box_x2, box_y2 in pixel_boxes
+        for corner in (
+            (box_x1 - handle, box_y1 - handle, box_x1 + handle, box_y1 + handle),
+            (box_x2 - handle, box_y1 - handle, box_x2 + handle, box_y1 + handle),
+            (box_x1 - handle, box_y2 - handle, box_x1 + handle, box_y2 + handle),
+            (box_x2 - handle, box_y2 - handle, box_x2 + handle, box_y2 + handle),
+        )
     ]
     draw_commands = [
-        f"fill {color['fill']} stroke {color['stroke']} "
-        f"stroke-width {line_width} rectangle {x1},{y1} {x2},{y2}",
+        *(
+            f"fill {color['fill']} stroke {color['stroke']} "
+            f"stroke-width {line_width} rectangle {box_x1},{box_y1} {box_x2},{box_y2}"
+            for box_x1, box_y1, box_x2, box_y2 in pixel_boxes
+        ),
         f"fill {color['stroke']} stroke none rectangle "
         f"{label_x},{label_y} {label_x + label_width},{label_y + label_height}",
     ]
@@ -182,8 +195,11 @@ def draw_member(
         "kind": kind,
         "page": member.page,
         "location": member.location,
-        "normalized_position": position.model_dump(),
-        "pixel_position": {"left": x1, "top": y1, "right": x2, "bottom": y2},
+        "normalized_positions": [position.model_dump() for position in boxes],
+        "pixel_positions": [
+            {"left": a, "top": b, "right": c, "bottom": d}
+            for a, b, c, d in pixel_boxes
+        ],
         "image_size": {"width": width, "height": height},
         "image": output.as_posix(),
     }
@@ -218,11 +234,9 @@ def main() -> None:
     positioned = [
         (kind, member, record)
         for kind, member, record in members
-        if record.position
+        if record.boxes
     ]
-    skipped = [
-        member.key for _, member, record in members if record.position is None
-    ]
+    skipped = [member.key for _, member, record in members if not record.boxes]
 
     args.output.mkdir(parents=True, exist_ok=True)
     for kind in COLORS:

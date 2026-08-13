@@ -100,6 +100,17 @@ class Readability(StrEnum):
     HIGH = "high"
 
 
+class BeamCrossSectionShape(StrEnum):
+    RECTANGULAR = "rectangular"
+    TAPERED = "tapered"
+    HAUNCHED = "haunched"
+    TEE = "tee"
+    INVERTED_TEE = "inverted_tee"
+    L_SHAPE = "l_shape"
+    CUSTOM = "custom"
+    UNKNOWN = "unknown"
+
+
 class ReferenceSourceType(StrEnum):
     COLUMN_SCHEDULE = "column_schedule"
     BEAM_SCHEDULE = "beam_schedule"
@@ -313,6 +324,14 @@ class Resolution(StrictModel):
         return self
 
 
+class BeamShapeAssessment(StrictModel):
+    """First-pass evidence map for one beam occurrence's cross-section."""
+
+    shape: BeamCrossSectionShape
+    confidence: Confidence
+    evidence: Evidence
+
+
 # ---------------------------------------------------------------------------
 # Extracted elements
 # ---------------------------------------------------------------------------
@@ -359,6 +378,9 @@ class Element(StrictModel):
     # Only meaningful for beams.
     beam_extent: BeamExtent | None
 
+    # Mandatory for beams so the second pass is warned about complex sections.
+    beam_shape: BeamShapeAssessment | None
+
     resolution: Resolution
 
     location: ElementLocation
@@ -367,6 +389,19 @@ class Element(StrictModel):
 
     @model_validator(mode="after")
     def validate_element(self) -> Element:
+        if self.type == ElementType.BEAM and self.beam_shape is None:
+            raise ValueError("beam elements require a cross-section shape assessment")
+        if self.type == ElementType.COLUMN and self.beam_shape is not None:
+            raise ValueError("column elements must not contain beam_shape")
+        if (
+            self.beam_shape is not None
+            and self.beam_shape.shape == BeamCrossSectionShape.UNKNOWN
+            and not self.needs_verification
+        ):
+            raise ValueError(
+                "a beam with unknown cross-section shape requires verification"
+            )
+
         if self.size is None:
             if self.resolution.source_type != ResolutionSource.UNRESOLVED:
                 # We also permit a low-confidence source with verification,

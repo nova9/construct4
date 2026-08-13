@@ -39,13 +39,44 @@ Account for explicitly stated slab, beam, footing, or pedestal interfaces when t
 
 Resolve width and depth using this priority:
 
-1. Local member annotation
-2. Member detail
+1. Dedicated named member section or detail
+2. Local member annotation
 3. Beam schedule
 4. Sheet-specific default
 5. Drawing-wide default
 
 Use the drawing’s established dimension order. Do not assume that the first value is width.
+
+### Complex beam profiles
+
+Perform a cross-section shape audit for every beam, even when its plan callout
+already supplies one width and depth. Search the full drawing set for a section
+or detail naming that beam and for notes declaring another beam similar. A
+dedicated named section controls cross-section geometry over a nominal plan
+callout, schedule size, or default. For example, a plan callout such as
+`300x225 BM` does not prove that the complete section is a 300-by-225 rectangle
+when a `BEAM - <ID>` detail shows a stepped or L-shaped section.
+
+Treat a beam with a tapered, haunched, tee, inverted-tee, L-shaped, or custom
+cross-section as one physical occurrence unless the drawings identify separate
+members or a joint between them.
+
+- Use the scalar `width` and `depth` only when each is one value that describes
+  the complete beam. Do not substitute a maximum, minimum, or typical value.
+- For a varying rectangular profile, record exact width/depth values at
+  dimensioned longitudinal stations in `profile.stations`. Identify the grid or
+  support centreline used as station zero in `profile.start_location`.
+- For a non-rectangular profile, record the exactly dimensioned cross-section
+  boundary as ordered `vertices` at each applicable station. Coordinates use
+  the beam's stated unit, with the lower-left of the section's bounding envelope
+  as `(0, 0)`, positive x to the right, and positive y upward. The last vertex
+  connects back to the first.
+- Never derive profile coordinates or station dimensions from rendered pixels.
+- When a scalar field cannot represent the profile, leave it null and state
+  that the exact values are preserved in `profile.stations`.
+- When `profile` is null, give a specific `profile_null_reason` identifying the
+  section/detail or other evidence checked and why it establishes a constant
+  rectangle or leaves the shape unresolved. Do not use a generic statement.
 
 ## Beam lengths
 
@@ -69,6 +100,12 @@ coordinates with a top-left origin: `left`, `top`, `right`, and `bottom`, each
 from 0 to 1. Do not use the member label, schedule row, dimension string, or
 cross-page evidence as the occurrence position. Return null with a specific
 reason when the member linework cannot be localized confidently.
+
+For a bent, stepped, or otherwise non-rectangular beam in plan, use `positions`
+with the smallest set of tight normalized bounding boxes that collectively
+cover its physical linework. Keep one position record for the physical beam.
+Do not split it into invented beam occurrences. Use the singular `position`
+for members that one tight box represents, and never populate both fields.
 
 ## Trace plan callouts into other views
 
@@ -95,13 +132,16 @@ Treat labels such as upstand, downstand, edge, hidden, or underside beam as geom
 
 ## Close unresolved fields
 
-Before returning any null dimension, perform a targeted closure pass:
+Before returning any null dimension or null beam profile, perform a targeted closure pass:
 
 1. List every member and missing field.
 2. Search plan annotations, intersecting section cuts, referenced sections/elevations/details, schedules, and applicable defaults for that field.
 3. Record the exact evidence or exact arithmetic that resolves it.
 4. Reinspect ambiguous callouts and referenced views at higher resolution.
 5. Keep null only after the targeted search fails or the drawing genuinely provides multiple incompatible values that the scalar output field cannot represent.
+
+For every beam profile, also search dedicated named beam sections, typical
+cross-sections, reinforcement details, and `similar` or `R/F similar` notes.
 
 ## Final verification
 

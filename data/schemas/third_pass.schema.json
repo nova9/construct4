@@ -23,6 +23,21 @@
             }
           ]
         },
+        "positions": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/NormalizedBBox"
+              },
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Positions"
+        },
         "position_null_reason": {
           "anyOf": [
             {
@@ -39,6 +54,7 @@
         "key",
         "page",
         "position",
+        "positions",
         "position_null_reason"
       ],
       "title": "MemberPosition",

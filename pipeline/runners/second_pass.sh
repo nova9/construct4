@@ -8,9 +8,28 @@ if [[ ! -f ./data/results/first_pass.json ]]; then
     exit 1
 fi
 
+python - <<'PY'
+from pathlib import Path
+
+from pydantic import ValidationError
+
+from pipeline.schemas.first_pass import DrawingExtraction
+
+try:
+    DrawingExtraction.model_validate_json(
+        Path("data/results/first_pass.json").read_text(encoding="utf-8")
+    )
+except ValidationError as error:
+    raise SystemExit(
+        "Error: first-pass result does not match the current schema. "
+        "Rerun ./pipeline/runners/first_pass.sh before the second pass."
+    ) from error
+PY
+
 python -m pipeline.tools.export_schema second ./data/schemas/second_pass.schema.json
 
 codex exec \
+    --ignore-user-config \
     --json \
     --skip-git-repo-check \
     -m gpt-5.6-sol \
@@ -29,6 +48,14 @@ and dimension conventions.
 Independently inspect the complete PDF again. This is one full-document second
 pass, not a crop-based verification pass.
 
+Before emitting any beam, perform a cross-section shape audit for it even when
+the plan already provides one width and depth. Search every beam and roof detail
+sheet for a dedicated section naming that member, typical sections that apply
+to it, and `similar` or `R/F similar` notes. A dedicated named member section
+controls cross-section geometry over a nominal plan callout, schedule value, or
+default. Do not interpret a two-number plan callout as proof of a rectangular
+section when a detail shows a step, flange, haunch, or L-shape.
+
 Return only actual physical beam and column occurrences that can be tied to a
 specific location in a plan, layout, elevation, or section.
 
@@ -44,10 +71,29 @@ This pass does not produce visual positions. Do not return bounding boxes,
 normalized coordinates, pixel coordinates, or overlay geometry. A separate
 third pass is responsible for locating these fixed member records on the page.
 
-Each beam has exactly three dimension fields:
+Each beam has three scalar dimension fields:
 - width: cross-section width
 - depth: cross-section depth
 - length: physical longitudinal length
+
+For a beam with a tapered, haunched, tee, inverted-tee, L-shaped, or custom
+profile, also populate `profile`. Use exact longitudinal stations measured from
+the grid or support centreline named in `profile.start_location`. At each
+station, provide either width and depth together or at least three exactly
+dimensioned cross-section vertices. Vertex coordinates start at the lower-left
+of the section bounding envelope, with positive x right and positive y up;
+the last vertex connects back to the first. Use vertices for every station of
+tee, inverted-tee, L-shaped, and custom profiles. Set `profile` to null for a
+constant rectangular beam.
+
+Every beam must contain `profile_null_reason`. When `profile` is null, identify
+the exact named section/detail or other evidence checked and why it establishes
+a constant rectangular section or leaves the shape unresolved. When `profile`
+is populated, `profile_null_reason` must be null.
+
+Do not split one physical beam merely because its profile varies. When one
+scalar width or depth cannot describe the complete beam, keep that scalar null
+and explain that the exact values are recorded in `profile.stations`.
 
 Each column has exactly three dimension fields:
 - width: cross-section width

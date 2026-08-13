@@ -35,20 +35,29 @@ class MemberPosition(StrictModel):
     key: str = Field(min_length=1)
     page: int = Field(gt=0)
     position: NormalizedBBox | None
+    positions: list[NormalizedBBox] | None = Field(default=None, min_length=1)
     position_null_reason: str | None
 
     @model_validator(mode="after")
     def validate_null_reason(self) -> MemberPosition:
-        if self.position is None:
+        if self.position is not None and self.positions is not None:
+            raise ValueError("use position or positions, not both")
+        if self.position is None and self.positions is None:
             if self.position_null_reason is None or not self.position_null_reason.strip():
                 raise ValueError(
-                    "position_null_reason is required when position is null"
+                    "position_null_reason is required when no position is populated"
                 )
         elif self.position_null_reason is not None:
             raise ValueError(
-                "position_null_reason must be null when position is populated"
+                "position_null_reason must be null when a position is populated"
             )
         return self
+
+    @property
+    def boxes(self) -> list[NormalizedBBox]:
+        if self.positions is not None:
+            return self.positions
+        return [self.position] if self.position is not None else []
 
 
 class ThirdPassResult(StrictModel):

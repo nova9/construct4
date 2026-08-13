@@ -253,9 +253,24 @@ and columns and contains one record for each physical occurrence found by the
 second pass. It contains semantic locations and dimensions, but no page
 coordinates.
 
-`data/results/third_pass.json` contains only normalized `position` bounding boxes
-(`left`, `top`, `right`, `bottom`) keyed to second-pass members, or a specific
-`position_null_reason` when an occurrence cannot be localized confidently.
+`data/results/third_pass.json` contains normalized bounding boxes keyed to
+second-pass members, or a specific `position_null_reason` when an occurrence
+cannot be localized confidently. A straight member uses one `position`; a bent
+or irregular beam can use `positions` with several tight boxes while remaining
+one physical occurrence.
+
+Complex beam geometry is optional and backward-compatible. A constant
+rectangular beam continues to use scalar `width`, `depth`, and `length`. A
+tapered, haunched, tee, inverted-tee, L-shaped, or custom beam uses
+`profile.stations`; non-rectangular sections use exactly dimensioned ordered
+vertices. Profile geometry must come from stated dimensions, never pixel
+measurement.
+
+The first pass records a `beam_shape` assessment for every beam occurrence. The
+second pass independently audits every beam against dedicated named sections,
+typical sections, and `similar` notes. Each second-pass beam must either contain
+a complex `profile` or a specific `profile_null_reason`; a two-number plan
+callout alone is not proof that the complete cross-section is rectangular.
 
 A schedule row alone does not prove that a member occurs. A plan or other positional drawing must establish the physical occurrence; schedules and details provide dimension evidence.
 

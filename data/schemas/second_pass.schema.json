@@ -127,6 +127,27 @@
             }
           ],
           "title": "Unit Null Reason"
+        },
+        "profile": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BeamProfile"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "profile_null_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Profile Null Reason"
         }
       },
       "required": [
@@ -142,9 +163,108 @@
         "length",
         "length_null_reason",
         "unit",
-        "unit_null_reason"
+        "unit_null_reason",
+        "profile",
+        "profile_null_reason"
       ],
       "title": "Beam",
+      "type": "object"
+    },
+    "BeamProfile": {
+      "additionalProperties": false,
+      "description": "Exact non-rectangular or longitudinally varying beam geometry.",
+      "properties": {
+        "shape": {
+          "$ref": "#/$defs/BeamProfileShape"
+        },
+        "start_location": {
+          "minLength": 1,
+          "title": "Start Location",
+          "type": "string"
+        },
+        "stations": {
+          "items": {
+            "$ref": "#/$defs/BeamProfileStation"
+          },
+          "minItems": 1,
+          "title": "Stations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "shape",
+        "start_location",
+        "stations"
+      ],
+      "title": "BeamProfile",
+      "type": "object"
+    },
+    "BeamProfileShape": {
+      "enum": [
+        "tapered",
+        "haunched",
+        "tee",
+        "inverted_tee",
+        "l_shape",
+        "custom"
+      ],
+      "title": "BeamProfileShape",
+      "type": "string"
+    },
+    "BeamProfileStation": {
+      "additionalProperties": false,
+      "description": "Cross-section at an exact distance from the beam's start centreline.",
+      "properties": {
+        "distance": {
+          "minimum": 0,
+          "title": "Distance",
+          "type": "number"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Width"
+        },
+        "depth": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Depth"
+        },
+        "vertices": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/CrossSectionPoint"
+              },
+              "minItems": 3,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Vertices"
+        }
+      },
+      "required": [
+        "distance",
+        "width",
+        "depth",
+        "vertices"
+      ],
+      "title": "BeamProfileStation",
       "type": "object"
     },
     "Column": {
@@ -292,6 +412,26 @@
         "unit_null_reason"
       ],
       "title": "Column",
+      "type": "object"
+    },
+    "CrossSectionPoint": {
+      "additionalProperties": false,
+      "description": "Exactly dimensioned section coordinate from its lower-left envelope.",
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ],
+      "title": "CrossSectionPoint",
       "type": "object"
     },
     "DimensionUnit": {

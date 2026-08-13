@@ -14,6 +14,67 @@ class DimensionUnit(StrEnum):
     INCH = "in"
 
 
+class BeamProfileShape(StrEnum):
+    TAPERED = "tapered"
+    HAUNCHED = "haunched"
+    TEE = "tee"
+    INVERTED_TEE = "inverted_tee"
+    L_SHAPE = "l_shape"
+    CUSTOM = "custom"
+
+
+class CrossSectionPoint(StrictModel):
+    """Exactly dimensioned section coordinate from its lower-left envelope."""
+
+    x: float
+    y: float
+
+
+class BeamProfileStation(StrictModel):
+    """Cross-section at an exact distance from the beam's start centreline."""
+
+    distance: float = Field(ge=0)
+    width: float | None
+    depth: float | None
+    vertices: list[CrossSectionPoint] | None = Field(default=None, min_length=3)
+
+    @model_validator(mode="after")
+    def validate_geometry(self) -> BeamProfileStation:
+        has_dimensions = self.width is not None or self.depth is not None
+        if has_dimensions and (self.width is None or self.depth is None):
+            raise ValueError("station width and depth must be populated together")
+        if not has_dimensions and self.vertices is None:
+            raise ValueError("station requires width/depth or cross-section vertices")
+        return self
+
+
+class BeamProfile(StrictModel):
+    """Exact non-rectangular or longitudinally varying beam geometry."""
+
+    shape: BeamProfileShape
+    start_location: str = Field(min_length=1)
+    stations: list[BeamProfileStation] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_stations(self) -> BeamProfile:
+        distances = [station.distance for station in self.stations]
+        if distances != sorted(distances) or len(distances) != len(set(distances)):
+            raise ValueError("profile station distances must be strictly increasing")
+        polygon_shapes = {
+            BeamProfileShape.TEE,
+            BeamProfileShape.INVERTED_TEE,
+            BeamProfileShape.L_SHAPE,
+            BeamProfileShape.CUSTOM,
+        }
+        if self.shape in polygon_shapes and any(
+            station.vertices is None for station in self.stations
+        ):
+            raise ValueError(
+                f"{self.shape.value} profiles require vertices at every station"
+            )
+        return self
+
+
 class Beam(StrictModel):
     """One physical beam occurrence visible in the drawing set."""
 
@@ -32,6 +93,8 @@ class Beam(StrictModel):
     length_null_reason: str | None
     unit: DimensionUnit | None
     unit_null_reason: str | None
+    profile: BeamProfile | None = None
+    profile_null_reason: str | None
 
     @model_validator(mode="after")
     def validate_null_reasons(self) -> Beam:
@@ -39,6 +102,21 @@ class Beam(StrictModel):
             self,
             ("width", "depth", "length", "unit"),
         )
+        if self.profile is None:
+            if self.profile_null_reason is None or not self.profile_null_reason.strip():
+                raise ValueError(
+                    "profile_null_reason is required when profile is null"
+                )
+        elif self.profile_null_reason is not None:
+            raise ValueError(
+                "profile_null_reason must be null when profile is populated"
+            )
+        if self.profile is not None and self.length is not None:
+            if any(
+                station.distance > self.length
+                for station in self.profile.stations
+            ):
+                raise ValueError("profile station distance cannot exceed beam length")
         return self
 
 

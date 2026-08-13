@@ -11,6 +11,7 @@ fi
 python -m pipeline.tools.export_schema third ./data/schemas/third_pass.schema.json
 
 codex exec \
+    --ignore-user-config \
     --json \
     --skip-git-repo-check \
     -m gpt-5.6-sol \
@@ -39,6 +40,12 @@ from prose, grid spacing, or assumed page proportions without seeing the member.
 
 Return `position` in normalized full-page coordinates with a top-left origin:
 `left`, `top`, `right`, and `bottom`, each from 0 to 1.
+
+When one tight box cannot represent a bent, stepped, or otherwise irregular
+beam without covering unrelated structure, leave `position` null and populate
+`positions` with the smallest set of tight boxes that collectively covers the
+member linework. Do not populate both `position` and `positions`. This remains
+one position record for one physical beam.
 
 For beams, tightly bound only the physical beam linework between its actual end
 supports. Exclude labels, dimension strings, grid lines, grid bubbles, columns,

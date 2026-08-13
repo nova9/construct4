@@ -7,6 +7,7 @@ initialize_pipeline
 python -m pipeline.tools.export_schema first ./data/schemas/first_pass.schema.json
 
 codex exec \
+  --ignore-user-config \
   --json \
   --skip-git-repo-check \
   -m gpt-5.6-sol \
@@ -27,6 +28,15 @@ Pay particular attention to:
 - beam and column details
 - general/default notes
 - local overrides and exceptions
+- dedicated named member sections and notes marking other members similar
+
+For every beam occurrence, perform and return a `beam_shape` assessment. Do not
+assume a beam is rectangular merely because its plan callout contains two
+numbers. Search the complete set for a section or detail naming that beam and
+for `similar` or `R/F similar` notes. A dedicated named section controls the
+cross-section shape over a nominal plan callout, schedule size, or default.
+Use `unknown` when the complete cross-section shape cannot be established.
+Set `beam_shape` to null only for columns.
 
 Use cross-page references where necessary.
 
@@ -35,6 +45,15 @@ Return the result using the supplied structured output schema.
 If a dimension cannot be read or resolved confidently from the supplied rendering, do not guess. Mark the element as needing verification. A mandatory higher-resolution second pass will process every beam and column.
 ' \
   >./data/logs/first_pass.jsonl
+
+python - <<'PY'
+from pathlib import Path
+
+from pipeline.schemas.first_pass import DrawingExtraction
+
+result_path = Path("data/results/first_pass.json")
+DrawingExtraction.model_validate_json(result_path.read_text(encoding="utf-8"))
+PY
 
 echo
 echo "First pass complete."

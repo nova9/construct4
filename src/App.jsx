@@ -32,13 +32,16 @@ import {
 const REVIEW_FILTERS = ["all", "unresolved", "changed"];
 const SUGGESTIONS = ["400", "450", "Varies"];
 
+function memberDimensionKeys(member) {
+  if (member.kind === "column") return ["width", "depth", "height", "unit"];
+  return member.profile
+    ? ["length", "unit"]
+    : ["width", "depth", "length", "unit"];
+}
+
 function memberStatus(member) {
   if (member.reviewStatus) return member.reviewStatus;
-  const dimensionKeys =
-    member.kind === "beam"
-      ? ["width", "depth", "length", "unit"]
-      : ["width", "depth", "height", "unit"];
-  return dimensionKeys.some((field) => member[field] == null)
+  return memberDimensionKeys(member).some((field) => member[field] == null)
     ? "unresolved"
     : "confirmed";
 }
@@ -52,9 +55,16 @@ function normalizeData(data, positionData) {
   );
   const withPosition = (member, kind) => {
     const record = positions.get(member.key);
+    const memberPositions = record?.positions?.length
+      ? record.positions
+      : record?.position
+        ? [record.position]
+        : [];
     return {
       ...member,
       position: record?.position ?? null,
+      positions: record?.positions ?? null,
+      positionBoxes: memberPositions,
       position_null_reason:
         record?.position_null_reason ??
         "No third-pass position record was loaded.",
@@ -84,11 +94,9 @@ async function fetchReviewData() {
 }
 
 function getMissingField(member) {
-  const fields =
-    member.kind === "beam"
-      ? ["width", "depth", "length", "unit"]
-      : ["width", "depth", "height", "unit"];
-  return fields.find((field) => member[field] == null) || null;
+  return (
+    memberDimensionKeys(member).find((field) => member[field] == null) || null
+  );
 }
 
 function downloadBlob(content, filename, type) {
@@ -187,7 +195,9 @@ function App() {
   const pageMembers = useMemo(
     () =>
       members
-        .filter((member) => member.page === viewPage && member.position)
+        .filter(
+          (member) => member.page === viewPage && member.positionBoxes.length,
+        )
         .sort(
           (a, b) =>
             Number(a.key === selectedKey) - Number(b.key === selectedKey),
@@ -379,7 +389,7 @@ function App() {
       return;
     }
     const clean = (member) => {
-      const { original, ...rest } = member;
+      const { original, positionBoxes, ...rest } = member;
       return rest;
     };
     if (format === "json") {
@@ -406,6 +416,8 @@ function App() {
         "depth",
         "length_or_height",
         "unit",
+        "profile_shape",
+        "profile_stations",
         "review_status",
         "review_note",
       ];
@@ -419,6 +431,8 @@ function App() {
         member.depth,
         member.kind === "beam" ? member.length : member.height,
         member.unit,
+        member.profile?.shape || "",
+        member.profile ? JSON.stringify(member.profile.stations) : "",
         memberStatus(member),
         member.reviewNote || "",
       ]);
@@ -640,18 +654,23 @@ function App() {
                   className="member-overlay"
                   aria-label={`Structural members on page ${viewPage}`}
                 >
-                  {pageMembers.map((member) => (
-                    <MemberPosition
-                      key={member.key}
-                      member={member}
-                      selected={member.key === selectedKey}
-                      onSelect={() => {
-                        setKind(member.kind);
-                        setFilter("all");
-                        setSelectedKey(member.key);
-                      }}
-                    />
-                  ))}
+                  {pageMembers.flatMap((member) =>
+                    member.positionBoxes.map((position, segmentIndex) => (
+                      <MemberPosition
+                        key={`${member.key}-${segmentIndex}`}
+                        member={member}
+                        position={position}
+                        segmentIndex={segmentIndex}
+                        segmentCount={member.positionBoxes.length}
+                        selected={member.key === selectedKey}
+                        onSelect={() => {
+                          setKind(member.kind);
+                          setFilter("all");
+                          setSelectedKey(member.key);
+                        }}
+                      />
+                    )),
+                  )}
                 </div>
               </div>
             </div>
@@ -713,9 +732,20 @@ function App() {
   );
 }
 
-function MemberPosition({ member, selected, onSelect }) {
-  const { left, top, right, bottom } = member.position;
+function MemberPosition({
+  member,
+  position,
+  segmentIndex,
+  segmentCount,
+  selected,
+  onSelect,
+}) {
+  const { left, top, right, bottom } = position;
   const label = `${member.kind === "beam" ? "Beam" : "Column"} ${member.drawing_id || "unlabelled"}: ${member.location}`;
+  const segmentLabel =
+    segmentCount > 1
+      ? `, segment ${segmentIndex + 1} of ${segmentCount}`
+      : "";
   return (
     <button
       type="button"
@@ -726,13 +756,15 @@ function MemberPosition({ member, selected, onSelect }) {
         width: `${(right - left) * 100}%`,
         height: `${(bottom - top) * 100}%`,
       }}
-      aria-label={`Select ${label}`}
+      aria-label={`Select ${label}${segmentLabel}`}
       title={label}
       onClick={onSelect}
     >
-      <span aria-hidden="true">
-        {member.kind === "beam" ? "B" : "C"} · {member.drawing_id || "—"}
-      </span>
+      {segmentIndex === 0 && (
+        <span aria-hidden="true">
+          {member.kind === "beam" ? "B" : "C"} · {member.drawing_id || "—"}
+        </span>
+      )}
     </button>
   );
 }
@@ -1077,19 +1109,27 @@ function ReviewTray({
           </label>
           <label>
             Width ({member.unit || "mm"})
-            <input
-              type="number"
-              value={draft.width}
-              onChange={(e) => setDraft({ ...draft, width: e.target.value })}
-            />
+            {member.profile ? (
+              <span className="read-only-field">See profile stations</span>
+            ) : (
+              <input
+                type="number"
+                value={draft.width}
+                onChange={(e) => setDraft({ ...draft, width: e.target.value })}
+              />
+            )}
           </label>
           <label>
             Depth ({member.unit || "mm"})
-            <input
-              type="number"
-              value={draft.depth}
-              onChange={(e) => setDraft({ ...draft, depth: e.target.value })}
-            />
+            {member.profile ? (
+              <span className="read-only-field">See profile stations</span>
+            ) : (
+              <input
+                type="number"
+                value={draft.depth}
+                onChange={(e) => setDraft({ ...draft, depth: e.target.value })}
+              />
+            )}
           </label>
           <label>
             {longitudinal === "length" ? "Length" : "Height"} (
@@ -1126,12 +1166,14 @@ function ReviewTray({
               value={member.width}
               original={member.original.width}
               unit={member.unit}
+              fallback={member.profile ? "See profile" : undefined}
             />
             <Fact
               label="Depth"
               value={member.depth}
               original={member.original.depth}
               unit={member.unit}
+              fallback={member.profile ? "See profile" : undefined}
             />
             <Fact
               label={longitudinal === "length" ? "Length" : "Height"}
@@ -1139,6 +1181,14 @@ function ReviewTray({
               original={member.original[longitudinal]}
               unit={member.unit}
             />
+            {member.kind === "beam" && member.profile && (
+              <Fact
+                label="Profile"
+                value={`${member.profile.shape.replaceAll("_", " ")} · ${member.profile.stations.length} ${
+                  member.profile.stations.length === 1 ? "station" : "stations"
+                }`}
+              />
+            )}
             <Fact label="Location" value={member.location} wide />
           </div>
           <div className="review-question">
@@ -1217,13 +1267,13 @@ function ReviewTray({
   );
 }
 
-function Fact({ label, value, original, unit, wide }) {
+function Fact({ label, value, original, unit, wide, fallback }) {
   const changed = value !== original;
   return (
     <div className={`fact ${wide ? "wide" : ""}`}>
       <span>{label}</span>
       <strong>
-        {value ?? "—"}
+        {value ?? fallback ?? "—"}
         {typeof value === "number" ? ` ${unit || ""}` : ""}
       </strong>
       {changed && <small>Original: {original ?? "unresolved"}</small>}

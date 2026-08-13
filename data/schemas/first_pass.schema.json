@@ -1,5 +1,19 @@
 {
   "$defs": {
+    "BeamCrossSectionShape": {
+      "enum": [
+        "rectangular",
+        "tapered",
+        "haunched",
+        "tee",
+        "inverted_tee",
+        "l_shape",
+        "custom",
+        "unknown"
+      ],
+      "title": "BeamCrossSectionShape",
+      "type": "string"
+    },
     "BeamDimensionMethod": {
       "enum": [
         "direct_annotation",
@@ -120,6 +134,31 @@
         "confidence"
       ],
       "title": "BeamExtent",
+      "type": "object"
+    },
+    "BeamShapeAssessment": {
+      "additionalProperties": false,
+      "description": "First-pass evidence map for one beam occurrence's cross-section.",
+      "properties": {
+        "shape": {
+          "$ref": "#/$defs/BeamCrossSectionShape"
+        },
+        "confidence": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "evidence": {
+          "$ref": "#/$defs/Evidence"
+        }
+      },
+      "required": [
+        "shape",
+        "confidence",
+        "evidence"
+      ],
+      "title": "BeamShapeAssessment",
       "type": "object"
     },
     "ColumnDimensionMethod": {
@@ -331,6 +370,16 @@
             }
           ]
         },
+        "beam_shape": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BeamShapeAssessment"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "resolution": {
           "$ref": "#/$defs/Resolution"
         },
@@ -350,6 +399,7 @@
         "size",
         "vertical_extent",
         "beam_extent",
+        "beam_shape",
         "resolution",
         "location",
         "needs_verification"
