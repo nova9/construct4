@@ -1,5 +1,11 @@
 # Beam and Column Extraction from Construction Drawings
 
+> **Project status: shelved (2026-08-16).** Active development has stopped
+> because the current approach does not have sufficient differentiation from
+> established AI takeoff products, while dependable construction quantities
+> still require human verification. The implementation is preserved for
+> reference and possible reuse. See [POSTMORTEM.md](POSTMORTEM.md).
+
 This project uses the Codex CLI to inspect a construction drawing PDF and produce structured JSON containing physical beam and column occurrences, locations, and dimensions.
 
 It uses three passes:

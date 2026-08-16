@@ -112,8 +112,12 @@ button:disabled { opacity: .42; cursor: not-allowed; }
 .zoom-tools span { width: 50px; text-align: center; font-size: 12px; font-variant-numeric: tabular-nums; }
 .pdf-stage { min-height: 0; position: relative; background: #dfe4ea; overflow: hidden; }
 .drawing-scroll { width: 100%; height: 100%; overflow: auto; display: flex; align-items: flex-start; justify-content: center; padding: 8px; }
-.drawing-sheet { position: relative; flex: 0 0 auto; min-width: 640px; line-height: 0; box-shadow: 0 4px 18px rgba(24, 35, 53, .14); }
-.drawing-sheet img { display: block; width: 100%; height: auto; max-width: none; }
+.drawing-sheet { position: relative; flex: 0 0 auto; min-width: 640px; background: var(--surface); line-height: 0; box-shadow: 0 4px 18px rgba(24, 35, 53, .14); }
+.drawing-sheet canvas { display: block; }
+.pdf-render-status { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--muted); background: var(--surface); font-size: 13px; line-height: 1.5; }
+.pdf-render-status svg { animation: spin 1s linear infinite; }
+.pdf-render-status.error { color: var(--red); }
+.pdf-render-status.error svg { animation: none; }
 .member-overlay { position: absolute; inset: 0; pointer-events: none; }
 .member-position { position: absolute; z-index: 1; min-width: 4px; min-height: 4px; padding: 0; border: 2px solid rgba(42, 55, 76, .72); border-radius: 2px; background: rgba(255, 255, 255, .16); box-shadow: 0 0 0 1px rgba(255, 255, 255, .76); pointer-events: auto; cursor: pointer; transition: border-color 140ms ease-out, background 140ms ease-out, box-shadow 140ms ease-out; }
 .member-position::before { content: ""; position: absolute; inset: -6px; }

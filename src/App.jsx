@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import pdfWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
+import planPdfUrl from "../data/input/plan.pdf?url";
 import {
   AlertCircle,
   ArrowLeft,
@@ -289,9 +291,97 @@ function App() {
   const [exportOpen, setExportOpen] = useState(false);
   const [exportWarning, setExportWarning] = useState(null);
   const [pdfZoom, setPdfZoom] = useState(100);
+  const [pdfDocument, setPdfDocument] = useState(null);
+  const [pdfPageCount, setPdfPageCount] = useState(15);
+  const [pdfPageSize, setPdfPageSize] = useState({ width: 640, height: 452 });
+  const [pdfViewerWidth, setPdfViewerWidth] = useState(0);
+  const [pdfReady, setPdfReady] = useState(false);
+  const [pdfRenderError, setPdfRenderError] = useState("");
   const [viewPage, setViewPage] = useState(1);
   const [toast, setToast] = useState("");
   const fileInput = useRef(null);
+  const drawingScroll = useRef(null);
+  const pdfCanvas = useRef(null);
+
+  useEffect(() => {
+    let active = true;
+    let loadingTask;
+    import("pdfjs-dist")
+      .then(({ GlobalWorkerOptions, getDocument }) => {
+        GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
+        loadingTask = getDocument({ url: String(planPdfUrl) });
+        return loadingTask.promise;
+      })
+      .then((document) => {
+        if (!active || !document) return;
+        setPdfDocument(document);
+        setPdfPageCount(document.numPages);
+      })
+      .catch((error) => {
+        if (active) setPdfRenderError(`PDF could not be opened: ${error.message}`);
+      });
+    return () => {
+      active = false;
+      loadingTask?.destroy();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!drawingScroll.current) return undefined;
+    const observer = new ResizeObserver(([entry]) => {
+      setPdfViewerWidth(entry.contentRect.width);
+    });
+    observer.observe(drawingScroll.current);
+    return () => observer.disconnect();
+  }, [screen]);
+
+  useEffect(() => {
+    if (!pdfDocument || !pdfCanvas.current || !pdfViewerWidth) return undefined;
+    let cancelled = false;
+    let renderTask;
+    setPdfReady(false);
+    setPdfRenderError("");
+
+    pdfDocument
+      .getPage(viewPage)
+      .then((page) => {
+        if (cancelled) return null;
+        const baseViewport = page.getViewport({ scale: 1 });
+        const cssWidth = Math.max(
+          640,
+          (pdfViewerWidth - 16) * (pdfZoom / 100),
+        );
+        const cssScale = cssWidth / baseViewport.width;
+        const outputScale = Math.max(1, window.devicePixelRatio || 1);
+        const renderViewport = page.getViewport({
+          scale: cssScale * outputScale,
+        });
+        const cssHeight = baseViewport.height * cssScale;
+        const canvas = pdfCanvas.current;
+        canvas.width = Math.ceil(renderViewport.width);
+        canvas.height = Math.ceil(renderViewport.height);
+        canvas.style.width = `${cssWidth}px`;
+        canvas.style.height = `${cssHeight}px`;
+        setPdfPageSize({ width: cssWidth, height: cssHeight });
+        renderTask = page.render({
+          canvasContext: canvas.getContext("2d"),
+          viewport: renderViewport,
+        });
+        return renderTask.promise;
+      })
+      .then(() => {
+        if (!cancelled) setPdfReady(true);
+      })
+      .catch((error) => {
+        if (!cancelled && error?.name !== "RenderingCancelledException")
+          setPdfRenderError(`Page could not be rendered: ${error.message}`);
+      });
+
+    return () => {
+      cancelled = true;
+      renderTask?.cancel();
+    };
+  }, [pdfDocument, pdfViewerWidth, pdfZoom, viewPage]);
 
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get("demo") !== "workspace")
@@ -834,24 +924,26 @@ function App() {
                   aria-label="Drawing page"
                   type="number"
                   min="1"
-                  max="15"
+                max={pdfPageCount}
                   value={viewPage}
                   onChange={(event) =>
                     setViewPage(
                       Math.min(
-                        15,
+                        pdfPageCount,
                         Math.max(1, Number(event.target.value) || 1),
                       ),
                     )
                   }
                 />
               </label>
-              <span>of 15</span>
+              <span>of {pdfPageCount}</span>
               <button
                 className="icon-button"
                 aria-label="Next page"
-                onClick={() => setViewPage((page) => Math.min(15, page + 1))}
-                disabled={viewPage === 15}
+                onClick={() =>
+                  setViewPage((page) => Math.min(pdfPageCount, page + 1))
+                }
+                disabled={viewPage === pdfPageCount}
               >
                 <ChevronRight size={15} />
               </button>
@@ -875,16 +967,24 @@ function App() {
             </div>
           </div>
           <div className="pdf-stage">
-            <div className="drawing-scroll">
-              <div className="drawing-sheet" style={{ width: `${pdfZoom}%` }}>
-                <img
-                  alt={`Rendered source drawing page ${viewPage}`}
-                  src={`/drawing-pages/page-${viewPage}.webp`}
+            <div className="drawing-scroll" ref={drawingScroll}>
+              <div
+                className="drawing-sheet"
+                style={{
+                  width: `${pdfPageSize.width}px`,
+                  height: `${pdfPageSize.height}px`,
+                }}
+                aria-busy={!pdfReady}
+              >
+                <canvas
+                  ref={pdfCanvas}
+                  aria-label={`Rendered source drawing page ${viewPage}`}
                 />
-                <div
-                  className="member-overlay"
-                  aria-label={`Structural members on page ${viewPage}`}
-                >
+                {pdfReady && (
+                  <div
+                    className="member-overlay"
+                    aria-label={`Structural members on page ${viewPage}`}
+                  >
                   {pageMembers.flatMap((member) =>
                     member.positionBoxes.map((position, segmentIndex) => (
                       <MemberPosition
@@ -902,7 +1002,18 @@ function App() {
                       />
                     )),
                   )}
-                </div>
+                  </div>
+                )}
+                {!pdfReady && !pdfRenderError && (
+                  <div className="pdf-render-status">
+                    <LoaderCircle size={18} /> Rendering page…
+                  </div>
+                )}
+                {pdfRenderError && (
+                  <div className="pdf-render-status error" role="alert">
+                    <AlertCircle size={18} /> {pdfRenderError}
+                  </div>
+                )}
               </div>
             </div>
             <div className="evidence-notice">
